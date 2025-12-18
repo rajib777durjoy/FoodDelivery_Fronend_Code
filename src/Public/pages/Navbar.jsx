@@ -7,6 +7,7 @@ const Navbar = () => {
         <Link to={'/'}>Home</Link>
         <Link></Link>
     </>
+    const user = true ;
     return (
         <div className='w-[90%] mx-auto '>
             <div className="navbar text-black">
@@ -15,27 +16,31 @@ const Navbar = () => {
                 </div>
 
                 <div className="navbar-end">
-                    <button className="btn btn-ghost btn-circle mx-2">
+                    <button className="btn btn-ghost hover:bg-green-800 border-0 hover:scale-90 btn-circle mx-2">
                         <div className="indicator">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /> </svg>
                            
                         </div>
                     </button>
-                    <div className="dropdown dropdown-center">
-                        <div tabIndex={0} role="button" className="mx-2">profile</div>
-                        <ul tabIndex="-1" className="dropdown-content menu bg-white mt-5 rounded-box z-1 w-52 py-2 px-6 shadow-sm">
-                            <NavLink to="/" className='my-2' >
-                                Home
+                    {user && <div className="dropdown dropdown-center">
+                        <div tabIndex={0} role="button" className="mx-2"><img src="/EatNowLogo-removebg-preview.png" className='w-10 h-10 rounded-full' alt="" /></div>
+                        <ul tabIndex="-1" className="dropdown-content menu bg-white mt-3 rounded-box z-1 w-52 py-2 px-2 shadow-sm">
+                            <NavLink to="/" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900' >
+                                Profile
                             </NavLink>
-                            <NavLink to="/" className='my-2'>
-                                Home
+                            <NavLink to="/" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
+                                Restaurants
                             </NavLink>
-                            <NavLink to="/" className='my-2'>
-                                Home
+                            <NavLink to="/" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
+                                Dashboard
                             </NavLink>
-                            <NavLink to="/" className='my-2' >Home</NavLink>
+                            <NavLink to="/" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>Help</NavLink>
                         </ul>
-                    </div>
+                    </div> || <div className='flex gap-2 '>
+                        <button className='btn bg-white hover:scale-95 transition-all duration-300 text-black hover:bg-green-800 border-0 hover:text-white'>SignUp</button>
+                        <button className='btn bg-white hover:scale-95 transition-all duration-300 text-black hover:bg-green-800 border-0 hover:text-white'>Sign_in</button>
+                    </div>}
+                    
                 </div>
             </div>
         </div>
