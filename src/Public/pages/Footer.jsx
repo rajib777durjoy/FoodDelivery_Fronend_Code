@@ -28,18 +28,18 @@ const Footer = () => {
         <div>
           <h2 className="text-xl font-semibold mb-3">Contact Us</h2>
           <p className="text-gray-300">123 Food Street, Dhaka, Bangladesh</p>
-          <p className="text-gray-300">Phone: +880 123 456 789</p>
-          <p className="text-gray-300">Email: support@foodie.com</p>
+          <p className="text-gray-300">Phone: +880 1733757561</p>
+          <p className="text-gray-300">Email:durjoy2001chando@gmail.com</p>
         </div>
 
         {/* Social Media */}
         <div>
           <h2 className="text-xl font-semibold mb-3">Follow Us</h2>
           <div className="flex gap-4 text-white text-2xl">
-            <a href="#"><FaFacebook className="hover:text-amber-400" /></a>
-            <a href="#"><FaTwitter className="hover:text-amber-400" /></a>
-            <a href="#"><FaInstagram className="hover:text-amber-400" /></a>
-            <a href="#"><FaLinkedin className="hover:text-amber-400" /></a>
+            <a href="https://www.facebook.com/durjoy.chando.2024" target='_blank'><FaFacebook className="hover:text-amber-400" /></a>
+            <a href="https://x.com/DurjoyChando" target='_blank'><FaTwitter className="hover:text-amber-400" /></a>
+            <a href="https://www.instagram.com/durjoychando7" target='_blank'><FaInstagram className="hover:text-amber-400" /></a>
+            <a href="https://www.linkedin.com/in/durjoy-chando-4a9878317" target='_blank'><FaLinkedin className="hover:text-amber-400" /></a>
           </div>
         </div>
       </div>

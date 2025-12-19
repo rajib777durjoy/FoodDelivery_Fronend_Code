@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 
 const RestaurentFeature = () => {
     return (
@@ -55,9 +56,9 @@ const RestaurentFeature = () => {
 
                     
                     <div className="pt-4">
-                        <button className="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition">
+                        <Link to={'/All_restaurant'}><button className="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition">
                             Explore Restaurants
-                        </button>
+                        </button></Link>
                     </div>
                 </div>
 

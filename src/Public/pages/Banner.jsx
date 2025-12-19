@@ -5,7 +5,7 @@ const Banner = () => {
         <div className='w-full lg:grid grid-cols-2 gap-6  min-h-125 '>
             <div className='mt-40'>
                 <h1 className="text-5xl font-bold text-green-500 py-4">
-                   Eat_Now Fresh ,<br /> Flavors, Fast Delivery <span className="text-gray-700">To Your Door</span>
+                   EatNow Fresh ,<br /> Flavors, Fast Delivery <span className="text-gray-700">To Your Door</span>
                 </h1>
                 <p className='text-gray-700 text-sm'>Order dishes from favorite restaurants near you.</p>
                 <div className='border border-green-500  h-15 rounded-md mt-4 flex '>
