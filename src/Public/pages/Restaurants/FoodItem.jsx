@@ -18,10 +18,10 @@ const FoodItem = () => {
                     Popular Food Items
                 </h1>
                 <p className="text-gray-600 mt-2">
-                    Delicious food delivered to your door 
+                    Delicious food delivered to your door
                 </p>
             </div>
-
+            
             {/* Food Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {foodItem?.map((item) => (
@@ -60,7 +60,7 @@ const FoodItem = () => {
                 ))}
             </div>
             <div className="w-[20%] mx-auto mt-8 mb-5">
-               {foodItem.length > 10 && <button onClick={handleViewMoreFood} className="btn w-full hover:shadow-xl ">View more</button>}
+                {foodItem.length > 10 && <button onClick={handleViewMoreFood} className="btn w-full hover:shadow-xl ">View more</button>}
             </div>
 
         </div>

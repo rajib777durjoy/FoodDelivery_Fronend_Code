@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { restaurantItems } from '../../DemoDB/Db';
 
 const FoodByCategory = () => {
     const { name } = useParams() // food category name 
     const [FoodItem, setFoodItem] = useState([])
+    const navigate = useNavigate()
     console.log(name)
     useEffect(() => {
         const FoodByCategory = restaurantItems.filter(item => item.category === name);
@@ -15,6 +16,9 @@ const FoodByCategory = () => {
     }
     return (
         <div className='bg-gray-100 min-h-screen p-6'>
+            <button className='btn mb-5 hover:shadow-xl' onClick={()=>navigate(-1)}>
+                Back to Home
+            </button>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {FoodItem?.map((item) => (
                     <div

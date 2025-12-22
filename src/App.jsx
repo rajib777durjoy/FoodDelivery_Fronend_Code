@@ -7,6 +7,8 @@ import Layoutpage from './Layout/Layoutpage';
 import All_Restaurant from './Public/pages/Restaurants/All_Restaurant';
 import Restaurant_menu from './Public/pages/Restaurants/Restaurant_menu';
 import FoodByCategory from './Public/pages/Restaurants/FoodByCategory';
+import SignUp from './Public/Authentication/SignUp';
+import SignIn from './Public/Authentication/SignIn';
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
        <Route path='/menu_Of_restaurant/:id' element={<Restaurant_menu/>}></Route>
        <Route path='/FoodByCategory/:name' element={<FoodByCategory></FoodByCategory>}></Route>
       </Route>
+      <Route path='/SignIn' element={<SignIn></SignIn>} />
+      <Route path='/SignUp' element={<SignUp></SignUp>} />
     </Routes>
   );
 }
