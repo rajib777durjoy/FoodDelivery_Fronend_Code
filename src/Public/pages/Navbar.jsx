@@ -1,14 +1,28 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router';
 import { AuthContext } from '../Provider/AuthProvider';
+import useAxiosPublic from '../Hook/useAxiosPublic';
+import { useSelector } from 'react-redux';
 
 
 const Navbar = () => {
-    const {user,SignOutUser}=useContext(AuthContext)
+    const {SignOutUser}=useContext(AuthContext)
+    // const axiosPublic = useAxiosPublic();
+    // const [userData,setUserData]=useState([])
+    const userData = useSelector(state=>state.user.user)
     const handleSingOut=()=>{
       SignOutUser()
     }
+    // useEffect(()=>{
+    //  const userInformationFunction = async()=>{
+    //   const res = await axiosPublic.get(`/api/user/user_data/${user?.email}`);
+    //   console.log(res.data)
+    //   setUserData(res.data)
+    //  }
+    //  userInformationFunction()
+    // },[user])
 
+    const role = userData.role
     return (
         <div className='w-[90%] mx-auto '>
             <div className="navbar text-black">
@@ -23,8 +37,8 @@ const Navbar = () => {
 
                         </div>
                     </button>
-                    {user && <div className="dropdown dropdown-center">
-                        <div tabIndex={0} role="button" className="mx-2"><img src={user?.photoURL} className='w-10 h-10 rounded-full' alt="" /></div>
+                    {userData && <div className="dropdown dropdown-center">
+                        <div tabIndex={0} role="button" className="mx-2"><img src={userData?.profile} className='w-10 h-10 rounded-full' alt="" /></div>
                         <ul tabIndex="-1" className="dropdown-content menu bg-white mt-3 rounded-box z-1 w-52 py-2 px-2 shadow-sm">
                             <NavLink to="/" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900' >
                                 Profile
@@ -32,9 +46,16 @@ const Navbar = () => {
                             <NavLink to="/" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
                                 Restaurants
                             </NavLink>
-                            <NavLink to="/" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
+                            {role === 'customer' && <NavLink to="/dashboard" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
                                 Dashboard
-                            </NavLink>
+                            </NavLink> }
+                            {role === 'delivery' && <NavLink to="/" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
+                                Dashboard
+                            </NavLink> }
+                            {role === 'restaurant' && <NavLink to="/" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
+                                Dashboard
+                            </NavLink> }
+
                             <NavLink to='#' onClick={handleSingOut}  className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
                                 Sign Out
                             </NavLink>

@@ -1,13 +1,16 @@
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoMdEye, IoIosEyeOff } from "react-icons/io";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../Provider/AuthProvider";
+import useAxiosPublic from "../Hook/useAxiosPublic";
 
 const SignIn = () => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const [showPassword, setShowPassword] = useState(false);
-  const { SignInUser } = useContext(AuthContext)
+  const { SignInUser, GoogleSingIn } = useContext(AuthContext)
+  const axiosPublic =useAxiosPublic();
+  const navigate = useNavigate()
 
   const onSubmit = (data) => {
     console.log("Sign In Data:", data.email);
@@ -30,6 +33,26 @@ const SignIn = () => {
       })
   };
 
+   const handleGoogleSignIn = () => {
+        GoogleSingIn()
+            .then((res) => {
+                if (res.user) {
+                    console.log('user api call form google')
+                    axiosPublic.post('/api/user/user_data', {
+                        fullname: res.user?.displayName,
+                        email: res.user?.email,
+                        profile: res.user?.photoURL
+                    }).then(res => {  
+                        return navigate('/')
+                    });
+
+                }
+
+            }).catch(err => {
+                console.log('err', err)
+            })
+    }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-green-50 px-4">
       <div className="w-full max-w-xl bg-white rounded-2xl shadow-lg p-8">
@@ -40,6 +63,7 @@ const SignIn = () => {
         {/* Google Sign In */}
         <button
           type="button"
+          onClick={handleGoogleSignIn}
           className="w-full mt-6 border border-green-500 py-2 rounded-lg flex items-center justify-center gap-2 text-green-700 hover:bg-green-100 transition"
         >
           <img
