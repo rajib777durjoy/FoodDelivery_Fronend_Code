@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { Link } from 'react-router';
 
 const Footer = () => {
   return (
@@ -41,6 +42,10 @@ const Footer = () => {
             <a href="https://www.instagram.com/durjoychando7" target='_blank'><FaInstagram className="hover:text-amber-400" /></a>
             <a href="https://www.linkedin.com/in/durjoy-chando-4a9878317" target='_blank'><FaLinkedin className="hover:text-amber-400" /></a>
           </div>
+          <Link to='/JoinOurTeam'><div className="py-1 w-36 px-2 font-medium rounded-md bg-white text-black my-2">
+            Join Our Team
+          </div></Link>
+
         </div>
       </div>
 

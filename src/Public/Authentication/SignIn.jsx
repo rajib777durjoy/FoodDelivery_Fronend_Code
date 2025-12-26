@@ -4,6 +4,7 @@ import { IoMdEye, IoIosEyeOff } from "react-icons/io";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../Provider/AuthProvider";
 import useAxiosPublic from "../Hook/useAxiosPublic";
+import { Bounce, toast } from "react-toastify";
 
 const SignIn = () => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();

@@ -20,6 +20,8 @@ import MenuPage from './Dashboard/Component/Restaurant/MenuPage';
 import AddFood from './Dashboard/Component/Restaurant/AddFood';
 import Delivery_History from './Dashboard/Component/Restaurant/Delivery_History';
 import OrdersPage from './Dashboard/Component/Restaurant/OrdersPage';
+import JoinOurTeam from './Public/JoinOurTeam/JoinOurTeam';
+import BecomePartner from './Public/JoinOurTeam/BecomePartner';
 
 function App() {
   const axiosPublic = useAxiosPublic();
@@ -40,6 +42,8 @@ function App() {
         <Route path='/All_restaurant' element={<All_Restaurant></All_Restaurant>}></Route>
         <Route path='/menu_Of_restaurant/:id' element={<Restaurant_menu />}></Route>
         <Route path='/FoodByCategory/:name' element={<FoodByCategory></FoodByCategory>}></Route>
+        <Route path='/JoinOurTeam' element={<JoinOurTeam></JoinOurTeam>}></Route>
+        <Route path='/BecomePartner' element={<BecomePartner></BecomePartner>}></Route>
       </Route>
       {/* Restaurant dashboard page */}
       <Route path='/restaurant_Dashboard' element={<RestaurantDashboard></RestaurantDashboard>}>
