@@ -22,6 +22,7 @@ import Delivery_History from './Dashboard/Component/Restaurant/Delivery_History'
 import OrdersPage from './Dashboard/Component/Restaurant/OrdersPage';
 import JoinOurTeam from './Public/JoinOurTeam/JoinOurTeam';
 import BecomePartner from './Public/JoinOurTeam/BecomePartner';
+import DeliveryPartner from './Public/JoinOurTeam/DeliveryPartner';
 
 function App() {
   const axiosPublic = useAxiosPublic();
@@ -44,6 +45,7 @@ function App() {
         <Route path='/FoodByCategory/:name' element={<FoodByCategory></FoodByCategory>}></Route>
         <Route path='/JoinOurTeam' element={<JoinOurTeam></JoinOurTeam>}></Route>
         <Route path='/BecomePartner' element={<BecomePartner></BecomePartner>}></Route>
+        <Route path='/BecomeDeliveryHero' element={<DeliveryPartner></DeliveryPartner>} ></Route>
       </Route>
       {/* Restaurant dashboard page */}
       <Route path='/restaurant_Dashboard' element={<RestaurantDashboard></RestaurantDashboard>}>

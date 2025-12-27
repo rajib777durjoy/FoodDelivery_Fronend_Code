@@ -65,9 +65,9 @@ const JoinOurTeam = () => {
               each month while spreading joy to doorsteps.
             </p>
 
-            <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold transition">
+            <Link to={'/BecomeDeliveryHero'}><button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold transition">
               Join as Delivery Hero
-            </button>
+            </button></Link>
           </div>
 
           {/* Image Section */}
