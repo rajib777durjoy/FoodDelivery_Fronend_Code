@@ -1,16 +1,29 @@
 import React, { useState } from "react";
 import Select from "react-select";
+import useAxiosPublic from "../../../Public/Hook/useAxiosPublic";
+import { useSelector } from "react-redux";
+import { Bounce, toast } from "react-toastify";
+import { GiCircularSawblade } from "react-icons/gi";
 
 const AddFood = () => {
     const [category, setCategory] = useState(null);
     const [availability, setAvailability] = useState(null);
+    const [image, setimage] = useState()
+    const axiosPublic = useAxiosPublic();
+    const user = useSelector(state => state.user.user);
+    const [loading, setloading] = useState(false);
+    console.log('user::', category, availability)
 
     // Options for react-select
     const categoryOptions = [
-        { value: "burger", label: "Burger" },
-        { value: "pizza", label: "Pizza" },
-        { value: "drinks", label: "Drinks" },
-        { value: "dessert", label: "Dessert" },
+        { value: "Fast Food", label: "Fast Food" },
+        { value: "Chinese", label: "Chinese" },
+        { value: "Vegetarian", label: "Vegetarian" },
+        { value: "Biryani", label: "Biryani" },
+        { value: "Pizza", label: "Pizza" },
+        { value: "Sandwich", label: "Sandwich" },
+        { value: "Desserts", label: "Desserts" },
+        { value: "Burger", label: "Burger" },
     ];
 
     const availabilityOptions = [
@@ -18,13 +31,52 @@ const AddFood = () => {
         { value: "out_of_stock", label: "Out of Stock" },
     ];
 
+    const handleAddFood = (e) => {
+        e.preventDefault();
+        setloading(true)
+        console.log('image', e.target.food_image.files[0])
+        const data = e.target;
+        const formData = new FormData();
+        formData.append('food_name', data.food_name.value)
+        formData.append('price', data.price.value)
+        formData.append('category', category)
+        formData.append('food_image', e.target.food_image.files[0])
+        formData.append('available', availability)
+        formData.append('description', data.description.value)
+
+        axiosPublic.post(`/api/restaurant/add_food/${user?.id}`, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        }).then(res => {
+            console.log('response::', res.data?.message)
+            if (res.data?.message) {
+                toast.success(res.data?.message, {
+                    position: "top-center",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    transition: Bounce,
+                });
+            }
+            setloading(false)
+        }).catch(err => {
+            setloading(false)
+            console.log('error', err?.message)
+        })
+    }
+
     return (
         <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow space-y-6">
             <h1 className="text-2xl font-semibold text-gray-800">
                 Add New Food Item
             </h1>
 
-            <form className="space-y-4">
+            <form onSubmit={handleAddFood} className="space-y-4">
                 {/* Food Name */}
                 <div>
                     <label className="block text-sm font-medium text-gray-700">
@@ -33,34 +85,23 @@ const AddFood = () => {
                     <input
                         type="text"
                         placeholder="e.g. Chicken Burger"
+                        name="food_name"
                         className="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
                     />
                 </div>
-                <div className="flex justify-between">
-                    {/* Price */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Price
-                        </label>
-                        <input
-                            type="number"
-                            placeholder="Price"
-                            className="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
-                        />
-                    </div>
-                    {/* Quantity */}
-                    <div>
+
+                {/* Price */}
+                <div>
                     <label className="block text-sm font-medium text-gray-700">
-                        Quantity
+                        Price
                     </label>
                     <input
                         type="number"
-                        placeholder="Quantity"
+                        placeholder="Price"
+                        name='price'
                         className="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
                     />
                 </div>
-                </div>
-                
 
                 {/* Category using React-Select */}
                 <div>
@@ -69,9 +110,10 @@ const AddFood = () => {
                     </label>
                     <Select
                         options={categoryOptions}
-                        value={category}
-                        onChange={setCategory}
+                        defaultValue={category}
+                        onChange={(categoryOptions) => setCategory(categoryOptions.value)}
                         placeholder="Select category"
+                        className="text-black"
                     />
                 </div>
 
@@ -82,9 +124,10 @@ const AddFood = () => {
                     </label>
                     <Select
                         options={availabilityOptions}
-                        value={availability}
-                        onChange={setAvailability}
+                        defaultValue={availability}
+                        onChange={(availabilityOptions) => setAvailability(availabilityOptions.value)}
                         placeholder="Select availability"
+                        className="text-black"
                     />
                 </div>
 
@@ -93,7 +136,8 @@ const AddFood = () => {
                     <label className="block text-sm font-medium text-gray-700">
                         Food Image
                     </label>
-                    <input type="file" className="w-full mt-1" />
+                    <input type="file" name="food_image" onChange={(e) => setimage(URL.createObjectURL(e.target.files[0]))} className="w-full mt-1" />
+                    {image && <img src={image} className="w-20 h-20 "></img>}
                 </div>
 
                 {/* Description */}
@@ -104,18 +148,22 @@ const AddFood = () => {
                     <textarea
                         rows="4"
                         placeholder="Short description of the food"
+                        name="description"
                         className="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
                     ></textarea>
                 </div>
 
                 {/* Buttons */}
                 <div className="flex gap-4 pt-4">
-                    <button
-                        type="submit"
-                        className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-md"
-                    >
-                        Add Food
-                    </button>
+                    {
+                        loading ? <button type="button" className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold "><GiCircularSawblade className="text-2xl text-white animate-spin" /></button> : <button
+                            type="submit"
+                            className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-md"
+                        >
+                            Add Food
+                        </button>
+                    }
+
 
                     <button
                         type="button"

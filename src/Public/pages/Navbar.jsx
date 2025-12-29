@@ -49,10 +49,10 @@ const Navbar = () => {
                             {role === 'customer' && <NavLink to="/dashboard" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
                                 Dashboard
                             </NavLink> }
-                            {role === 'delivery' && <NavLink to="/" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
+                            {role === 'delivery' && <NavLink to="/delivery_Dashboard" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
                                 Dashboard
                             </NavLink> }
-                            {role === 'restaurant' && <NavLink to="/" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
+                            {role === 'partner' && <NavLink to="/restaurant_Dashboard" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
                                 Dashboard
                             </NavLink> }
 

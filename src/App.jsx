@@ -23,6 +23,7 @@ import OrdersPage from './Dashboard/Component/Restaurant/OrdersPage';
 import JoinOurTeam from './Public/JoinOurTeam/JoinOurTeam';
 import BecomePartner from './Public/JoinOurTeam/BecomePartner';
 import DeliveryPartner from './Public/JoinOurTeam/DeliveryPartner';
+import Food_Edit from './Dashboard/Component/Restaurant/Food_Edit';
 
 function App() {
   const axiosPublic = useAxiosPublic();
@@ -34,7 +35,7 @@ function App() {
       dispatch(setUser(res.data))
     }
     getCurrentuser()
-  }, [])
+  },[])
   return (
     <Routes>
       <Route path="/" element={<Layoutpage></Layoutpage>}>
@@ -52,6 +53,7 @@ function App() {
         {/* here is her children */}
         <Route path='/restaurant_Dashboard/menu' element={<MenuPage></MenuPage>}></Route>
         <Route path='/restaurant_Dashboard/AddFood' element={<AddFood></AddFood>}></Route>
+        <Route path='/restaurant_Dashboard/Food_Edit/:id' element={<Food_Edit></Food_Edit>} ></Route>
         <Route path='/restaurant_Dashboard/delivery_history' element={<Delivery_History></Delivery_History>}></Route>
         <Route path='/restaurant_Dashboard/orders' element={<OrdersPage></OrdersPage>}></Route>
       </Route>
