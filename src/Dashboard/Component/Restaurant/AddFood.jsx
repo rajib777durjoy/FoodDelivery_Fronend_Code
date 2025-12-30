@@ -12,7 +12,6 @@ const AddFood = () => {
     const axiosPublic = useAxiosPublic();
     const user = useSelector(state => state.user.user);
     const [loading, setloading] = useState(false);
-    console.log('user::', category, availability)
 
     // Options for react-select
     const categoryOptions = [
@@ -34,7 +33,6 @@ const AddFood = () => {
     const handleAddFood = (e) => {
         e.preventDefault();
         setloading(true)
-        console.log('image', e.target.food_image.files[0])
         const data = e.target;
         const formData = new FormData();
         formData.append('food_name', data.food_name.value)
@@ -51,6 +49,7 @@ const AddFood = () => {
         }).then(res => {
             console.log('response::', res.data?.message)
             if (res.data?.message) {
+                setloading(false)
                 toast.success(res.data?.message, {
                     position: "top-center",
                     autoClose: 3000,
@@ -63,7 +62,7 @@ const AddFood = () => {
                     transition: Bounce,
                 });
             }
-            setloading(false)
+          
         }).catch(err => {
             setloading(false)
             console.log('error', err?.message)
