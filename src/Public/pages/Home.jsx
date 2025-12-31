@@ -6,12 +6,14 @@ import Services from './Services';
 import RestaurentFeature from './RestaurentFeature';
 import DeliveryManFeature from './DeliveryManFeature';
 import ReviewPage from './ReviewPage';
+import Food_Item from './Food_item/Food_Item';
 
 const Home = () => {
     return (
         <div className='w-full min-h-screen '>
                 <Banner></Banner>
                 <CounterPage></CounterPage>
+                <Food_Item></Food_Item>
                 <Services></Services>
                 <RestaurentFeature></RestaurentFeature>
                 <DeliveryManFeature></DeliveryManFeature>

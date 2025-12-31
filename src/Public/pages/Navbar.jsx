@@ -3,13 +3,15 @@ import { Link, NavLink } from 'react-router';
 import { AuthContext } from '../Provider/AuthProvider';
 import useAxiosPublic from '../Hook/useAxiosPublic';
 import { useSelector } from 'react-redux';
+import Loading from '../../CustomeLoading/Loading';
 
 
 const Navbar = () => {
-    const {SignOutUser}=useContext(AuthContext)
+    const {user,SignOutUser,loading}=useContext(AuthContext)
     // const axiosPublic = useAxiosPublic();
     // const [userData,setUserData]=useState([])
     const userData = useSelector(state=>state.user.user)
+    console.log('userData',userData)
     const handleSingOut=()=>{
       SignOutUser()
     }
@@ -21,8 +23,12 @@ const Navbar = () => {
     //  }
     //  userInformationFunction()
     // },[user])
+    const role = userData?.role ;
+    console.log('role',role)
 
-    const role = userData.role
+    if(loading){
+        return <Loading></Loading>
+    }
     return (
         <div className='w-[90%] mx-auto '>
             <div className="navbar text-black">
@@ -37,13 +43,16 @@ const Navbar = () => {
 
                         </div>
                     </button>
-                    {userData && <div className="dropdown dropdown-center">
+                    {user && <div className="dropdown dropdown-center">
                         <div tabIndex={0} role="button" className="mx-2"><img src={userData?.profile} className='w-10 h-10 rounded-full' alt="" /></div>
                         <ul tabIndex="-1" className="dropdown-content menu bg-white mt-3 rounded-box z-1 w-52 py-2 px-2 shadow-sm">
                             <NavLink to="/" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900' >
                                 Profile
                             </NavLink>
-                            <NavLink to="/" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
+                            <NavLink to="/All_FoodItem" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
+                                Food list
+                            </NavLink>
+                            <NavLink to="/All_restaurant" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
                                 Restaurants
                             </NavLink>
                             {role === 'customer' && <NavLink to="/dashboard" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
