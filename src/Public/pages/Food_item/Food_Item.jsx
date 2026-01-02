@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 import useAxiosPublic from "../../Hook/useAxiosPublic";
 import { Bounce, toast } from "react-toastify";
+import socket from "../../../Socket";
+
 
 /* Demo Food Data */
 // const foodItems = [
@@ -63,14 +65,20 @@ const Food_Item = () => {
     const axiosPublic = useAxiosPublic();
     const [foodItems, setFoodItems] = useState([])
     useEffect(() => {
+        socket.on('notification', (data) => {
+            console.log('notification::',data?.message); 
+        });
         axiosPublic.get('/api/restaurant/food_item')
             .then(res => {
                 setFoodItems(res.data)
             }).catch(err => {
                 console.log(err)
             })
+        return ()=>{
+            socket.off('notification'); 
+        }
     }, [])
-    
+
     const handleAddToCart = (id) => {
         axiosPublic.post(`/api/restaurant/AddToCart/${id}`)
             .then(res => {
@@ -92,26 +100,27 @@ const Food_Item = () => {
             })
     }
 
-     const handleOrderFood = (id) => {
-            axiosPublic.post(`/api/restaurant/food_order/${id}`)
-                .then(res => {
-                    if (res.data?.message) {
-                        toast.success(res.data?.message, {
-                            position: "top-center",
-                            autoClose: 3000,
-                            hideProgressBar: false,
-                            closeOnClick: false,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "light",
-                            transition: Bounce,
-                        });
-                    }
-                }).catch(err => {
-                    console.log(err)
-                })
-        }
+    const handleOrderFood = (id) => {
+        
+        axiosPublic.post(`/api/restaurant/food_order/${id}`)
+            .then(res => {
+                if (res.data?.message) {
+                    toast.success(res.data?.message, {
+                        position: "top-center",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                        transition: Bounce,
+                    });
+                }
+            }).catch(err => {
+                console.log(err)
+            })
+    }
 
     return (
         <div className="min-h-screen bg-gray-100 py-10 px-4">
@@ -149,8 +158,8 @@ const Food_Item = () => {
 
                                 {/* Add to Cart Icon */}
                                 <button
-                                onClick={()=>handleAddToCart(food.id)}
-                                disabled={!food.available}
+                                    onClick={() => handleAddToCart(food.id)}
+                                    disabled={!food.available}
                                     className="absolute top-3 right-3 bg-white p-2 rounded-full shadow hover:bg-green-100 transition"
                                     title="Add to Cart"
                                 >
@@ -183,7 +192,7 @@ const Food_Item = () => {
 
                                     <button
                                         disabled={!food.available}
-                                        onClick={()=>handleOrderFood(food.id)}
+                                        onClick={() => handleOrderFood(food.id)}
                                         className={`w-1/2 py-2 rounded-lg font-medium transition
             ${food.available
                                                 ? "bg-green-600 hover:bg-green-700 text-white"

@@ -2,33 +2,34 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router';
 import { AuthContext } from '../Provider/AuthProvider';
 import useAxiosPublic from '../Hook/useAxiosPublic';
-import { useSelector } from 'react-redux';
-import Loading from '../../CustomeLoading/Loading';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../Redux/userSlice';
+
 
 
 const Navbar = () => {
-    const {user,SignOutUser,loading}=useContext(AuthContext)
-    // const axiosPublic = useAxiosPublic();
-    // const [userData,setUserData]=useState([])
-    const userData = useSelector(state=>state.user.user)
-    console.log('userData',userData)
-    const handleSingOut=()=>{
-      SignOutUser()
-    }
-    // useEffect(()=>{
-    //  const userInformationFunction = async()=>{
-    //   const res = await axiosPublic.get(`/api/user/user_data/${user?.email}`);
-    //   console.log(res.data)
-    //   setUserData(res.data)
-    //  }
-    //  userInformationFunction()
-    // },[user])
-    const role = userData?.role ;
-    console.log('role',role)
+    const { user, SignOutUser, loading } = useContext(AuthContext)
+    const axiosPublic = useAxiosPublic();
+    const [userData, setUserData] = useState([])
+    const dispatch = useDispatch()
 
-    if(loading){
-        return <Loading></Loading>
+    console.log('navbar user data:;', userData)
+
+    const handleSingOut = () => {
+        SignOutUser()
     }
+    useEffect(() => {
+        const userInformationFunction = async () => {
+            const res = await axiosPublic.get(`/api/user/user_data`);
+            console.log(res.data)
+            dispatch(setUser(res.data))
+            setUserData(res.data)
+        }
+        userInformationFunction()
+    }, [user, loading])
+
+    const role = userData?.role;
+    console.log('role', role)
     return (
         <div className='w-[90%] mx-auto '>
             <div className="navbar text-black">
@@ -57,15 +58,15 @@ const Navbar = () => {
                             </NavLink>
                             {role === 'customer' && <NavLink to="/dashboard" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
                                 Dashboard
-                            </NavLink> }
+                            </NavLink>}
                             {role === 'delivery' && <NavLink to="/delivery_Dashboard" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
                                 Dashboard
-                            </NavLink> }
+                            </NavLink>}
                             {role === 'partner' && <NavLink to="/restaurant_Dashboard" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
                                 Dashboard
-                            </NavLink> }
+                            </NavLink>}
 
-                            <NavLink to='#' onClick={handleSingOut}  className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
+                            <NavLink to='#' onClick={handleSingOut} className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
                                 Sign Out
                             </NavLink>
                             <NavLink to="/" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>

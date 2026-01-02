@@ -26,18 +26,24 @@ import DeliveryPartner from './Public/JoinOurTeam/DeliveryPartner';
 import Food_Edit from './Dashboard/Component/Restaurant/Food_Edit';
 import AllFood from './Public/pages/Food_item/AllFood';
 import FoodDetails from './Public/pages/Food_item/FoodDetails';
+import { useContext } from 'react';
+import { AuthContext } from './Public/Provider/AuthProvider';
 
 function App() {
   const axiosPublic = useAxiosPublic();
-  const dispatch = useDispatch()
-  useEffect(() => {
-    const getCurrentuser = async() => {
-      const res = await axiosPublic.get(`/api/user/user_data`);
-      console.log('app js fill user::', res?.data)
-      dispatch(setUser(res.data))
-    }
-    getCurrentuser()
-  },[])
+  const {user,loading}= useContext(AuthContext)
+  
+  // console.log('app user',user)
+  // const dispatch = useDispatch()
+  // useEffect(() => {
+  //   const getCurrentuser = async() => {
+  //     const res = await axiosPublic.get(`/api/user/user_data`);
+  //     console.log('app js fill user::', res?.data)
+  //     dispatch(setUser(res.data))
+  //   }
+  //   getCurrentuser()
+  // },[user,loading])
+
   return (
     <Routes>
       <Route path="/" element={<Layoutpage></Layoutpage>}>

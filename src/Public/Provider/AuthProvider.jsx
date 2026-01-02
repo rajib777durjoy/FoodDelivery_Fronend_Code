@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { createContext } from 'react';
 import { auth } from '../../../firebase.config';
 import useAxiosPublic from '../Hook/useAxiosPublic';
+import socket from '../../Socket.js';
 
 
 export const AuthContext = createContext(null)
@@ -11,6 +12,8 @@ const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const axiosPublic = useAxiosPublic();
     const provider = new GoogleAuthProvider();
+
+
     const GoogleSingIn = () => {
         setLoading(true)
         return signInWithPopup(auth, provider)
@@ -32,12 +35,23 @@ const AuthProvider = ({ children }) => {
         }
     }
     useEffect(() => {
+        socket.on("connect", () => {
+            console.log("✅ Connected to server");
+
+            console.log("My socket id:", socket.id);
+        });
+
+        socket.on("disconnect", () => {
+            console.log("❌ Disconnected from server");
+        });
+
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             console.log('currentUser::', currentUser);
             setuser(currentUser);
             if (currentUser?.email) {
                 axiosPublic.post('/jwt_generate', { email: currentUser?.email })
                     .then(res => {
+
                         setLoading(false)
                         console.log('token generate message::', res.data.message)
                     }).catch(err => {
@@ -59,9 +73,15 @@ const AuthProvider = ({ children }) => {
 
         return () => {
             unsubscribe();
+            socket.off("connect");
+            socket.off("disconnect");
         };
     }, []);
-
+    useEffect(() => {
+        if (user?.email) {
+            socket.emit('currentuser', { email: user.email });
+        }
+    }, [user]);
 
     const data = {
         GoogleSingIn,
