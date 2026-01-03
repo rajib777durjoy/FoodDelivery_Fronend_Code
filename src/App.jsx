@@ -28,6 +28,7 @@ import AllFood from './Public/pages/Food_item/AllFood';
 import FoodDetails from './Public/pages/Food_item/FoodDetails';
 import { useContext } from 'react';
 import { AuthContext } from './Public/Provider/AuthProvider';
+import OrderConfirm from './Public/pages/OrderConfirm/OrderConfirm';
 
 function App() {
   const axiosPublic = useAxiosPublic();
@@ -57,6 +58,7 @@ function App() {
         <Route path='/BecomeDeliveryHero' element={<DeliveryPartner></DeliveryPartner>} ></Route>
         <Route path='/All_FoodItem' element={<AllFood></AllFood>}></Route>
         <Route path='/Food_details/:id' element={<FoodDetails></FoodDetails>}></Route>
+        <Route path='/order_confirm/:id/:quantity' element={<OrderConfirm></OrderConfirm>}></Route>
       </Route>
       {/* Restaurant dashboard page */}
       <Route path='/restaurant_Dashboard' element={<RestaurantDashboard></RestaurantDashboard>}>

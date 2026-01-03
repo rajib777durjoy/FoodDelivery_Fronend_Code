@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router";
+import { useParams, Link, useNavigate } from "react-router";
 import useAxiosPublic from "../../Hook/useAxiosPublic";
 import { Bounce, toast } from "react-toastify";
 
@@ -64,6 +64,7 @@ const FoodDetails = () => {
     const axiosPublic = useAxiosPublic();
     const [food, setFood] = useState({})
     const [quantity, setQuantity] = useState(1);
+    const navigate = useNavigate()
     useEffect(() => {
         axiosPublic.get(`/api/restaurant/food_details/${id}`)
             .then(res => {
@@ -102,26 +103,26 @@ const FoodDetails = () => {
             })
     }
 
-    const handleOrderFood = (id) => {
-        axiosPublic.post(`/api/restaurant/food_order/${id}`)
-            .then(res => {
-                if (res.data?.message) {
-                    toast.success(res.data?.message, {
-                        position: "top-center",
-                        autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: false,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                        transition: Bounce,
-                    });
-                }
-            }).catch(err => {
-                console.log(err)
-            })
-    }
+    // const handleOrderFood = (id) => {
+    //     axiosPublic.post(`/api/restaurant/food_order/${id}`)
+    //         .then(res => {
+    //             if (res.data?.message) {
+    //                 toast.success(res.data?.message, {
+    //                     position: "top-center",
+    //                     autoClose: 3000,
+    //                     hideProgressBar: false,
+    //                     closeOnClick: false,
+    //                     pauseOnHover: true,
+    //                     draggable: true,
+    //                     progress: undefined,
+    //                     theme: "light",
+    //                     transition: Bounce,
+    //                 });
+    //             }
+    //         }).catch(err => {
+    //             console.log(err)
+    //         })
+    // }
 
     console.log('food::', food)
     return (
@@ -130,12 +131,12 @@ const FoodDetails = () => {
 
                 {/* Back Button */}
                 <div className="p-4">
-                    <Link
-                        to="/foods"
+                    <button
+                     onClick={()=> navigate(-1)}
                         className="text-green-600 font-medium hover:underline"
                     >
                         ← Back to Foods
-                    </Link>
+                    </button>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-8 p-6">
@@ -181,19 +182,19 @@ const FoodDetails = () => {
                         </div>
 
                         {/* Quantity */}
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-4 text-black">
                             <span className="font-medium">Quantity:</span>
-                            <div className="flex items-center border rounded-lg">
+                            <div className="flex items-center border rounded-lg text-black">
                                 <button
                                     onClick={() => quantity > 1 && setQuantity(quantity - 1)}
-                                    className="px-3 py-1 text-lg font-bold"
+                                    className="px-3 py-1 text-lg font-bold text-black"
                                 >
-                                    −
+                                    -
                                 </button>
-                                {/* <span className="px-4">{quantity}</span> */}
+                                <span className="px-4 text-black">{quantity}</span>
                                 <button
                                     onClick={() => setQuantity(quantity + 1)}
-                                    className="px-3 py-1 text-lg font-bold"
+                                    className="px-3 py-1 text-lg font-bold text-black"
                                 >
                                     +
                                 </button>
@@ -216,7 +217,7 @@ const FoodDetails = () => {
 
                             <button
                                 disabled={!food.available}
-                                onClick={() => handleOrderFood(food.id)}
+                                onClick={() =>navigate(`/order_confirm/${id}/${quantity}`)}
                                 className={`w-full py-3 rounded-xl font-semibold transition
                 ${food.available
                                         ? "border border-green-600 text-green-600 hover:bg-green-50"
