@@ -8,7 +8,7 @@ const OrderConfirm = () => {
     const axiosPublic = useAxiosPublic();
     const [paymentMethod, setPaymentMethod] = useState('cod');
     const delivery_charge = 50;
-
+  
     const { data: food_details = {} } = useQuery({
         queryKey: ['food_details', id],
         queryFn: async () => {
@@ -21,130 +21,163 @@ const OrderConfirm = () => {
 
 
 
-    const handleConfirmOrder = () => {
-     let amount ;
-     if(paymentMethod === 'cod'){
-      amount = delivery_charge;
-     }
-     else{
-        amount = (parseInt(price) * quantity) + delivery_charge; 
-     }
-      const data ={food_id:id,food_name,amount};
+    const handleConfirmOrder = (e) => {
+        e.preventDefault();
+        const name = e.target.name.value;
+        const phone = e.target.phone.value;
+        const address = e.target.address.value;
+        console.log(name, phone, address)
+        let amount;
+        if (paymentMethod === 'cod') {
+            amount = delivery_charge;
+        }
+        else {
+            amount = (parseInt(price) * quantity) + delivery_charge;
+        }
+        const data = { food_id:id,paymentMethod, name, phone, address, food_name, quantity };
 
-      axiosPublic.get('/api/payment/init',data)
-      .then(res=>{
-        console.log('successfull payment init:: ',res.data.url)
-      }).catch(err=>{
-        console.log('error',err)
-      })
+        axiosPublic.post(`/api/payment/init`,data)
+            .then(res => {
+                const url = res.data.url; 
+                if (url) {
+                    window.location.href = url; 
+                }
+            })
+            .catch(err => {
+                console.log('Payment request error:', err);
+               
+            });
+
 
     };
-
-
 
     return (
         <div className="min-h-screen bg-gray-100 py-10 px-4">
             <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-md p-6">
 
-                <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+                <h2 className="text-2xl font-semibold mb-8 text-gray-800 text-center">
                     Confirm Your Order
                 </h2>
 
-                {/* Two Column Layout */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* MAIN GRID */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-                    {/* Left Column – Order Summary */}
+                    {/* CUSTOMER INFO */}
+                    <div className="border rounded-lg p-5">
+                        <h3 className="text-lg font-semibold mb-4 text-gray-800">
+                            Customer Information
+                        </h3>
+
+                        <form onSubmit={handleConfirmOrder} className="space-y-4">
+                            <input
+                                type="text"
+                                name="name"
+                                placeholder="Full Name"
+                                required
+                                className="w-full border text-gray-800 rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500"
+                            />
+
+                            <input
+                                type="tel"
+                                name="phone"
+                                placeholder="Phone Number"
+                                required
+                                className="w-full border text-gray-800 rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500"
+                            />
+
+                            <textarea
+                                name="address"
+                                placeholder="Delivery Address"
+                                rows="3"
+                                required
+                                className="w-full border text-gray-800 rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500"
+                            />
+                            {/* CONFIRM BUTTON */}
+                            <button
+                                className="w-full mt-6 bg-green-600 hover:bg-green-700 text-gray-900 py-3 rounded-lg font-semibold transition"
+                            >
+                                Confirm Order
+                            </button>
+                        </form>
+                    </div>
+
+                    {/* ORDER SUMMARY */}
                     <div className="border rounded-lg p-5">
                         <h3 className="text-lg font-semibold mb-4 text-gray-800">
                             Order Summary
                         </h3>
 
-                        {paymentMethod === 'cod' && <div className="space-y-3 text-gray-600">
+                        <div className="space-y-3 text-gray-800">
                             <div className="flex justify-between">
-                                <span>Total Food item </span>
+                                <span>Food Item</span>
+                                <span>{food_name}</span>
+                            </div>
+
+                            <div className="flex justify-between">
+                                <span>Quantity</span>
                                 <span>{quantity}</span>
                             </div>
+
                             <div className="flex justify-between">
                                 <span>Delivery Charge</span>
-                                <span>{delivery_charge}</span>
+                                <span>৳ {delivery_charge}</span>
                             </div>
+
                             <hr />
 
-                            <p className="text-sm text-red-500 text-center">
-                                * Now you only need to pay the delivery charge. Food price will be paid later.
-                            </p>
-
-                            <div className="flex justify-between font-semibold text-gray-800">
-                                <span>Total</span>
-                                <span>{delivery_charge}</span>
-                            </div>
-                        </div>
-                            || <div className="space-y-3 text-gray-600">
-                                <div className="flex justify-between">
-                                    <span>Total Food item </span>
-                                    <span>{quantity}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span>Delivery Charge</span>
-                                    <span>{delivery_charge}</span>
-                                </div>
-                                <hr />
-                                <div className="flex justify-between font-semibold text-gray-800">
+                            {paymentMethod === 'cod' ? (
+                                <>
+                                    <p className="text-sm text-red-500 text-center">
+                                        * Only delivery charge is required now
+                                    </p>
+                                    <div className="flex justify-between font-semibold">
+                                        <span>Total</span>
+                                        <span>৳ {delivery_charge}</span>
+                                    </div>
+                                </>
+                            ) : (
+                                <div className="flex justify-between font-semibold">
                                     <span>Total Amount</span>
-                                    <span>{(parseInt(price) * quantity) + delivery_charge}</span>
+                                    <span>
+                                        ৳ {(parseInt(price) * quantity) + delivery_charge}
+                                    </span>
                                 </div>
-                            </div>
-                        }
+                            )}
+                        </div>
                     </div>
 
-                    {/* Right Column – Payment Method */}
+                    {/* PAYMENT METHOD */}
                     <div className="border rounded-lg p-5">
                         <h3 className="text-lg font-semibold mb-4 text-gray-800">
                             Payment Method
                         </h3>
 
-                        <div className="space-y-4">
-                            {/* Cash on Delivery */}
-                            <label className="flex items-center gap-3 text-gray-800 cursor-pointer border p-3 rounded-lg">
+                        <div className="space-y-4 text-gray-800">
+                            <label className="flex items-center gap-3 border p-3 rounded-lg cursor-pointer">
                                 <input
                                     type="radio"
-                                    name="payment"
-                                    value="cod"
                                     checked={paymentMethod === 'cod'}
                                     onChange={() => setPaymentMethod('cod')}
                                 />
-                                <span className="font-medium">
-                                    Cash on Delivery
-                                </span>
+                                Cash on Delivery
                             </label>
 
-                            {/* Advance Payment */}
-                            <label className="flex items-center gap-3 text-gray-800 cursor-pointer border p-3 rounded-lg">
+                            <label className="flex items-center gap-3 border p-3 rounded-lg cursor-pointer">
                                 <input
                                     type="radio"
-                                    name="payment"
-                                    value="advance"
                                     checked={paymentMethod === 'advance'}
                                     onChange={() => setPaymentMethod('advance')}
                                 />
-                                <span className="font-medium">
-                                    Advance Payment
-                                </span>
+                                Advance Payment
                             </label>
                         </div>
-
-                        <button
-                            onClick={handleConfirmOrder}
-                            className="w-full mt-6 bg-green-600 hover:bg-green-700 text-black py-3 rounded-lg font-semibold transition"
-                        >
-                            Confirm Order
-                        </button>
                     </div>
 
                 </div>
             </div>
         </div>
     );
+
 };
 
 export default OrderConfirm;

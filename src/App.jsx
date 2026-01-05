@@ -29,6 +29,10 @@ import FoodDetails from './Public/pages/Food_item/FoodDetails';
 import { useContext } from 'react';
 import { AuthContext } from './Public/Provider/AuthProvider';
 import OrderConfirm from './Public/pages/OrderConfirm/OrderConfirm';
+import Successpage from './Public/pages/Paymentpage/Successpage';
+import Myorders from './Public/pages/OrderConfirm/Myorders';
+import PaymentFail from './Public/pages/Paymentpage/PaymentFail';
+import AddToCart from './Public/pages/AddToCart/AddToCart';
 
 function App() {
   const axiosPublic = useAxiosPublic();
@@ -59,6 +63,10 @@ function App() {
         <Route path='/All_FoodItem' element={<AllFood></AllFood>}></Route>
         <Route path='/Food_details/:id' element={<FoodDetails></FoodDetails>}></Route>
         <Route path='/order_confirm/:id/:quantity' element={<OrderConfirm></OrderConfirm>}></Route>
+        <Route path='/payment/success/:tran_id' element={<Successpage></Successpage>}></Route>
+        <Route path='/payment/fail/:tran_id' element={<PaymentFail></PaymentFail>} ></Route>
+        <Route path='/my_orders' element={<Myorders></Myorders>} ></Route>
+        <Route path='/myCart' element={<AddToCart></AddToCart>} ></Route>
       </Route>
       {/* Restaurant dashboard page */}
       <Route path='/restaurant_Dashboard' element={<RestaurantDashboard></RestaurantDashboard>}>

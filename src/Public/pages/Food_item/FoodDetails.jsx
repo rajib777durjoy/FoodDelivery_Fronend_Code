@@ -83,10 +83,23 @@ const FoodDetails = () => {
     }
 
     const handleAddToCart = (id) => {
-        axiosPublic.post(`/api/restaurant/AddToCart/${id}`)
+        axiosPublic.post(`/api/restaurant/AddToCart/${id}`, { quantity })
             .then(res => {
-                if (res.data?.message) {
+                if (res.data?.message === 'Item added to cart successfully') {
                     toast.success(res.data?.message, {
+                        position: "top-center",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                        transition: Bounce,
+                    });
+                }
+                else {
+                    toast.warning(res.data?.message, {
                         position: "top-center",
                         autoClose: 3000,
                         hideProgressBar: false,
@@ -132,7 +145,7 @@ const FoodDetails = () => {
                 {/* Back Button */}
                 <div className="p-4">
                     <button
-                     onClick={()=> navigate(-1)}
+                        onClick={() => navigate(-1)}
                         className="text-green-600 font-medium hover:underline"
                     >
                         ← Back to Foods
@@ -217,7 +230,7 @@ const FoodDetails = () => {
 
                             <button
                                 disabled={!food.available}
-                                onClick={() =>navigate(`/order_confirm/${id}/${quantity}`)}
+                                onClick={() => navigate(`/order_confirm/${id}/${quantity}`)}
                                 className={`w-full py-3 rounded-xl font-semibold transition
                 ${food.available
                                         ? "border border-green-600 text-green-600 hover:bg-green-50"
