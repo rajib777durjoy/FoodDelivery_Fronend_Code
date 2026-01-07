@@ -12,14 +12,14 @@ const DeliveryManDashboard = () => {
       : "text-gray-300 hover:bg-green-600 hover:text-white px-4 py-2 my-2 rounded-md block";
 
   return (
-    <div className="w-full flex min-h-screen bg-gray-100">
+    <div className="w-full flex min-h-screen ">
       {/* left sidebar */}
       <div className="min-w-40 bg-gray-600 py-4  ">
         <NavLink to="/delivery_Dashboard" end className={linkClass}>
           Dashboard
         </NavLink>
 
-        <NavLink to="/delivery-dashboard/assigned-orders" className={linkClass}>
+        <NavLink to="/delivery_Dashboard/order_page" className={linkClass}>
           Assigned Orders
         </NavLink>
 
@@ -53,7 +53,7 @@ const DeliveryManDashboard = () => {
 
       {/* main pages */}
      
-        <div className="w-full bg-white rounded-lg shadow h-screen">
+        <div className="w-full  rounded-lg shadow min-h-screen">
           <Outlet />
         </div>
     </div>

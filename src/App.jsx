@@ -33,21 +33,22 @@ import Successpage from './Public/pages/Paymentpage/Successpage';
 import Myorders from './Public/pages/OrderConfirm/Myorders';
 import PaymentFail from './Public/pages/Paymentpage/PaymentFail';
 import AddToCart from './Public/pages/AddToCart/AddToCart';
+import Orderpage from './Dashboard/Component/DeliveryComponent/Orderpage';
 
 function App() {
   const axiosPublic = useAxiosPublic();
-  const {user,loading}= useContext(AuthContext)
-  
+  const { user, loading } = useContext(AuthContext)
+
   // console.log('app user',user)
-  // const dispatch = useDispatch()
-  // useEffect(() => {
-  //   const getCurrentuser = async() => {
-  //     const res = await axiosPublic.get(`/api/user/user_data`);
-  //     console.log('app js fill user::', res?.data)
-  //     dispatch(setUser(res.data))
-  //   }
-  //   getCurrentuser()
-  // },[user,loading])
+  const dispatch = useDispatch()
+  useEffect(() => {
+    const getCurrentuser = async() => {
+      const res = await axiosPublic.get(`/api/user/user_data`);
+      console.log('app js fill user::', res?.data)
+      dispatch(setUser(res.data))
+    }
+    getCurrentuser()
+  },[user?.email,loading])
 
   return (
     <Routes>
@@ -65,8 +66,7 @@ function App() {
         <Route path='/order_confirm/:id/:quantity' element={<OrderConfirm></OrderConfirm>}></Route>
         <Route path='/payment/success/:tran_id' element={<Successpage></Successpage>}></Route>
         <Route path='/payment/fail/:tran_id' element={<PaymentFail></PaymentFail>} ></Route>
-        <Route path='/my_orders' element={<Myorders></Myorders>} ></Route>
-        <Route path='/myCart' element={<AddToCart></AddToCart>} ></Route>
+
       </Route>
       {/* Restaurant dashboard page */}
       <Route path='/restaurant_Dashboard' element={<RestaurantDashboard></RestaurantDashboard>}>
@@ -80,13 +80,17 @@ function App() {
 
       {/* DeliveryMan Dashboard page */}
       <Route path='/delivery_Dashboard' element={<DeliverManDashboard></DeliverManDashboard>}>
-       {/* here is her children */}
+        {/* here is her children */}
+        <Route path='/delivery_Dashboard/order_page' element={<Orderpage></Orderpage>}></Route>
       </Route>
 
       {/* Customer Dashboard page */}
       <Route path='/dashboard' element={<CustomerDashboard></CustomerDashboard>}>
+        {/* here is children route */}
+        <Route path='/dashboard/myCart' element={<AddToCart></AddToCart>} ></Route>
+        <Route path='/dashboard/my_orders' element={<Myorders></Myorders>} ></Route>
 
-      {/* here is her children */}
+
       </Route>
 
       <Route path='/SignIn' element={<SignIn></SignIn>} />

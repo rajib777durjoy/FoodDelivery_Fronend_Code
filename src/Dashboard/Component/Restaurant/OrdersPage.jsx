@@ -1,121 +1,106 @@
 import React, { useState } from "react";
-import Select from "react-select";
+import { useQuery } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
+import useAxiosPublic from "../../../Public/Hook/useAxiosPublic";
 
 const OrdersPage = () => {
-  // Sample orders data
-  const [orders, setOrders] = useState([
-    {
-      id: "ORD1234",
-      customer: "John Doe",
-      customerId: "CUST001",
-      amount: 350,
-      date: "2025-12-20",
-      status: "Pending",
-      assignedDelivery: null,
-    },
-    {
-      id: "ORD1235",
-      customer: "Jane Smith",
-      customerId: "CUST002",
-      amount: 450,
-      date: "2025-12-21",
-      status: "Assigned",
-      assignedDelivery: "DM001",
-    },
-    {
-      id: "ORD1236",
-      customer: "Michael Johnson",
-      customerId: "CUST003",
-      amount: 220,
-      date: "2025-12-22",
-      status: "Delivered",
-      assignedDelivery: "DM002",
-    },
-  ]);
+  const userData = useSelector((state) => state.user.user);
+  const AxiosPublic = useAxiosPublic();
 
-  // Sample delivery men options
-  const deliveryMenOptions = [
-    { value: "DM001", label: "Rony" },
-    { value: "DM002", label: "Sabbir" },
-    { value: "DM003", label: "Rashed" },
-  ];
-
-  // Assign delivery man handler
-  const handleAssignDelivery = (orderId, selectedDelivery) => {
-    setOrders((prevOrders) =>
-      prevOrders.map((order) =>
-        order.id === orderId
-          ? { ...order, assignedDelivery: selectedDelivery.value, status: "Assigned" }
-          : order
-      )
-    );
-  };
+  const { data: orders = [] } = useQuery({
+    queryKey: ["orders", userData?.id],
+    queryFn: async () => {
+      const res = await AxiosPublic.get(`/api/restaurant/order_list/${userData?.id}`);
+      return res.data;
+    },
+  });
 
   const statusColor = (status) => {
     switch (status) {
       case "Pending":
-        return "text-yellow-600";
+        return "bg-yellow-100 text-yellow-800";
       case "Assigned":
-        return "text-blue-600";
+        return "bg-blue-100 text-blue-800";
       case "Delivered":
-        return "text-green-600";
+        return "bg-green-100 text-green-800";
       case "Cancelled":
-        return "text-red-600";
+        return "bg-red-100 text-red-800";
       default:
-        return "text-gray-600";
+        return "bg-gray-100 text-gray-600";
     }
   };
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-semibold text-gray-800">Orders</h1>
+    <div className="p-4 md:p-6 space-y-6">
+      <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Orders</h1>
 
-      <div className="bg-white rounded-lg shadow overflow-x-auto">
-        <table className="w-full text-left border-collapse">
-          <thead className="bg-gray-100">
+      <div className="overflow-x-auto bg-white shadow-md rounded-lg">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
             <tr>
-              <th className="p-3 text-sm text-gray-600">Order ID</th>
-              <th className="p-3 text-sm text-gray-600">Customer</th>
-              <th className="p-3 text-sm text-gray-600">Customer ID</th>
-              <th className="p-3 text-sm text-gray-600">Amount </th>
-              <th className="p-3 text-sm text-gray-600">Date</th>
-              <th className="p-3 text-sm text-gray-600">Status</th>
-              <th className="p-3 text-sm text-gray-600">Assign Delivery</th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Sl_No
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Food Item
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Quantity
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Amount
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Customer Phone
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Payment Status
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Date
+              </th>
             </tr>
           </thead>
 
-          <tbody>
-            {orders.map((order) => (
-              <tr key={order.id} className="border-t">
-                <td className="p-3">{order.id}</td>
-                <td className="p-3">{order.customer}</td>
-                <td className="p-3">{order.customerId}</td>
-                <td className="p-3">{order.amount}</td>
-                <td className="p-3">{order.date}</td>
-                <td className={`p-3 font-medium ${statusColor(order.status)}`}>
-                  {order.status}
-                </td>
-                <td className="p-3">
-                  {order.status === "Pending" ? (
-                    <Select
-                      options={deliveryMenOptions}
-                      placeholder="Select Delivery Man"
-                      onChange={(selectedOption) =>
-                        handleAssignDelivery(order.id, selectedOption)
-                      }
-                    />
-                  ) : (
-                    <span className="text-gray-600">
-                      {order.assignedDelivery
-                        ? deliveryMenOptions.find(
-                            (d) => d.value === order.assignedDelivery
-                          )?.label
-                        : "-"}
+          <tbody className="bg-white divide-y divide-gray-200">
+            {orders.length > 0 ? (
+              orders.map((order,index) => (
+                <tr key={order.order_id} className="hover:bg-gray-50 transition duration-150">
+                  <td className="px-4 py-3 text-gray-700 font-medium">{index+1}</td>
+                  <td className="px-4 py-3 flex items-center space-x-2">
+                    {order.food_image && (
+                      <img
+                        src={order.food_image}
+                        alt={order.food_name}
+                        className="w-10 h-10 rounded-md object-cover"
+                      />
+                    )}
+                    <span>{order.food_name}</span>
+                  </td>
+                  <td className="px-4 py-3 text-gray-700">{order.quantity}</td>
+                  <td className="px-4 py-3 text-gray-700">{order.payment}</td>
+                  <td className="px-4 py-3 text-gray-700">{order.customer_phone}</td>
+                  <td>
+                    <span
+                      className={`px-3 py-1 inline-flex text-xs font-semibold rounded-full ${statusColor(
+                        order.payment_status ? "Delivered" : "Pending"
+                      )}`}
+                    >
+                      {order.payment_status ? "Paid" : "Pending"}
                     </span>
-                  )}
+                  </td>
+                  <td className="px-4 py-3 text-gray-500 text-sm">
+                    {new Date(order.created_at).toLocaleDateString()}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={7} className="px-4 py-6 text-center text-gray-500">
+                  No orders found.
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
@@ -124,3 +109,4 @@ const OrdersPage = () => {
 };
 
 export default OrdersPage;
+

@@ -28,7 +28,8 @@ const Navbar = () => {
         userInformationFunction()
     }, [user?.email, loading])
 
-    const role = userData?.role;
+    // const role = userData?.role;
+    const role = 'delivery';
     console.log('role', role)
     return (
         <div className='w-[90%] mx-auto '>
@@ -44,7 +45,7 @@ const Navbar = () => {
 
                         </div>
                     </button>
-                    {userData && <div className="dropdown dropdown-center">
+                    {userData.email  && <div className="dropdown dropdown-center">
                         <div tabIndex={0} role="button" className="mx-2"><img src={userData?.profile} className='w-10 h-10 rounded-full' alt="" /></div>
                         <ul tabIndex="-1" className="dropdown-content menu bg-white mt-3 rounded-box z-1 w-52 py-2 px-2 shadow-sm">
                             <NavLink to="/" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900' >

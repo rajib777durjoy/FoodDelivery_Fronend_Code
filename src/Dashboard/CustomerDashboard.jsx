@@ -19,7 +19,7 @@ const CustomerDashboard = () => {
                     Dashboard
                 </NavLink>
 
-                <NavLink to="/dashboard/orders" className={linkClass}>
+                <NavLink to="/dashboard/my_orders" className={linkClass}>
                     My Orders
                 </NavLink>
 
@@ -27,13 +27,13 @@ const CustomerDashboard = () => {
                     Track Order
                 </NavLink>
 
-                <NavLink to="/dashboard/favourites" className={linkClass}>
-                    Favourites
+                <NavLink to="/dashboard/myCart" className={linkClass}>
+                    My Carts
                 </NavLink>
 
-                <NavLink to="/dashboard/payments" className={linkClass}>
+                {/* <NavLink to="/dashboard/payments" className={linkClass}>
                     Payments
-                </NavLink>
+                </NavLink> */}
 
                 <NavLink to="/dashboard/offers" className={linkClass}>
                     Offers
@@ -60,6 +60,7 @@ const CustomerDashboard = () => {
                 <nav className='w-full h-20 border-l-0 border border-red-300'>
 
                 </nav>
+                <Outlet></Outlet>
                
             </div>
         </div>
