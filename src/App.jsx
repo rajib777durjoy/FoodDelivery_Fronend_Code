@@ -34,6 +34,9 @@ import Myorders from './Public/pages/OrderConfirm/Myorders';
 import PaymentFail from './Public/pages/Paymentpage/PaymentFail';
 import AddToCart from './Public/pages/AddToCart/AddToCart';
 import Orderpage from './Dashboard/Component/DeliveryComponent/Orderpage';
+import SelectDVHero from './Dashboard/Component/Restaurant/SelectDVHero';
+import NotificationPage from './Public/pages/Notification/NotificationPage';
+import OrderDetails from './Public/pages/OrderConfirm/OrderDetails';
 
 function App() {
   const axiosPublic = useAxiosPublic();
@@ -66,7 +69,8 @@ function App() {
         <Route path='/order_confirm/:id/:quantity' element={<OrderConfirm></OrderConfirm>}></Route>
         <Route path='/payment/success/:tran_id' element={<Successpage></Successpage>}></Route>
         <Route path='/payment/fail/:tran_id' element={<PaymentFail></PaymentFail>} ></Route>
-
+        <Route path='/notification' element={<NotificationPage></NotificationPage>}></Route>
+        <Route path='/OrderDetails/:id' element={<OrderDetails></OrderDetails>} ></Route>
       </Route>
       {/* Restaurant dashboard page */}
       <Route path='/restaurant_Dashboard' element={<RestaurantDashboard></RestaurantDashboard>}>
@@ -76,6 +80,7 @@ function App() {
         <Route path='/restaurant_Dashboard/Food_Edit/:id' element={<Food_Edit></Food_Edit>} ></Route>
         <Route path='/restaurant_Dashboard/delivery_history' element={<Delivery_History></Delivery_History>}></Route>
         <Route path='/restaurant_Dashboard/orders' element={<OrdersPage></OrdersPage>}></Route>
+        <Route path='/restaurant_Dashboard/select_deliver_hero/:id' element={<SelectDVHero></SelectDVHero>} ></Route>
       </Route>
 
       {/* DeliveryMan Dashboard page */}

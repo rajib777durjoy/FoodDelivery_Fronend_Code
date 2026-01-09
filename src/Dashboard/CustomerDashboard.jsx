@@ -42,6 +42,9 @@ const CustomerDashboard = () => {
                 <NavLink to="/dashboard/profile" className={linkClass}>
                     Profile
                 </NavLink>
+                <NavLink to="/notification" className={linkClass}>
+                    Notification
+                </NavLink>
 
                 <NavLink to="/dashboard/support" className={linkClass}>
                     Support
@@ -61,7 +64,7 @@ const CustomerDashboard = () => {
 
                 </nav>
                 <Outlet></Outlet>
-               
+
             </div>
         </div>
     );

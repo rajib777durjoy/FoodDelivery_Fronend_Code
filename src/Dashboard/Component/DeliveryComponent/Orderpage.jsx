@@ -19,10 +19,7 @@ const Orderpage = () => {
     switch (status) {
       case "Pending":
         return "bg-yellow-100 text-yellow-800";
-      case "Assigned":
-        return "bg-blue-100 text-blue-800";
-      case "Delivered":
-        return "bg-green-100 text-green-800";
+        
       case "Cancelled":
         return "bg-red-100 text-red-800";
       default:
@@ -63,7 +60,7 @@ const Orderpage = () => {
                   <td className="px-4 py-3 text-gray-700">{order.delivery_location}</td>
                   <td className="px-4 py-3 text-gray-700">{order.customer_phone}</td>
                   <td>
-                    <span className={`px-3 py-1 inline-flex text-xs font-semibold rounded-full ${statusColor(order.payment_status ? "Delivered" : "Pending")}`}>
+                    <span className={`px-3 py-1 inline-flex mx-4 text-xs font-semibold rounded-full ${statusColor(order.payment_status ? "Delivered" : "Pending")}`}>
                       {order.payment_status ? "Paid" : "Pending"}
                     </span>
                   </td>
@@ -86,7 +83,7 @@ const Orderpage = () => {
             <div key={order.order_id} className="bg-white shadow rounded-lg p-4 space-y-2">
               <div className="flex justify-between items-center">
                 <span className="font-medium text-gray-700">Order #{index+1}</span>
-                <span className={`px-2 py-1 text-xs font-semibold rounded-full ${statusColor(order.payment_status ? "Delivered" : "Pending")}`}>
+                <span className={`px-3 py-1 inline-flex text-xs mx-4 font-semibold rounded-full ${statusColor(order.payment_status ? "Delivered" : "Pending")}`}>
                   {order.payment_status ? "Paid" : "Pending"}
                 </span>
               </div>

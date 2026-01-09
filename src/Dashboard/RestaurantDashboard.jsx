@@ -23,7 +23,7 @@ const RestaurantOwnerDashboard = () => {
                 </NavLink>
 
                 <NavLink to="/restaurant_Dashboard/delivery_history" className={linkClass}>
-                     Delivery History
+                    Delivery History
                 </NavLink>
 
                 <NavLink to="/restaurant_Dashboard/menu" className={linkClass}>
@@ -36,6 +36,9 @@ const RestaurantOwnerDashboard = () => {
 
                 <NavLink to="/restaurant_Dashboard/profile" className={linkClass}>
                     Profile
+                </NavLink>
+                <NavLink to="/notification" className={linkClass}>
+                    Notification
                 </NavLink>
 
                 <button

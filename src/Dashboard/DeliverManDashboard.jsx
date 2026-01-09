@@ -38,6 +38,9 @@ const DeliveryManDashboard = () => {
         <NavLink to="/delivery-dashboard/profile" className={linkClass}>
           Profile
         </NavLink>
+        <NavLink to="/notification" className={linkClass}>
+          Notification
+        </NavLink>
 
         <NavLink to="/delivery-dashboard/support" className={linkClass}>
           Support

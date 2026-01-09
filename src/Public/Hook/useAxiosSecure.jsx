@@ -10,7 +10,7 @@ const useAxiosSecure = () => {
         const interceptor = instance.interceptors.response.use((response) => {
             return response;
         }, (err) => {
-            const status = err?.response?.status;
+            const status = err?.status;
             if (status === 403 || status === 401) {
                 // signOut user here function //
             }

@@ -1,7 +1,13 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import useAxiosPublic from "../Hook/useAxiosPublic";
+import { Bounce, toast } from "react-toastify";
 
 const DeliveryPartner = () => {
+  const user_data = useSelector(state => state.user.user);
+  const axiosPublic = useAxiosPublic();
+
   const {
     register,
     handleSubmit,
@@ -11,7 +17,64 @@ const DeliveryPartner = () => {
 
   const onSubmit = (data) => {
     console.log("Delivery Partner Data:", data);
-    reset();
+
+    if (user_data.id && user_data?.email) {
+      const formData = {
+        name: data.fullname,
+        user_id: user_data.id,
+        email: data.email,
+        phone: data.phone,
+        location: data.location,
+        ride: data.ride,
+        description: data.description
+      }
+      axiosPublic.post(`/api/deliveryHero/create_deliver_hero_profile/${data?.email}`, formData,)
+        .then(res => {
+          if (res.data.message === 'Profile created successfully') {
+            toast.success(res.data?.message, {
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+              transition: Bounce,
+            });
+          }
+          else {
+            toast.warning(res.data.message, {
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+              transition: Bounce,
+            });
+
+          }
+        }).catch(err => {
+          console.log('error::', err)
+          toast.error(err.message, {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+
+        })
+    }
+
+    // reset();
   };
 
   return (
@@ -28,11 +91,13 @@ const DeliveryPartner = () => {
             <input
               type="text"
               placeholder="Enter your name"
-              {...register("name", { required: "Name is required" })}
+              defaultValue={user_data?.fullname}
+              readOnly
+              {...register("fullname", { required: "Name is required" })}
               className="w-full mt-1 text-black px-3 py-2 border rounded-md"
             />
-            {errors.name && (
-              <p className="text-red-500 text-sm">{errors.name.message}</p>
+            {errors.fullname && (
+              <p className="text-red-500 text-sm">{errors.fullname.message}</p>
             )}
           </div>
 
@@ -42,6 +107,8 @@ const DeliveryPartner = () => {
             <input
               type="email"
               placeholder="Enter your email"
+              defaultValue={user_data?.email}
+              readOnly
               {...register("email", { required: "Email is required" })}
               className="w-full mt-1 text-black px-3 py-2 border rounded-md"
             />
@@ -49,16 +116,18 @@ const DeliveryPartner = () => {
               <p className="text-red-500 text-sm">{errors.email.message}</p>
             )}
           </div>
-
-          {/* Address */}
+          {/* phone number */}
           <div>
-            <label className="block text-black font-medium">Address</label>
+            <label className="block text-black font-medium">Phone number</label>
             <input
               type="text"
-              placeholder="Your address"
-              {...register("address", { required: "Address is required" })}
+              placeholder="Enter your Phone number"
+              {...register("phone", { required: "Phone number is required" })}
               className="w-full mt-1 text-black px-3 py-2 border rounded-md"
             />
+            {errors.phone && (
+              <p className="text-red-500 text-sm">{errors.phone.message}</p>
+            )}
           </div>
 
           {/* Location */}

@@ -28,8 +28,8 @@ const Navbar = () => {
         userInformationFunction()
     }, [user?.email, loading])
 
-    // const role = userData?.role;
-    const role = 'delivery';
+    const role = userData?.role;
+    // const role = 'delivery';
     console.log('role', role)
     return (
         <div className='w-[90%] mx-auto '>
@@ -60,7 +60,7 @@ const Navbar = () => {
                             {role === 'customer' && <NavLink to="/dashboard" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
                                 Dashboard
                             </NavLink>}
-                            {role === 'delivery' && <NavLink to="/delivery_Dashboard" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
+                            {role === 'deliver_hero' && <NavLink to="/delivery_Dashboard" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
                                 Dashboard
                             </NavLink>}
                             {role === 'partner' && <NavLink to="/restaurant_Dashboard" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
