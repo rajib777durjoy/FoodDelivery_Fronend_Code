@@ -8,7 +8,7 @@ const RestaurentFeature = () => {
                 Featured Restaurants
             </span>
 
-            <h1 className="text-3xl  flex justify-center items-center lg:text-4xl font-bold text-gray-900 mb-10">
+            <h1 className="text-xl flex justify-center items-center lg:text-4xl font-bold text-gray-900 mb-10">
                 EatNow Restaurants <br />
                 <span className="text-green-600">Quality You Can Trust</span>
             </h1>

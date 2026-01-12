@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import useAxiosPublic from '../../Hook/useAxiosPublic';
 import { AuthContext } from '../../Provider/AuthProvider';
-import { useQuery } from '@tanstack/react-query';
 
 const Myorders = () => {
   const axiosPublic = useAxiosPublic();
@@ -20,40 +20,55 @@ const Myorders = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex justify-center items-center">
-        <span className="loading loading-spinner loading-lg"></span>
+      <div className="min-h-screen flex justify-center items-center bg-gray-100">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
       </div>
     );
+  }
+  const handleDuePayment = (id) => {  // id is order.id // 
+    axiosPublic.post('/api/payment/duepayment_init', { order_id: id })
+      .then((res) => {
+        console.log(res.data.url)
+        const url = res.data.url;
+        if (url) {
+          window.location.href = url;
+        }
+      }).catch(err => {
+        console.log('Payment request error:', err);
+
+      });
   }
 
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-8">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto">
 
         {/* Header */}
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">
-          My Orders
-        </h2>
+        <div className="mb-8 flex justify-between items-center">
+          <h2 className="text-3xl font-bold text-gray-800">My Orders</h2>
+          <span className="text-sm text-gray-500">
+            Total: {orderData.length}
+          </span>
+        </div>
 
-        {/* Empty State */}
+        {/* Empty */}
         {orderData.length === 0 && (
-          <div className="bg-white rounded-lg p-8 text-center shadow">
-            <p className="text-gray-500">
-              You have not placed any orders yet.
-            </p>
+          <div className="bg-white rounded-xl p-10 text-center shadow">
+            <p className="text-gray-500">No orders found</p>
           </div>
         )}
 
-        {/* Order List */}
-        <div className="space-y-4">
-          {orderData.map((order) => (
+        {/* Orders */}
+        <div className="space-y-6">
+          {orderData.map(order => (
             <div
               key={order.id}
-              className="bg-white rounded-lg shadow p-5"
+              onClick={() => handleDuePayment(order.id)}
+              className="bg-white rounded-xl shadow hover:shadow-md transition p-6"
             >
-              {/* Top Row */}
-              <div className="flex flex-wrap justify-between items-center mb-3">
-                <h3 className="font-semibold text-gray-800">
+              {/* Top */}
+              <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4">
+                <h3 className="text-lg font-semibold text-gray-800">
                   Order #{order.id}
                 </h3>
                 <span className="text-sm text-gray-500">
@@ -61,19 +76,15 @@ const Myorders = () => {
                 </span>
               </div>
 
-              {/* Info Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                <Info label="Transaction ID" value={order.payment_tran_id} />
-                <Info label="Payment Method" value={order.payment_method.toUpperCase()} />
-                <Info label="Amount" value={`৳ ${order.payment}`} />
-                <Info label="dueAmount" value={`৳ ${order.dueAmount || 0}`} />
-                <Info
-                  label="Payment Status"
-                  value={order.payment_status ? 'Paid' : 'Unpaid'}
-                  green={order.payment_status}
-                />
-                <Info label="delivery Status" value={order.status} />
+              {/* Content */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
                 <Info label="Delivery Location" value={order.delivery_location} />
+                <Info label="Customer Phone" value={order.customer_phone} />
+                <Info label="Quantity" value={order.quantity} />
+                <Info label="Payment Method" value={order.payment_method.toUpperCase()} />
+                <Info label="Total Amount" value={`৳ ${order.payment}`} />
+                <Info label="Due Amount" value={`৳ ${order.dueAmount}`} />
+                <Status value={order.status} />
               </div>
             </div>
           ))}
@@ -84,13 +95,29 @@ const Myorders = () => {
   );
 };
 
-const Info = ({ label, value, green }) => (
+const Info = ({ label, value }) => (
   <div className="flex justify-between">
-    <span className="text-gray-700">{label}</span>
-    <span className={`font-medium text-gray-800 ${green && 'text-green-600'}`}>
-      {value}
-    </span>
+    <span className="text-gray-600">{label}</span>
+    <span className="font-medium text-gray-800">{value}</span>
   </div>
 );
 
+const Status = ({ value }) => {
+  const color =
+    value === 'panding'
+      ? 'bg-yellow-100 text-yellow-700'
+      : 'bg-green-100 text-green-700';
+
+  return (
+    <div className="flex justify-between sm:col-span-2 lg:col-span-3">
+      <span className="text-gray-600">Order Status</span>
+      <span className={`px-3 py-1 text-black rounded-full text-xs font-semibold ${color}`}>
+        {value}
+      </span>
+    </div>
+  );
+};
+
 export default Myorders;
+
+

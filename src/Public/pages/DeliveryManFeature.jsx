@@ -7,7 +7,7 @@ const DeliveryManFeature = () => {
                 Trusted Delivery Partners
             </span>
 
-            <h1 className="text-3xl flex justify-center mb-10 lg:text-4xl font-bold text-gray-900 ">
+            <h1 className="text-xl flex justify-center mb-10 lg:text-4xl font-bold text-gray-900 ">
                 Fast & Reliable <br />
                 <span className="text-green-600">Delivery You Can Trust</span>
             </h1>

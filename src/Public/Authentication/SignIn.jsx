@@ -6,12 +6,14 @@ import { AuthContext } from "../Provider/AuthProvider";
 import useAxiosPublic from "../Hook/useAxiosPublic";
 import { Bounce, toast } from "react-toastify";
 
+
 const SignIn = () => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const [showPassword, setShowPassword] = useState(false);
   const { SignInUser, GoogleSingIn } = useContext(AuthContext)
-  const axiosPublic =useAxiosPublic();
+  const axiosPublic = useAxiosPublic();
   const navigate = useNavigate()
+ 
 
   const onSubmit = (data) => {
     console.log("Sign In Data:", data.email);
@@ -29,30 +31,31 @@ const SignIn = () => {
           theme: "light",
           transition: Bounce,
         });
+        navigate('/')
       }).catch(err => {
         console.log('error', err?.message)
       })
   };
 
-   const handleGoogleSignIn = () => {
-        GoogleSingIn()
-            .then((res) => {
-                if (res.user) {
-                    console.log('user api call form google')
-                    axiosPublic.post('/api/user/user_data', {
-                        fullname: res.user?.displayName,
-                        email: res.user?.email,
-                        profile: res.user?.photoURL
-                    }).then(res => {  
-                        return navigate('/')
-                    });
+  const handleGoogleSignIn = () => {
+    GoogleSingIn()
+      .then((res) => {
+        if (res.user) {
+          console.log('user api call form google')
+          axiosPublic.post('/api/user/user_data', {
+            fullname: res.user?.displayName,
+            email: res.user?.email,
+            profile: res.user?.photoURL
+          }).then(res => {
+            return navigate('/')
+          });
 
-                }
+        }
 
-            }).catch(err => {
-                console.log('err', err)
-            })
-    }
+      }).catch(err => {
+        console.log('err', err)
+      })
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-green-50 px-4">

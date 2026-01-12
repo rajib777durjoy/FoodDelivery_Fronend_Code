@@ -14,7 +14,7 @@ import DeliverManDashboard from './Dashboard/DeliverManDashboard';
 import CustomerDashboard from './Dashboard/CustomerDashboard';
 import { useEffect } from 'react';
 import useAxiosPublic from './Public/Hook/useAxiosPublic';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from './Redux/userSlice';
 import MenuPage from './Dashboard/Component/Restaurant/MenuPage';
 import AddFood from './Dashboard/Component/Restaurant/AddFood';
@@ -37,21 +37,26 @@ import Orderpage from './Dashboard/Component/DeliveryComponent/Orderpage';
 import SelectDVHero from './Dashboard/Component/Restaurant/SelectDVHero';
 import NotificationPage from './Public/pages/Notification/NotificationPage';
 import OrderDetails from './Public/pages/OrderConfirm/OrderDetails';
+import PaymentInbox from './Public/pages/Paymentpage/paymentInbox';
+import Profile from './Public/pages/userProfile/Profile';
+import Earning from './Dashboard/Component/Restaurant/Earning';
 
 function App() {
   const axiosPublic = useAxiosPublic();
   const { user, loading } = useContext(AuthContext)
-
   // console.log('app user',user)
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    const getCurrentuser = async() => {
+    const getCurrentuser = async () => {
       const res = await axiosPublic.get(`/api/user/user_data`);
       console.log('app js fill user::', res?.data)
       dispatch(setUser(res.data))
-    }
+
+    };
     getCurrentuser()
-  },[user?.email,loading])
+
+  }, [user?.email, loading])
 
   return (
     <Routes>
@@ -81,12 +86,15 @@ function App() {
         <Route path='/restaurant_Dashboard/delivery_history' element={<Delivery_History></Delivery_History>}></Route>
         <Route path='/restaurant_Dashboard/orders' element={<OrdersPage></OrdersPage>}></Route>
         <Route path='/restaurant_Dashboard/select_deliver_hero/:id' element={<SelectDVHero></SelectDVHero>} ></Route>
+        <Route path='/restaurant_Dashboard/profile' element={<Profile></Profile>} ></Route>
+        <Route path='/restaurant_Dashboard/earnings' element={<Earning></Earning>} ></Route>
       </Route>
 
       {/* DeliveryMan Dashboard page */}
       <Route path='/delivery_Dashboard' element={<DeliverManDashboard></DeliverManDashboard>}>
         {/* here is her children */}
         <Route path='/delivery_Dashboard/order_page' element={<Orderpage></Orderpage>}></Route>
+        <Route path='/delivery_Dashboard/profile' element={<Profile></Profile>} ></Route>
       </Route>
 
       {/* Customer Dashboard page */}
@@ -94,7 +102,8 @@ function App() {
         {/* here is children route */}
         <Route path='/dashboard/myCart' element={<AddToCart></AddToCart>} ></Route>
         <Route path='/dashboard/my_orders' element={<Myorders></Myorders>} ></Route>
-
+        <Route path='/dashboard/payment_inbox' element={<PaymentInbox></PaymentInbox>} ></Route>
+        <Route path='/dashboard/profile' element={<Profile></Profile>} ></Route>
 
       </Route>
 

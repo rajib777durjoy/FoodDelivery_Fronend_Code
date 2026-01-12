@@ -1,34 +1,22 @@
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
+import { useSelector } from "react-redux";
+import useAxiosPublic from "../../../Public/Hook/useAxiosPublic";
 
 const Delivery_History = () => {
+    const user  = useSelector(state => state.user.user);
+   
+    const axiosPublic = useAxiosPublic();
     // Sample data
-    const orders = [
-        {
-            id: "ORD1234",
-            customer: "John Doe",
-            deliverMan:"534396324",
-            amount: 350,
-            date: "2025-12-20",
-            status: "Delivered",
-        },
-        {
-            id: "ORD1235",
-            customer: "Jane Smith",
-            deliverMan:"534396324",
-            amount: 450,
-            date: "2025-12-21",
-            status: "Pending",
-        },
-        {
-            id: "ORD1236",
-            customer: "Michael Johnson",
-            deliverMan:"534396324",
-            amount: 220,
-            date: "2025-12-22",
-            status: "Cancelled",
-        },
-    ];
 
+    const { data: order_list = [] } = useQuery({
+        queryKey: ['order_list', user?.id],
+        queryFn: async () => {
+            const res = await axiosPublic.get(`/api/deliveryHero/order_for_delivery_list/${user.id}/${user.email}`);
+            return res.data;
+        }
+    })
+//   
     // Status color mapping
     const statusColor = (status) => {
         switch (status) {
@@ -57,19 +45,19 @@ const Delivery_History = () => {
                             <th className="p-3 text-sm text-gray-600">Customer</th>
                             <th className="p-3 text-sm text-gray-600">Delivery Man</th>
                             <th className="p-3 text-sm text-gray-600">Amount </th>
-                            <th className="p-3 text-sm text-gray-600">Date</th>
+                            <th className="p-3 text-sm text-gray-600">Due_amount </th>
                             <th className="p-3 text-sm text-gray-600">Status</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        {orders.map((order) => (
+                        {order_list.map((order) => (
                             <tr key={order.id} className="border-t">
                                 <td className="p-3">{order.id}</td>
                                 <td className="p-3">{order.customer}</td>
                                 <td className="p-3">{order.deliverMan}</td>
                                 <td className="p-3">{order.amount}</td>
-                                <td className="p-3">{order.date}</td>
+                                <td className="p-3">{order.DueAmount}</td>
                                 <td className={`p-3 font-medium ${statusColor(order.status)}`}>
                                     {order.status}
                                 </td>

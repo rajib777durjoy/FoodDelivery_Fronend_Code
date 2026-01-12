@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import useAxiosPublic from '../../../Public/Hook/useAxiosPublic';
 import { useParams } from 'react-router';
@@ -10,7 +10,7 @@ const SelectDVHero = () => {
     const { id: order_id } = useParams()
     console.log('order_id::', order_id)
     const axiosPublic = useAxiosPublic();
-    const [selectedDV, setSelectedDV] = useState(null);
+ 
 
     const { data: deliverMan = [], isPending, refetch } = useQuery({
         queryKey: ['deliverMan', userData?.id],
@@ -18,13 +18,13 @@ const SelectDVHero = () => {
             const res = await axiosPublic.get(`/api/deliveryHero/deliver_man/${userData?.email}`);
             return res.data;
         },
-        enabled: !!userData?.email
+        
     });
     const handleSelectDeliver = (id) => { // id = is deliver_hero id //
         axiosPublic.patch(`/api/deliveryHero/deliver_man/update/${id}`, { order_id })
             .then(res => {
                 console.log('update message::', res.data.message);
-                if (res.data.message === 'Update Successfull !') {
+                if (res.data.message === 'Booking Successfull !') {
                     refetch()
                     toast.success(res.data?.message, {
                         position: "top-center",
@@ -146,7 +146,7 @@ const SelectDVHero = () => {
                                         </span>
                                     </td>
                                     <td className="px-4 py-3">
-                                        <button onClick={() => handleSelectDeliver(dv?.deliverHero_id)} disabled={!dv.status} className={`rounded-md text-black px-2 py-1 ${dv.status ? 'px-4 bg-green-700 text-white' : "text-red-700"}`}> {dv.status && "Select" || "On the way"}</button>
+                                        <button onClick={() => handleSelectDeliver(dv?.deliverHero_id)} disabled={!dv.status} className={`rounded-md text-black px-2 py-1 ${dv.status ? 'px-4 bg-green-700 text-white' : "text-red-700"}`}> {dv.status? "Select" : "On_the_way"}</button>
 
                                     </td>
                                 </tr>

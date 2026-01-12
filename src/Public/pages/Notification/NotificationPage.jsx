@@ -22,7 +22,6 @@ const NotificationPage = () => {
             );
             setNotifications(res.data);
         };
-
         fetchNotifications();
     }, [userData?.id]);
 

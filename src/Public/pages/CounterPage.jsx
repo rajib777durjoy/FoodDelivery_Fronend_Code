@@ -3,7 +3,7 @@ import CountUp from 'react-countup';
 
 const CounterPage = () => {
     return (
-        <div className="w-full grid lg:grid-cols-3 gap-6 text-black py-20">
+        <div className="w-full grid md:grid-cols-3 gap-6 text-black py-20">
             <div className="flex justify-center">
                 <div className="text-center">
                     <p className="text-lg font-medium">Total Users</p>

@@ -4,11 +4,13 @@ import { createContext } from 'react';
 import { auth } from '../../../firebase.config';
 import useAxiosPublic from '../Hook/useAxiosPublic';
 import socket from '../../Socket.js';
+import { useDispatch } from 'react-redux';
 
 
 export const AuthContext = createContext(null)
 const AuthProvider = ({ children }) => {
     const [user, setuser] = useState(null);
+    const dispatch = useDispatch()
     const [loading, setLoading] = useState(true);
     const axiosPublic = useAxiosPublic();
     const provider = new GoogleAuthProvider();
@@ -35,23 +37,30 @@ const AuthProvider = ({ children }) => {
         }
     }
     useEffect(() => {
-        socket.on("connect", () => {
-            console.log("✅ Connected to server");
-
+        const handleConnect = () => {
+            console.log(" Connected to server");
             console.log("My socket id:", socket.id);
-        });
+        };
 
-        socket.on("disconnect", () => {
-            console.log("❌ Disconnected from server");
-        });
+        const handleDisconnect = () => {
+            console.log(" Disconnected from server");
+        };
+        const handleNotification =({message})=>{
+          console.log('notification message:',message)
+          alert(message)
+        }
+
+        socket.on("connect", handleConnect);
+        socket.on('order-assigned',handleNotification)
+        socket.on("disconnect", handleDisconnect);
 
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             console.log('currentUser::', currentUser);
             setuser(currentUser);
+            // dispatch(setuser(currentUser))
             if (currentUser?.email) {
                 axiosPublic.post('/jwt_generate', { email: currentUser?.email })
                     .then(res => {
-
                         setLoading(false)
                         console.log('token generate message::', res.data.message)
                     }).catch(err => {
@@ -73,8 +82,9 @@ const AuthProvider = ({ children }) => {
 
         return () => {
             unsubscribe();
-            socket.off("connect");
-            socket.off("disconnect");
+            socket.off("connect", handleConnect);
+            socket.off('order-assigned',handleNotification)
+            socket.off("disconnect", handleDisconnect);
         };
     }, []);
     useEffect(() => {

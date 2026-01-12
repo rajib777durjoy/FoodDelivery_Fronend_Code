@@ -72,10 +72,10 @@ const Successpage = () => {
             Go Home
           </Link>
           <Link
-            to="/my_orders"
+            to="/dashboard/payment_inbox"
             className="flex-1 py-2 text-center rounded-lg bg-green-600 text-white hover:bg-green-700"
           >
-            My Orders
+            Payment history
           </Link>
         </div>
       </div>
