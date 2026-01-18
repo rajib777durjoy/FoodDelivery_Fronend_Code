@@ -40,6 +40,10 @@ import OrderDetails from './Public/pages/OrderConfirm/OrderDetails';
 import PaymentInbox from './Public/pages/Paymentpage/paymentInbox';
 import Profile from './Public/pages/userProfile/Profile';
 import Earning from './Dashboard/Component/Restaurant/Earning';
+import TrackingMap from './Public/LocationTracking/TrackingMap';
+import StaticPage from './Dashboard/Component/Restaurant/StaticPage';
+import Staticpage from './Dashboard/Component/DeliveryComponent/Staticpage';
+import Static from './Public/pages/Static/Staticpage';
 
 function App() {
   const axiosPublic = useAxiosPublic();
@@ -74,12 +78,13 @@ function App() {
         <Route path='/order_confirm/:id/:quantity' element={<OrderConfirm></OrderConfirm>}></Route>
         <Route path='/payment/success/:tran_id' element={<Successpage></Successpage>}></Route>
         <Route path='/payment/fail/:tran_id' element={<PaymentFail></PaymentFail>} ></Route>
-        <Route path='/notification' element={<NotificationPage></NotificationPage>}></Route>
         <Route path='/OrderDetails/:id' element={<OrderDetails></OrderDetails>} ></Route>
+        <Route path='/TrackingMap' element={<TrackingMap></TrackingMap>}></Route>
       </Route>
       {/* Restaurant dashboard page */}
       <Route path='/restaurant_Dashboard' element={<RestaurantDashboard></RestaurantDashboard>}>
         {/* here is her children */}
+        <Route index={true} element={<StaticPage></StaticPage>} ></Route>
         <Route path='/restaurant_Dashboard/menu' element={<MenuPage></MenuPage>}></Route>
         <Route path='/restaurant_Dashboard/AddFood' element={<AddFood></AddFood>}></Route>
         <Route path='/restaurant_Dashboard/Food_Edit/:id' element={<Food_Edit></Food_Edit>} ></Route>
@@ -87,23 +92,31 @@ function App() {
         <Route path='/restaurant_Dashboard/orders' element={<OrdersPage></OrdersPage>}></Route>
         <Route path='/restaurant_Dashboard/select_deliver_hero/:id' element={<SelectDVHero></SelectDVHero>} ></Route>
         <Route path='/restaurant_Dashboard/profile' element={<Profile></Profile>} ></Route>
+        <Route path='/restaurant_Dashboard/notification' element={<NotificationPage></NotificationPage>}></Route>
         <Route path='/restaurant_Dashboard/earnings' element={<Earning></Earning>} ></Route>
+        <Route path='/restaurant_Dashboard/TrackingMap' element={<TrackingMap></TrackingMap>}></Route>
       </Route>
 
       {/* DeliveryMan Dashboard page */}
       <Route path='/delivery_Dashboard' element={<DeliverManDashboard></DeliverManDashboard>}>
         {/* here is her children */}
+        <Route index={true} element={<Staticpage></Staticpage>} ></Route>
         <Route path='/delivery_Dashboard/order_page' element={<Orderpage></Orderpage>}></Route>
         <Route path='/delivery_Dashboard/profile' element={<Profile></Profile>} ></Route>
+        <Route path='/delivery_Dashboard/notification' element={<NotificationPage></NotificationPage>}></Route>
+        <Route path='/delivery_Dashboard/TrackingMap' element={<TrackingMap></TrackingMap>}></Route>
       </Route>
 
       {/* Customer Dashboard page */}
       <Route path='/dashboard' element={<CustomerDashboard></CustomerDashboard>}>
         {/* here is children route */}
+        <Route index={true} element={<Static></Static>}></Route>
         <Route path='/dashboard/myCart' element={<AddToCart></AddToCart>} ></Route>
         <Route path='/dashboard/my_orders' element={<Myorders></Myorders>} ></Route>
         <Route path='/dashboard/payment_inbox' element={<PaymentInbox></PaymentInbox>} ></Route>
         <Route path='/dashboard/profile' element={<Profile></Profile>} ></Route>
+        <Route path='/dashboard/notification' element={<NotificationPage></NotificationPage>}></Route>
+        <Route path='/dashboard/TrackingMap' element={<TrackingMap></TrackingMap>}></Route>
 
       </Route>
 

@@ -1,0 +1,110 @@
+import React from "react";
+
+const StaticPage = () => {
+  // Dummy data
+  const restaurant = {
+    name: "Foodi Express",
+    owner: "Mr. Rahman",
+    location: "Dhanmondi, Dhaka",
+    status: "Open",
+    rating: 4.6,
+    totalOrders: 1240,
+    todayOrders: 38,
+    revenue: 98500,
+  };
+
+  const orders = [
+    { id: "#FD1021", customer: "Arif", amount: 650, status: "Delivered" },
+    { id: "#FD1022", customer: "Sadia", amount: 420, status: "Preparing" },
+    { id: "#FD1023", customer: "Naim", amount: 890, status: "Pending" },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-100 p-6">
+      {/* Header */}
+      <div className="bg-white rounded-xl shadow p-6 mb-6">
+        <h1 className="text-2xl font-bold text-gray-800">
+          Restaurant Owner Dashboard
+        </h1>
+        <p className="text-gray-500">
+          Welcome back, {restaurant.owner}
+        </p>
+      </div>
+
+      {/* Restaurant Info */}
+      <div className="grid md:grid-cols-3 gap-6 mb-6">
+        <div className="bg-white rounded-xl shadow p-5">
+          <h2 className="text-lg font-semibold">Restaurant</h2>
+          <p className="text-gray-700 font-medium">{restaurant.name}</p>
+          <p className="text-gray-500 text-sm">{restaurant.location}</p>
+          <span className="inline-block mt-2 px-3 py-1 text-sm rounded-full bg-green-100 text-green-700">
+            {restaurant.status}
+          </span>
+        </div>
+
+        <div className="bg-white rounded-xl shadow p-5">
+          <h2 className="text-lg font-semibold">Today Orders</h2>
+          <p className="text-3xl font-bold text-blue-600">
+            {restaurant.todayOrders}
+          </p>
+          <p className="text-gray-500 text-sm">
+            Total Orders: {restaurant.totalOrders}
+          </p>
+        </div>
+
+        <div className="bg-white rounded-xl shadow p-5">
+          <h2 className="text-lg font-semibold">Revenue</h2>
+          <p className="text-3xl font-bold text-green-600">
+            ৳ {restaurant.revenue}
+          </p>
+          <p className="text-gray-500 text-sm">
+            Rating: ⭐ {restaurant.rating}
+          </p>
+        </div>
+      </div>
+
+      {/* Recent Orders */}
+      <div className="bg-white rounded-xl shadow p-6">
+        <h2 className="text-xl font-semibold mb-4">Recent Orders</h2>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="text-gray-500 border-b">
+                <th className="py-2">Order ID</th>
+                <th className="py-2">Customer</th>
+                <th className="py-2">Amount</th>
+                <th className="py-2">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((order) => (
+                <tr key={order.id} className="border-b last:border-0">
+                  <td className="py-3 font-medium">{order.id}</td>
+                  <td className="py-3">{order.customer}</td>
+                  <td className="py-3">৳ {order.amount}</td>
+                  <td className="py-3">
+                    <span
+                      className={`px-3 py-1 text-sm rounded-full
+                        ${
+                          order.status === "Delivered"
+                            ? "bg-green-100 text-green-700"
+                            : order.status === "Preparing"
+                            ? "bg-yellow-100 text-yellow-700"
+                            : "bg-red-100 text-red-700"
+                        }`}
+                    >
+                      {order.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default StaticPage;

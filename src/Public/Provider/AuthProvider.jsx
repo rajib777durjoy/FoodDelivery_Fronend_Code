@@ -37,6 +37,7 @@ const AuthProvider = ({ children }) => {
         }
     }
     useEffect(() => {
+
         const handleConnect = () => {
             console.log(" Connected to server");
             console.log("My socket id:", socket.id);
@@ -45,14 +46,16 @@ const AuthProvider = ({ children }) => {
         const handleDisconnect = () => {
             console.log(" Disconnected from server");
         };
-        const handleNotification =({message})=>{
-          console.log('notification message:',message)
-          alert(message)
+        const handleNotification = ({ message }) => {
+            console.log('notification message:', message)
+            alert(message)
         }
 
+
         socket.on("connect", handleConnect);
-        socket.on('order-assigned',handleNotification)
+        socket.on('order-assigned', handleNotification)
         socket.on("disconnect", handleDisconnect);
+
 
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             console.log('currentUser::', currentUser);
@@ -80,18 +83,33 @@ const AuthProvider = ({ children }) => {
             setLoading(false)
         });
 
+        // / tracking location  function ///
+        const watchId = navigator.geolocation.watchPosition((pos) => {
+            // socket.emit('send_location', ({ lat: pos.coords.latitude, lng: pos.coords.longitude, user_id: 15 }))
+        },
+            (err) => console.error(err),
+            { enableHighAccuracy: true, maximumAge: 1000 }
+        );
+
         return () => {
             unsubscribe();
             socket.off("connect", handleConnect);
-            socket.off('order-assigned',handleNotification)
+            socket.off('order-assigned', handleNotification)
+            // socket.off('send_location')
             socket.off("disconnect", handleDisconnect);
+            navigator.geolocation.clearWatch(watchId);
         };
     }, []);
+
     useEffect(() => {
         if (user?.email) {
             socket.emit('currentuser', { email: user.email });
         }
+        return () => {
+            socket.off('currentuser')
+        }
     }, [user]);
+
 
     const data = {
         GoogleSingIn,
@@ -101,6 +119,8 @@ const AuthProvider = ({ children }) => {
         user,
         loading,
     }
+
+
     return (
         <AuthContext.Provider value={data}>
             {children}

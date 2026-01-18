@@ -28,6 +28,9 @@ const RestaurantOwnerDashboard = () => {
                 <NavLink to="/restaurant_Dashboard/orders" className={linkClass}>
                     Orders
                 </NavLink>
+                <NavLink to="/restaurant_Dashboard/TrackingMap" className={linkClass}>
+                    Track DeliveryMan
+                </NavLink>
 
                 <NavLink to="/restaurant_Dashboard/delivery_history" className={linkClass}>
                     Delivery History
@@ -44,7 +47,7 @@ const RestaurantOwnerDashboard = () => {
                 <NavLink to="/restaurant_Dashboard/profile" className={linkClass}>
                     Profile
                 </NavLink>
-                <NavLink to="/notification" className={linkClass}>
+                <NavLink to="/restaurant_Dashboard/notification" className={linkClass}>
                     Notification
                 </NavLink>
 
@@ -84,7 +87,7 @@ const RestaurantOwnerDashboard = () => {
                     <NavLink to="/restaurant_Dashboard/profile" className={linkClass}>
                         Profile
                     </NavLink>
-                    <NavLink to="/notification" className={linkClass}>
+                    <NavLink to="/restaurant_Dashboard/notification" className={linkClass}>
                         Notification
                     </NavLink>
 

@@ -26,7 +26,7 @@ const CustomerDashboard = () => {
                    Payment history
                 </NavLink>
 
-                <NavLink to="/dashboard/track-order" className={linkClass}>
+                <NavLink to="/dashboard/TrackingMap" className={linkClass}>
                     Track Order
                 </NavLink>
 
@@ -36,7 +36,7 @@ const CustomerDashboard = () => {
                 <NavLink to="/dashboard/profile" className={linkClass}>
                     Profile
                 </NavLink>
-                <NavLink to="/notification" className={linkClass}>
+                <NavLink to="/dashboard/notification" className={linkClass}>
                     Notification
                 </NavLink>
 

@@ -23,27 +23,27 @@ const DeliveryManDashboard = () => {
           Assigned Orders
         </NavLink>
 
-        <NavLink to="/delivery-dashboard/active-delivery" className={linkClass}>
+        <NavLink to="/delivery_Dashboard/active-delivery" className={linkClass}>
           Active Delivery
         </NavLink>
 
-        <NavLink to="/delivery-dashboard/delivery-history" className={linkClass}>
+        <NavLink to="/delivery_Dashboard/delivery-history" className={linkClass}>
           Delivery History
         </NavLink>
 
-        <NavLink to="/delivery-dashboard/earnings" className={linkClass}>
+        <NavLink to="/delivery_Dashboard/earnings" className={linkClass}>
           Earnings
         </NavLink>
 
-        <NavLink to="/delivery-dashboard/profile" className={linkClass}>
+        <NavLink to="/delivery_Dashboard/profile" className={linkClass}>
           Profile
         </NavLink>
-        <NavLink to="/notification" className={linkClass}>
+        <NavLink to="/delivery_Dashboard/notification" className={linkClass}>
           Notification
         </NavLink>
 
-        <NavLink to="/delivery-dashboard/support" className={linkClass}>
-          Support
+        <NavLink to="/delivery_Dashboard/TrackingMap" className={linkClass}>
+          Track Delivery
         </NavLink>
 
         <button
