@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import useAxiosPublic from '../../Hook/useAxiosPublic';
+
 import { AuthContext } from '../../Provider/AuthProvider';
+import useAxiosSecure from '../../Hook/useAxiosSecure';
 
 const Myorders = () => {
-  const axiosPublic = useAxiosPublic();
+  const axiosPublic = useAxiosSecure();
   const { user } = useContext(AuthContext);
 
   const { data: orderData = [], isLoading } = useQuery({

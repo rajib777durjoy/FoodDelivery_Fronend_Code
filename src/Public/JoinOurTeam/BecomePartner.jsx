@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import useAxiosPublic from "../Hook/useAxiosPublic";
 import { useSelector } from "react-redux";
 import { Bounce, toast } from "react-toastify";
 import { GiCircularSawblade } from "react-icons/gi";
+import useAxiosSecure from "../Hook/useAxiosSecure";
 
 const BecomePartner = () => {
     const { register, handleSubmit, reset } = useForm();
     const [logoPreview, setLogoPreview] = useState(null);
     const [coverPreview, setCoverPreview] = useState(null);
     const [loading, setloadign] = useState(false);
-    const axiosPublic = useAxiosPublic()
+    const axiosPublic = useAxiosSecure()
     const user = useSelector(state => state.user.user);
     //   console.log('user',user)
     const onSubmit = async (data) => {

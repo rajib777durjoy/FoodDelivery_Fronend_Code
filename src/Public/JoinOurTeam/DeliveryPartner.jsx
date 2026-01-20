@@ -1,12 +1,12 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import useAxiosPublic from "../Hook/useAxiosPublic";
 import { Bounce, toast } from "react-toastify";
+import useAxiosSecure from "../Hook/useAxiosSecure";
 
 const DeliveryPartner = () => {
   const user_data = useSelector(state => state.user.user);
-  const axiosPublic = useAxiosPublic();
+  const axiosPublic = useAxiosSecure();
 
   const {
     register,

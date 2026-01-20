@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { useParams } from 'react-router';
-import useAxiosPublic from '../../Hook/useAxiosPublic';
+import useAxiosSecure from '../../Hook/useAxiosSecure';
 
 const OrderConfirm = () => {
     const { id, quantity } = useParams();
-    const axiosPublic = useAxiosPublic();
+    const axiosPublic = useAxiosSecure();
     const [paymentMethod, setPaymentMethod] = useState('cod');
     const delivery_charge = 50;
   

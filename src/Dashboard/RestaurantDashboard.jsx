@@ -16,7 +16,7 @@ const RestaurantOwnerDashboard = () => {
     return (
         <div className="w-full flex min-h-screen bg-gray-100">
             {/* Sidebar */}
-            <div className="hidden lg:block min-w-48 h-150 sticky top-0 rounded-br-md bg-gray-600 py-2 px-2">
+            <div className="hidden lg:block min-w-48 h-screen sticky top-0 rounded-br-md bg-gray-600 py-2 px-2">
                 <div className='px-4 py-4 flex items-center gap-2'>
                     <img src={user?.photoURL} className='w-8 h-8 rounded-full mt-1' alt="" />
                     <h1 className='text-2xl'>Eatnow</h1>
@@ -49,6 +49,9 @@ const RestaurantOwnerDashboard = () => {
                 </NavLink>
                 <NavLink to="/restaurant_Dashboard/notification" className={linkClass}>
                     Notification
+                </NavLink>
+                <NavLink to="/" className={linkClass}>
+                    Back to Home
                 </NavLink>
 
                 <button
@@ -104,9 +107,7 @@ const RestaurantOwnerDashboard = () => {
             <div className="flex-1 bg-white text-black">
                 {/* Top navbar (optional) */}
                 <div className="h-20 border-b flex items-center justify-between px-2 lg:px-6">
-                    <h2 className="text-sm lg:text-xl font-semibold">
-                        Restaurant Owner Panel
-                    </h2>
+                    
                     <div className='lg:hidden'>
                         <button onClick={() => setMenu(!menu)} className=''><CiMenuFries className='text-3xl' /></button>
                     </div>

@@ -44,6 +44,7 @@ import TrackingMap from './Public/LocationTracking/TrackingMap';
 import StaticPage from './Dashboard/Component/Restaurant/StaticPage';
 import Staticpage from './Dashboard/Component/DeliveryComponent/Staticpage';
 import Static from './Public/pages/Static/Staticpage';
+import EarningPage from './Dashboard/Component/DeliveryComponent/EarningPage';
 
 function App() {
   const axiosPublic = useAxiosPublic();
@@ -105,6 +106,7 @@ function App() {
         <Route path='/delivery_Dashboard/profile' element={<Profile></Profile>} ></Route>
         <Route path='/delivery_Dashboard/notification' element={<NotificationPage></NotificationPage>}></Route>
         <Route path='/delivery_Dashboard/TrackingMap' element={<TrackingMap></TrackingMap>}></Route>
+        <Route path='/delivery_Dashboard/earnings' element={<EarningPage></EarningPage>}></Route>
       </Route>
 
       {/* Customer Dashboard page */}

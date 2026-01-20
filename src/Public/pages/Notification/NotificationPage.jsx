@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import socket from '../../../Socket';
 import { useSelector } from 'react-redux';
-import useAxiosPublic from '../../Hook/useAxiosPublic';
+
 import { Bounce, toast } from 'react-toastify';
 import { FaBell } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router';
+import useAxiosSecure from '../../Hook/useAxiosSecure';
 
 const NotificationPage = () => {
     const [notifications, setNotifications] = useState([]);
-    const axiosPublic = useAxiosPublic();
+    const axiosPublic = useAxiosSecure();
     const userData = useSelector(state => state.user.user);
     const navigate = useNavigate()
 

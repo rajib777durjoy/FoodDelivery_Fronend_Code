@@ -1,13 +1,13 @@
 import React from 'react';
-import useAxiosPublic from '../../../Public/Hook/useAxiosPublic';
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import ToastSuccess from '../../../Public/Hook/ToastMessage/ToastSuccess';
 import ToastError from '../../../Public/Hook/ToastMessage/ToastError';
+import useAxiosSecure from '../../../Public/Hook/useAxiosSecure';
 
 const Orderpage = () => {
-  const axiosPublic = useAxiosPublic();
+  const axiosPublic = useAxiosSecure();
   const userData = useSelector((state) => state.user.user);
   const [status, setStatus] = useState(null);
   const [order_id, setOrder_id] = useState(0);

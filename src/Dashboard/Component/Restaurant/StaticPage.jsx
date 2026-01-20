@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import useAxiosSecure from "../../../Public/Hook/useAxiosSecure";
 
 const StaticPage = () => {
+  const userData = useSelector(state => state.user.user);
+  const [order, setOrder] = useState([]);
+  const [totalPayment, setTotalPayment] = useState(0);
+  const [TodayOrder, setTodayOrder] = useState([])
+  const axiosSecure = useAxiosSecure();
   // Dummy data
   const restaurant = {
     name: "Foodi Express",
@@ -12,12 +19,36 @@ const StaticPage = () => {
     todayOrders: 38,
     revenue: 98500,
   };
+  useEffect(() => {
+    axiosSecure.get(`/api/restaurant/owner_static_page/${userData?.id}`)
+      .then(res => {
+        console.log('owner order::', res?.data)
+        setOrder(res?.data)
+        TotalPayment(res?.data || []);
+        todayOrder(res?.data || [])
+      }).catch(err => {
+        console.log('error', err?.message)
+      })
+  }, [])
 
-  const orders = [
-    { id: "#FD1021", customer: "Arif", amount: 650, status: "Delivered" },
-    { id: "#FD1022", customer: "Sadia", amount: 420, status: "Preparing" },
-    { id: "#FD1023", customer: "Naim", amount: 890, status: "Pending" },
-  ];
+  const TotalPayment = (data) => {
+    let total = 0;
+    data?.forEach(py => {
+      total = total + Number(py?.payment)
+    });
+    setTotalPayment(total)
+  }
+
+  const todayOrder = (data) => {
+    const today = new Date().getDate();
+    const todayOrder = data?.filter(dt => {
+      return new Date(dt?.created_at).getDate()-1 === today
+    })
+    setTodayOrder(todayOrder)
+  }
+
+
+
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -27,7 +58,7 @@ const StaticPage = () => {
           Restaurant Owner Dashboard
         </h1>
         <p className="text-gray-500">
-          Welcome back, {restaurant.owner}
+          Welcome back, {userData?.fullname}
         </p>
       </div>
 
@@ -45,17 +76,17 @@ const StaticPage = () => {
         <div className="bg-white rounded-xl shadow p-5">
           <h2 className="text-lg font-semibold">Today Orders</h2>
           <p className="text-3xl font-bold text-blue-600">
-            {restaurant.todayOrders}
+            {TodayOrder.length}
           </p>
           <p className="text-gray-500 text-sm">
-            Total Orders: {restaurant.totalOrders}
+            Total Orders: {order.length}
           </p>
         </div>
 
         <div className="bg-white rounded-xl shadow p-5">
           <h2 className="text-lg font-semibold">Revenue</h2>
           <p className="text-3xl font-bold text-green-600">
-            ৳ {restaurant.revenue}
+            ৳ {totalPayment}
           </p>
           <p className="text-gray-500 text-sm">
             Rating: ⭐ {restaurant.rating}
@@ -72,24 +103,26 @@ const StaticPage = () => {
             <thead>
               <tr className="text-gray-500 border-b">
                 <th className="py-2">Order ID</th>
-                <th className="py-2">Customer</th>
+                <th className="py-2">Customer Phone</th>
                 <th className="py-2">Amount</th>
-                <th className="py-2">Status</th>
+                <th className="py-2">Due Amount</th>
+                <th className="py-2">Delivery Status</th>
               </tr>
             </thead>
             <tbody>
-              {orders.map((order) => (
-                <tr key={order.id} className="border-b last:border-0">
-                  <td className="py-3 font-medium">{order.id}</td>
-                  <td className="py-3">{order.customer}</td>
-                  <td className="py-3">৳ {order.amount}</td>
+              {order?.map((item) => (
+                <tr key={item.id} className="border-b last:border-0">
+                  <td className="py-3 font-medium">{item?.id}</td>
+                  <td className="py-3">{item?.customer_phone}</td>
+                  <td className="py-3">৳ {item?.payment}</td>
+                  <td className="py-3">৳ {item?.dueAmount}</td>
+                  <td className="py-3">৳ {item?.status}</td>
                   <td className="py-3">
                     <span
                       className={`px-3 py-1 text-sm rounded-full
-                        ${
-                          order.status === "Delivered"
-                            ? "bg-green-100 text-green-700"
-                            : order.status === "Preparing"
+                        ${order.status === "Delivered"
+                          ? "bg-green-100 text-green-700"
+                          : order.status === "Preparing"
                             ? "bg-yellow-100 text-yellow-700"
                             : "bg-red-100 text-red-700"
                         }`}

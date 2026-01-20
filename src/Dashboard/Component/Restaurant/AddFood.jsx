@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import Select from "react-select";
-import useAxiosPublic from "../../../Public/Hook/useAxiosPublic";
 import { useSelector } from "react-redux";
 import { Bounce, toast } from "react-toastify";
 import { GiCircularSawblade } from "react-icons/gi";
+import useAxiosSecure from "../../../Public/Hook/useAxiosSecure";
 
 const AddFood = () => {
     const [category, setCategory] = useState(null);
     const [availability, setAvailability] = useState(null);
     const [image, setimage] = useState()
-    const axiosPublic = useAxiosPublic();
+    const axiosPublic = useAxiosSecure();
     const user = useSelector(state => state.user.user);
     const [loading, setloading] = useState(false);
 

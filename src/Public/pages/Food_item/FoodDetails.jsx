@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router";
 import useAxiosPublic from "../../Hook/useAxiosPublic";
 import { Bounce, toast } from "react-toastify";
+import useAxiosSecure from "../../Hook/useAxiosSecure";
 
 // /* Demo Food Data */
 // const foodItems = [
@@ -62,6 +63,7 @@ import { Bounce, toast } from "react-toastify";
 const FoodDetails = () => {
     const { id } = useParams();
     const axiosPublic = useAxiosPublic();
+    const AxiosSecure = useAxiosSecure();
     const [food, setFood] = useState({})
     const [quantity, setQuantity] = useState(1);
     const navigate = useNavigate()
@@ -83,7 +85,7 @@ const FoodDetails = () => {
     }
 
     const handleAddToCart = (id) => {
-        axiosPublic.post(`/api/restaurant/AddToCart/${id}`, { quantity })
+        AxiosSecure.post(`/api/restaurant/AddToCart/${id}`, { quantity })
             .then(res => {
                 if (res.data?.message === 'Item added to cart successfully') {
                     toast.success(res.data?.message, {

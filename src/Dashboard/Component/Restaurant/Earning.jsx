@@ -1,224 +1,138 @@
 import React, { useEffect, useState } from 'react';
 import {
-  BarChart, Bar, LineChart, Line, PieChart, Pie, Tooltip, Legend, Cell, ResponsiveContainer, CartesianGrid, XAxis, YAxis
+  BarChart, Bar, LineChart, Line, PieChart, Pie, Tooltip, Legend, Cell,
+  ResponsiveContainer, CartesianGrid, XAxis, YAxis
 } from 'recharts';
-
- const dummyOrders = [
-  {
-    id: 1,
-    owner_id: 101,
-    cus_id: 201,
-    food_id: 301,
-    delivery_id: 401,
-    delivery_location: "Dhaka",
-    payment: 150.50,
-    dueAmount: 0,
-    customer_phone: "01712345678",
-    quantity: 2,
-    payment_method: "Card",
-    payment_tran_id: "TRX001",
-    payment_status: true,
-    deliveryTime: "2026-01-05T12:00:00Z",
-    status: "completed",
-    OTP: 1234,
-    created_at: "2026-01-05T10:00:00Z"
-  },
-  {
-    id: 2,
-    owner_id: 101,
-    cus_id: 202,
-    food_id: 302,
-    delivery_id: 402,
-    delivery_location: "Chittagong",
-    payment: 80.00,
-    dueAmount: 0,
-    customer_phone: "01898765432",
-    quantity: 1,
-    payment_method: "Cash",
-    payment_tran_id: "",
-    payment_status: false,
-    deliveryTime: "2026-01-06T14:30:00Z",
-    status: "panding",
-    OTP: 5678,
-    created_at: "2026-01-06T13:30:00Z"
-  },
-  {
-    id: 3,
-    owner_id: 101,
-    cus_id: 203,
-    food_id: 303,
-    delivery_id: 403,
-    delivery_location: "Dhaka",
-    payment: 120.75,
-    dueAmount: 0,
-    customer_phone: "01911223344",
-    quantity: 3,
-    payment_method: "Online",
-    payment_tran_id: "TRX002",
-    payment_status: true,
-    deliveryTime: "2026-01-07T16:00:00Z",
-    status: "completed",
-    OTP: 4321,
-    created_at: "2026-01-07T15:00:00Z"
-  },
-  {
-    id: 4,
-    owner_id: 101,
-    cus_id: 204,
-    food_id: 304,
-    delivery_id: 404,
-    delivery_location: "Sylhet",
-    payment: 95.00,
-    dueAmount: 0,
-    customer_phone: "01677889900",
-    quantity: 2,
-    payment_method: "Card",
-    payment_tran_id: "TRX003",
-    payment_status: true,
-    deliveryTime: "2026-01-08T18:30:00Z",
-    status: "completed",
-    OTP: 8765,
-    created_at: "2026-01-08T17:30:00Z"
-  },
-  {
-    id: 5,
-    owner_id: 101,
-    cus_id: 205,
-    food_id: 305,
-    delivery_id: 405,
-    delivery_location: "Dhaka",
-    payment: 60.00,
-    dueAmount: 0,
-    customer_phone: "01566778899",
-    quantity: 1,
-    payment_method: "Cash",
-    payment_tran_id: "",
-    payment_status: false,
-    deliveryTime: "2026-01-09T20:00:00Z",
-    status: "panding",
-    OTP: 1357,
-    created_at: "2026-01-09T19:00:00Z"
-  },
-];
+import useAxiosSecure from '../../../Public/Hook/useAxiosSecure';
+import { useSelector } from 'react-redux';
 
 export default function EarningsPage() {
+  const [orderData, setOrderData] = useState([]);
   const [monthlyData, setMonthlyData] = useState([]);
   const [paymentMethodData, setPaymentMethodData] = useState([]);
   const [orderStatusData, setOrderStatusData] = useState([]);
   const [totalPayment, setTotalPayment] = useState(0);
   const [totalOrders, setTotalOrders] = useState(0);
   const [pendingOrders, setPendingOrders] = useState(0);
-  
+
+  const axiosSecure = useAxiosSecure();
+  const userData = useSelector(state => state.user.user);
+
   useEffect(() => {
-    // 1️⃣ Summary cards
-    const totalPay = dummyOrders.reduce((acc, o) => acc + parseFloat(o.payment), 0);
-    const totalOrd = dummyOrders.reduce((acc, o) => acc + (o.quantity || 1), 0);
-    const pendingOrd = dummyOrders.filter(o => o.status === 'panding').length;
-    setTotalPayment(totalPay);
-    setTotalOrders(totalOrd);
-    setPendingOrders(pendingOrd);
+    if (!userData?.id) return;
 
-    // 2️⃣ Monthly Data
-    const monthly = {};
-    dummyOrders.forEach(o => {
-      const month = new Date(o.created_at).toLocaleString('default', { month: 'short' });
-      if (!monthly[month]) monthly[month] = { month, totalPayment: 0, totalOrders: 0 };
-      monthly[month].totalPayment += parseFloat(o.payment);
-      monthly[month].totalOrders += o.quantity || 1;
-    });
-    setMonthlyData(Object.values(monthly));
+    axiosSecure
+      .get(`/api/restaurant/earnigs_data/${userData.id}`)
+      .then(res => {
+        const orders = res.data || [];
+        console.log('earning data',orders)
+        setOrderData(orders);
 
-    // 3️⃣ Payment Method Pie
-    const paymentMethods = {};
-    dummyOrders.forEach(o => {
-      if (!paymentMethods[o.payment_method]) paymentMethods[o.payment_method] = 0;
-      paymentMethods[o.payment_method] += 1;
-    });
-    setPaymentMethodData(
-      Object.keys(paymentMethods).map(k => ({ name: k || 'Unknown', value: paymentMethods[k] }))
-    );
+        /* 1️⃣ Summary */
+        setTotalPayment(
+          orders.reduce((sum, o) => sum + Number(o.payment || 0), 0)
+        );
+        setTotalOrders(
+          orders.reduce((sum, o) => sum + Number(o.quantity || 1), 0)
+        );
+        setPendingOrders(
+          orders.filter(o => o.status === 'panding').length
+        );
 
-    // 4️⃣ Order Status Pie
-    const orderStatus = {};
-    dummyOrders.forEach(o => {
-      if (!orderStatus[o.status]) orderStatus[o.status] = 0;
-      orderStatus[o.status] += 1;
-    });
-    setOrderStatusData(
-      Object.keys(orderStatus).map(k => ({ name: k, value: orderStatus[k] }))
-    );
+        /* 2️⃣ Monthly */
+        const monthly = {};
+        orders.forEach(o => {
+          const month = new Date(o.created_at).toLocaleString('default', { month: 'short' });
+          if (!monthly[month]) monthly[month] = { month, totalPayment: 0, totalOrders: 0 };
+          monthly[month].totalPayment += Number(o.payment || 0);
+          monthly[month].totalOrders += Number(o.quantity || 1);
+        });
+        setMonthlyData(Object.values(monthly));
 
-  }, []);
+        /* 3️⃣ Payment Method */
+        const payMethod = {};
+        orders.forEach(o => {
+          payMethod[o.payment_method] = (payMethod[o.payment_method] || 0) + 1;
+        });
+        setPaymentMethodData(
+          Object.entries(payMethod).map(([name, value]) => ({ name, value }))
+        );
 
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+        /* 4️⃣ Order Status */
+        const status = {};
+        orders.forEach(o => {
+          status[o.status] = (status[o.status] || 0) + 1;
+        });
+        setOrderStatusData(
+          Object.entries(status).map(([name, value]) => ({ name, value }))
+        );
+      })
+      .catch(() => console.log('fetch error'));
+  }, [userData?.id]);
+
+  const COLORS = ['#4f46e5', '#22c55e', '#f59e0b', '#ef4444'];
 
   return (
-    <div style={{ padding: '30px', background: '#f5f6fa', minHeight: '100vh', fontFamily: 'Arial, sans-serif' }}>
-      <h1 style={{ textAlign: 'center', marginBottom: '40px', color: '#333' }}>Earnings Dashboard</h1>
+    <div style={styles.page}>
+      <h1 style={styles.title}>Earnings Dashboard</h1>
 
-      {/* Summary Cards */}
-      <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '40px' }}>
-        <Card title="Total Payment" value={`$${totalPayment.toFixed(2)}`} color="#007bff" />
-        <Card title="Total Orders" value={totalOrders} color="#28a745" />
-        <Card title="Pending Orders" value={pendingOrders} color="#ff6347" />
+      {/* Summary */}
+      <div style={styles.summaryGrid}>
+        <Card title="Total Payment" value={`৳ ${totalPayment.toFixed(2)}`} color="#4f46e5" />
+        <Card title="Total Orders" value={totalOrders} color="#22c55e" />
+        <Card title="Pending Orders" value={pendingOrders} color="#ef4444" />
       </div>
 
       {/* Charts */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'center' }}>
-        {/* Bar Chart: Total Payment */}
-        <ChartCard title="Total Payment ($)">
-          <ResponsiveContainer width="100%" height={300}>
+      <div style={styles.chartGrid}>
+        <ChartCard title="Monthly Earnings">
+          <ResponsiveContainer width="100%" height={280}>
             <BarChart data={monthlyData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" />
               <YAxis />
               <Tooltip />
-              <Legend />
-              <Bar dataKey="totalPayment" fill="#007bff" radius={[5, 5, 0, 0]} />
+              <Bar dataKey="totalPayment" fill="#4f46e5" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </ChartCard>
 
-        {/* Line Chart: Total Orders */}
-        <ChartCard title="Total Orders">
-          <ResponsiveContainer width="100%" height={300}>
+        <ChartCard title="Monthly Orders">
+          <ResponsiveContainer width="100%" height={280}>
             <LineChart data={monthlyData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" />
               <YAxis />
               <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="totalOrders" stroke="#28a745" strokeWidth={3} activeDot={{ r: 6 }} />
+              <Line dataKey="totalOrders" stroke="#22c55e" strokeWidth={3} />
             </LineChart>
           </ResponsiveContainer>
         </ChartCard>
 
-        {/* Pie Chart: Payment Methods */}
-        <ChartCard title="Payment Method Distribution">
-          <ResponsiveContainer width="100%" height={300}>
+        <ChartCard title="Payment Methods">
+          <ResponsiveContainer width="100%" height={280}>
             <PieChart>
-              <Pie data={paymentMethodData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label>
-                {paymentMethodData.map((entry, index) => (
-                  <Cell key={index} fill={COLORS[index % COLORS.length]} />
+              <Pie data={paymentMethodData} dataKey="value" nameKey="name" outerRadius={90} label>
+                {paymentMethodData.map((_, i) => (
+                  <Cell key={i} fill={COLORS[i % COLORS.length]} />
                 ))}
               </Pie>
               <Tooltip />
-              <Legend verticalAlign="bottom" height={36} />
+              <Legend />
             </PieChart>
           </ResponsiveContainer>
         </ChartCard>
 
-        {/* Pie Chart: Order Status */}
-        <ChartCard title="Order Status Distribution">
-          <ResponsiveContainer width="100%" height={300}>
+        <ChartCard title="Order Status">
+          <ResponsiveContainer width="100%" height={280}>
             <PieChart>
-              <Pie data={orderStatusData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label>
-                {orderStatusData.map((entry, index) => (
-                  <Cell key={index} fill={COLORS[index % COLORS.length]} />
+              <Pie data={orderStatusData} dataKey="value" nameKey="name" outerRadius={90} label>
+                {orderStatusData.map((_, i) => (
+                  <Cell key={i} fill={COLORS[i % COLORS.length]} />
                 ))}
               </Pie>
               <Tooltip />
-              <Legend verticalAlign="bottom" height={36} />
+              <Legend />
             </PieChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -227,28 +141,77 @@ export default function EarningsPage() {
   );
 }
 
-// Small card component
+/* ---------------- UI Components ---------------- */
+
 const Card = ({ title, value, color }) => (
-  <div style={{
-    flex: '1 1 200px', background: '#fff', padding: '20px',
-    borderRadius: '10px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-    textAlign: 'center'
-  }}>
-    <h4>{title}</h4>
-    <p style={{ fontSize: '24px', fontWeight: 'bold', color }}>{value}</p>
+  <div style={styles.card}>
+    <p style={styles.cardTitle}>{title}</p>
+    <h2 style={{ ...styles.cardValue, color }}>{value}</h2>
   </div>
 );
 
-// Small card wrapper for charts
+
 const ChartCard = ({ title, children }) => (
-  <div style={{
-    flex: '1 1 400px', background: '#fff', padding: '20px',
-    borderRadius: '10px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-  }}>
-    <h3 style={{ textAlign: 'center', marginBottom: '20px', color: '#333' }}>{title}</h3>
+  <div style={styles.chartCard}>
+    <h3 style={styles.chartTitle}>{title}</h3>
     {children}
   </div>
 );
+
+/* ---------------- Styles ---------------- */
+
+const styles = {
+  page: {
+    padding: '20px',
+    background: '#f9fafb',
+    minHeight: '100vh',
+  },
+  title: {
+    textAlign: 'center',
+    marginBottom: '30px',
+    fontSize: '28px',
+    fontWeight: '700',
+  },
+  summaryGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+    gap: '20px',
+    marginBottom: '40px',
+  },
+  card: {
+    background: '#fff',
+    borderRadius: '14px',
+    padding: '20px',
+    boxShadow: '0 8px 20px rgba(0,0,0,0.08)',
+    textAlign: 'center',
+  },
+  cardTitle: {
+    fontSize: '14px',
+    color: '#6b7280',
+  },
+  cardValue: {
+    marginTop: '10px',
+    fontSize: '26px',
+    fontWeight: '700',
+  },
+  chartGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+    gap: '24px',
+  },
+  chartCard: {
+    background: '#fff',
+    borderRadius: '16px',
+    padding: '20px',
+    boxShadow: '0 8px 20px rgba(0,0,0,0.08)',
+  },
+  chartTitle: {
+    textAlign: 'center',
+    marginBottom: '15px',
+    fontWeight: '600',
+  },
+};
+
 
 
 

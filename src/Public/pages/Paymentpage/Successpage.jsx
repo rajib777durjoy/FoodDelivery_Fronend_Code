@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { useParams, Link } from 'react-router';
-import useAxiosPublic from '../../Hook/useAxiosPublic';
+
+import useAxiosSecure from '../../Hook/useAxiosSecure';
 
 const Successpage = () => {
   const { tran_id } = useParams();
-  const axiosPublic = useAxiosPublic();
+  const axiosPublic = useAxiosSecure();
 
   const { data, isLoading } = useQuery({
     queryKey: ['order', tran_id],

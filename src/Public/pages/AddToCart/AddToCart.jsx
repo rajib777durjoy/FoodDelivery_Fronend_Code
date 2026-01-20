@@ -1,13 +1,14 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../../Provider/AuthProvider';
 import { useQuery } from '@tanstack/react-query';
-import useAxiosPublic from '../../Hook/useAxiosPublic';
+
 import { useNavigate } from 'react-router';
 import { Bounce, toast } from 'react-toastify';
+import useAxiosSecure from '../../Hook/useAxiosSecure';
 
 const AddToCart = () => {
     const { user } = useContext(AuthContext);
-    const axiosPublic = useAxiosPublic();
+    const axiosPublic = useAxiosSecure();
     const navigate = useNavigate()
 
     // Fetch Cart Items

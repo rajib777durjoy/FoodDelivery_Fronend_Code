@@ -1,15 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import useAxiosPublic from '../../../Public/Hook/useAxiosPublic';
 import { useParams } from 'react-router';
 import { Bounce, toast } from 'react-toastify';
+import useAxiosSecure from '../../../Public/Hook/useAxiosSecure';
 
 const SelectDVHero = () => {
     const userData = useSelector(state => state.user.user);
     const { id: order_id } = useParams()
     console.log('order_id::', order_id)
-    const axiosPublic = useAxiosPublic();
+    const axiosPublic = useAxiosSecure();
  
 
     const { data: deliverMan = [], isPending, refetch } = useQuery({

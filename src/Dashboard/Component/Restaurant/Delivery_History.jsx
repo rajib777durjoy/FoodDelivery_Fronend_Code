@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { useSelector } from "react-redux";
-import useAxiosPublic from "../../../Public/Hook/useAxiosPublic";
+import useAxiosSecure from "../../../Public/Hook/useAxiosSecure";
 
 const Delivery_History = () => {
     const user  = useSelector(state => state.user.user);
    
-    const axiosPublic = useAxiosPublic();
+    const axiosPublic = useAxiosSecure();
     // Sample data
 
     const { data: order_list = [] } = useQuery({

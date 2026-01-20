@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useParams } from 'react-router';
-import useAxiosPublic from '../../Hook/useAxiosPublic';
+
 import {
     FaBox,
     FaMapMarkerAlt,
@@ -10,10 +10,11 @@ import {
     FaClock,
     FaCreditCard
 } from 'react-icons/fa';
+import useAxiosSecure from '../../Hook/useAxiosSecure';
 
 const OrderDetails = () => {
     const { id } = useParams();
-    const axiosPublic = useAxiosPublic();
+    const axiosPublic = useAxiosSecure();
 
     const { data: order, isLoading } = useQuery({
         queryKey: ['order_details', id],

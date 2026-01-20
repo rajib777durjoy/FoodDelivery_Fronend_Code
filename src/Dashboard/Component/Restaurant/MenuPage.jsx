@@ -4,15 +4,15 @@ import {
     useQuery
 } from '@tanstack/react-query'
 import { useSelector } from "react-redux";
-import useAxiosPublic from "../../../Public/Hook/useAxiosPublic";
 import Loading from "../../../CustomeLoading/Loading";
 import Swal from 'sweetalert2'
+import useAxiosSecure from "../../../Public/Hook/useAxiosSecure";
 
 
 const MenuPage = () => {
     const navigate = useNavigate();
     const user = useSelector(state => state.user.user);
-    const axiosPublic = useAxiosPublic();
+    const axiosPublic = useAxiosSecure();
 
     const { data: food_item, refetch, isPending } = useQuery({
         queryKey: ['food_item', user?.id],

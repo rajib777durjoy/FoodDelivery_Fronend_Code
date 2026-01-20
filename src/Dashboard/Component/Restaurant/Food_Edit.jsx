@@ -1,15 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { useParams } from 'react-router';
-import useAxiosPublic from '../../../Public/Hook/useAxiosPublic';
 import Loading from '../../../CustomeLoading/Loading';
 import Select from "react-select";
 import { GiCircularSawblade } from "react-icons/gi";
 import { Bounce, toast } from 'react-toastify';
+import useAxiosSecure from '../../../Public/Hook/useAxiosSecure';
 
 const Food_Edit = () => {
     const { id } = useParams();
-    const axiosPublic = useAxiosPublic();
+    const axiosPublic = useAxiosSecure();
     const [categorys, setCategory] = useState(null);
     const [image, setimage] = useState(null)
     const [availability, setAvailability] = useState(null);

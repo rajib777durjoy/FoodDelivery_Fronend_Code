@@ -1,12 +1,12 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
-import useAxiosPublic from "../../../Public/Hook/useAxiosPublic";
 import { Link } from "react-router";
+import useAxiosSecure from "../../../Public/Hook/useAxiosSecure";
 
 const OrdersPage = () => {
   const userData = useSelector((state) => state.user.user);
-  const AxiosPublic = useAxiosPublic();
+  const AxiosPublic = useAxiosSecure();
 
   const { data: orders = [] } = useQuery({
     queryKey: ["orders", userData?.id],
@@ -17,7 +17,7 @@ const OrdersPage = () => {
       return res.data;
     },
   });
-
+ 
   const statusColor = (status) => {
     switch (status) {
       case "Pending":
@@ -30,7 +30,7 @@ const OrdersPage = () => {
   };
 
   return (
-    <div className="p-3 sm:p-4 md:p-6 space-y-5">
+    <div className="overflow-x-scroll p-3 sm:p-4 md:p-6 space-y-5">
       <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800">
         Orders
       </h1>
@@ -41,7 +41,7 @@ const OrdersPage = () => {
           <thead className="bg-gray-50">
             <tr>
               <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Sl_No
+                Order ID
               </th>
               <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                 Food Item
@@ -68,11 +68,11 @@ const OrdersPage = () => {
             {orders.length > 0 ? (
               orders.map((order, index) => (
                 <tr
-                  key={order.order_id}
+                  key={index + 1}
                   className="hover:bg-gray-50 transition"
                 >
                   <td className="px-3 py-3 text-sm font-medium text-gray-700">
-                    {index + 1}
+                    {order?.order_id}
                   </td>
 
                   <td className="px-3 py-3 flex items-center gap-2 text-sm">
