@@ -21,7 +21,7 @@ const JoinOurTeam = () => {
           {/* Image Section */}
           <div>
             <img
-              src="https://i.ibb.co/7zYp9Zc/restaurant-partner.png"
+              src="\become_restaurant_partner.jpg"
               alt="Restaurant Partner"
               className="w-full rounded-lg"
             />
@@ -73,7 +73,7 @@ const JoinOurTeam = () => {
           {/* Image Section */}
           <div>
             <img
-              src="https://i.ibb.co/9wZ6GZg/delivery-hero.png"
+              src="\become_delivery_hero.jpg"
               alt="Delivery Hero"
               className="w-full rounded-lg"
             />

@@ -8,43 +8,9 @@ const Staticpage = () => {
     const [deliverList, setDeliverylist] = useState([]);
     const [todayDeliveries, SetTodayDeliveries] = useState([]);
     const [Balance, setBalance] = useState(0)
-    // Dummy data
-    const deliveryMan = {
-        name: "Rakib Hasan",
-        status: "Online",
-        todayDeliveries: 12,
-        totalDeliveries: 540,
-        earningsToday: 1250,
-        rating: 4.8,
-    };
-
-    const deliveries = [
-        {
-            id: "#DL1021",
-            restaurant: "Foodi Express",
-            customer: "Arif",
-            address: "Dhanmondi 32, Dhaka",
-            status: "On the way",
-        },
-        {
-            id: "#DL1022",
-            restaurant: "Burger Lab",
-            customer: "Sadia",
-            address: "Mirpur 10, Dhaka",
-            status: "Picked up",
-        },
-        {
-            id: "#DL1023",
-            restaurant: "Pizza Hub",
-            customer: "Naim",
-            address: "Mohakhali, Dhaka",
-            status: "Delivered",
-        },
-    ];
     useEffect(() => {
         axiosSecure.get(`/api/deliveryHero/static_page/${userData?.id}`)
             .then(res => {
-                console.log('dlidrer::', res.data)
                 setDeliverylist(res?.data);
                 todayDeliveris(res?.data);
                 delivery_Total_balance(res?.data)

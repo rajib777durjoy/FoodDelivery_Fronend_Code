@@ -55,7 +55,7 @@ function App() {
   useEffect(() => {
     const getCurrentuser = async () => {
       const res = await axiosPublic.get(`/api/user/user_data`);
-      console.log('app js fill user::', res?.data)
+      // console.log('app js fill user::', res?.data)
       dispatch(setUser(res.data))
 
     };

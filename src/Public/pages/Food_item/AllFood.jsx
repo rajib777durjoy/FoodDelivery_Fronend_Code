@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import useAxiosPublic from "../../Hook/useAxiosPublic";
 import { Bounce, toast } from "react-toastify";
 
 const AllFood = () => {
     const axiosPublic = useAxiosPublic();
-    const [foodItems, setFoodItems] = useState([])
+    const [foodItems, setFoodItems] = useState([]);
+    const navigate = useNavigate()
     useEffect(() => {
         axiosPublic.get('/api/restaurant/Allfood_item')
             .then(res => {
@@ -58,6 +59,13 @@ const AllFood = () => {
     }
     return (
         <div className="min-h-screen bg-gray-100 py-10 px-4">
+            {/* Back Button */}
+            <button
+                onClick={() => navigate(-1)}
+                className="text-green-600 font-medium hover:underline"
+            >
+                ← Back to page
+            </button>
             <div className="max-w-7xl mx-auto">
                 {/* Page Title */}
                 <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
@@ -65,7 +73,7 @@ const AllFood = () => {
                 </h1>
 
                 {/* Food Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {foodItems?.map((food) => (
                         <div
                             key={food.id}
@@ -142,7 +150,7 @@ const AllFood = () => {
                 </div>
 
                 <div className="w-[30%] mx-auto mt-6">
-                    <button className="btn text-black bg-green-400 w-full border-0 outline-0">View All Food </button>
+                    <button className="btn text-md py-1 text-black bg-green-600 hover:bg-green-700 w-full border-0 outline-0">View All</button>
                 </div>
             </div>
         </div>

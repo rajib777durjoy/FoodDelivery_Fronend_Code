@@ -53,25 +53,7 @@ const SelectDVHero = () => {
                 });
             })
     }
-
-
-    //     {
-    //     user_id: 15,
-    //     fullname: 'Yash Das',
-    //     email: 'yash123das@gmail.com',
-    //     profile: 'https://res.cloudinary.com/dwmkakht7/image/upload/v1767368824/eavqrbuug7puwszdcoe8.jpg',
-    //     email: 'yash123das@gmail.com',
-    //     profile: 'https://res.cloudinary.com/dwmkakht7/image/upload/v1767368824/eavqrbuug7puwsz    email: 'yash123das@gmail.com',
-    //     email: 'yash123das@gmail.com',
-    //     profile: 'https://res.cloudinary.com/dwmkakht7/image/upload/v1767368824/eavqrbuug7puwszdcoe8.jpg',
-    //     deliverHero_id: 3,
-    //     socket: '-PT80UqgcIsPvZ_iAAAH',
-    //     phone: '01733757561',
-    //     location: 'bangladesh,sylhet',
-    //     ride: 'cycle',
-    //     description: 'Deliver Hero is a dedicated delivery partner who ensures fast, reliable, and safe delivery of orders from restaurants, e-commerce stores, or service providers to customers. Each Deliver Hero is verified, trained, and assigned tasks based on availability and location, ensuring timely delivery and excellent customer experience.',
-    //     active: true
-    //   }
+    
     return (
         <div className="max-w-7xl mx-auto p-6">
             <h2 className="text-2xl font-bold mb-6 text-gray-800">

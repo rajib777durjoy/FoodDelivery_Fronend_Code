@@ -1,93 +1,127 @@
 import React, { useEffect, useState } from "react";
-
 import Select from "react-select";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
-import { restaurants } from "../../DemoDB/Db";
+import useAxiosPublic from "../../Hook/useAxiosPublic";
 
 const All_Restaurant = () => {
-    const [allRestaurants, setAllRestaurants] = useState(restaurants);
-    const [Restaurants, setRestaurants] = useState(restaurants);
-    const [selectValue, setSelectedValue] = useState([]);
-     let navigate = useNavigate();
+    const [allRestaurants, setAllRestaurants] = useState([]);
+    const [filteredRestaurants, setFilteredRestaurants] = useState([]);
+    const [selectedStatus, setSelectedStatus] = useState(null);
 
-    const location = allRestaurants.map(item => ({ value: item.location, label: item.location }));
+    const navigate = useNavigate();
+    const axiosPublic = useAxiosPublic();
 
-    // Animation variants
-    const cardVariants = {
-        hidden: { opacity: 0, y: 25 },
-        visible: { opacity: 1, y: 0 },
-    };
-
-    // Filter restaurants whenever selectValue changes
+    // Fetch Restaurants
     useEffect(() => {
-        if (!selectValue || selectValue.length === 0) {
-            setRestaurants(allRestaurants);
+        axiosPublic
+            .get("/api/restaurant/view_restaurant")
+            .then((res) => {
+                setAllRestaurants(res.data);
+                setFilteredRestaurants(res.data);
+            })
+            .catch((err) => console.log(err));
+    }, []);
+
+    // Filter based on active status
+    useEffect(() => {
+        if (!selectedStatus || selectedStatus.value === 'all') {
+            setFilteredRestaurants(allRestaurants);
         } else {
-            const filtered = allRestaurants.filter(item =>
-                selectValue.some(option => option.value === item.location)
+            const filtered = allRestaurants.filter(
+                (r) => r.active === (selectedStatus.value === "active")
             );
-            setRestaurants(filtered);
+            setFilteredRestaurants(filtered);
         }
-    }, [selectValue]);
+    }, [selectedStatus, allRestaurants]);
+
+    const statusOptions = [
+        { value: "all", label: "All" },
+        { value: "active", label: "Active" },
+        { value: "inactive", label: "Inactive" },
+    ];
 
     return (
-        <div className="bg-gray-100 min-h-screen p-6 text-black">
-            <h1 className="text-2xl font-bold mb-4">All Restaurants </h1>
-                <h2 className="text-md font-medium text-gray-500">Show Restaurants {Restaurants.length}</h2>
+        <div className="p-4 md:p-6 bg-gray-100 min-h-screen">
+            <h2 className="text-2xl font-bold mb-4 text-gray-800">
+                All Restaurants
+            </h2>
 
-            <div className="grid grid-cols-12 gap-6">
-                {/* Left Side */}
-                <div className="col-span-12 md:col-span-3 border-0 bg-white p-4 ">
-                    <h2 className="text-lg font-semibold mb-4">Locations</h2>
-                    <Select
-                        isMulti
-                        options={location}
-                        placeholder="Select location"
-                        value={selectValue}
-                        onChange={setSelectedValue} // directly update state
-                    />
-                </div>
+            {/* Filter Section */}
+            <div className="mb-6 max-w-sm text-black">
+                <Select
+                    options={statusOptions}
+                    value={selectedStatus}
+                    onChange={setSelectedStatus}
+                    placeholder="Filter by status"
+                />
+            </div>
 
-                {/* Right Side */}
-                <div className="col-span-12 md:col-span-9 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {Restaurants.map((restaurant, index) => (
+            {/* Restaurants Grid */}
+            {filteredRestaurants.length === 0 ? (
+                <p className="text-gray-500">No restaurants found.</p>
+            ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {filteredRestaurants.map((restaurant) => (
                         <motion.div
                             key={restaurant.id}
-                            className="bg-white rounded-lg shadow hover:shadow-lg transition"
-                            variants={cardVariants}
-                            initial="hidden"
-                            animate="visible"
-                            transition={{ duration: 0.8, delay: index * 0.1 }}
+                            whileHover={{ scale: 1.05 }}
+                            className="bg-white rounded-xl shadow-md  overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-300 flex flex-col"
+                            onClick={() => navigate(`/menu_Of_restaurant/${restaurant.id}`)}
                         >
-                            <img
-                                src={restaurant.image}
-                                alt={restaurant.name}
-                                className="h-40 w-full object-cover rounded-t-lg"
-                            />
-                            <div className="p-4">
-                                <h3 className="text-lg font-semibold">{restaurant.name}</h3>
-                                <p className="text-sm text-gray-600">📍 {restaurant.location}</p>
-                                <p className="text-sm">🍽 {restaurant.cuisine}</p>
-                                <p className="text-sm">⭐ {restaurant.rating}</p>
-                                <p className="text-sm">
-                                    Status:{" "}
-                                    <span className={restaurant.isOpen ? "text-green-600" : "text-red-500"}>
-                                        {restaurant.isOpen ? "Open" : "Closed"}
+                            {/* Cover Image */}
+                            <div className="h-32 w-full overflow-hidden">
+                                {restaurant.cover ? (
+                                    <img
+                                        src={restaurant.cover}
+                                        alt={restaurant.restaurant_name}
+                                        className="w-full h-full object-cover"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400 text-sm">
+                                        No Cover Image
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Restaurant Info */}
+                            <div className="p-4 flex-1 flex flex-col justify-between">
+                                <div>
+                                    <h3 className="text-lg font-semibold text-gray-800 truncate">
+                                        {restaurant.restaurant_name}
+                                    </h3>
+                                    <p className="text-gray-500 text-sm mt-1 truncate">
+                                        {restaurant.address}
+                                    </p>
+                                    <p className="text-gray-500 text-sm mt-1 truncate">
+                                        Phone: {restaurant.phone}
+                                    </p>
+                                    <p className="text-gray-500 text-sm mt-1 truncate">
+                                        Email: {restaurant.email}
+                                    </p>
+                                </div>
+
+                                {/* Active/Inactive Badge */}
+                                <div className="mt-3">
+                                    <span
+                                        className={`px-2 py-1 text-xs  font-semibold rounded-full ${restaurant.active
+                                                ? "bg-green-100 text-green-800"
+                                                : "bg-red-100 text-red-800"
+                                            }`}
+                                    >
+                                        {restaurant.active ? "Active" : "Inactive"}
                                     </span>
-                                </p>
-                                <button onClick={()=>navigate(`/menu_Of_restaurant/${restaurant.id}`)} className="mt-3 w-full bg-black text-white py-2 rounded hover:bg-gray-800">
-                                    Vist Restaurant
-                                </button>
+                                </div>
                             </div>
                         </motion.div>
                     ))}
                 </div>
-            </div>
+            )}
         </div>
     );
 };
 
 export default All_Restaurant;
+
 
 

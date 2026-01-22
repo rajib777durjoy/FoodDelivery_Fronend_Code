@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import useAxiosSecure from '../../Hook/useAxiosSecure';
 
 const OrderConfirm = () => {
@@ -8,7 +8,8 @@ const OrderConfirm = () => {
     const axiosPublic = useAxiosSecure();
     const [paymentMethod, setPaymentMethod] = useState('cod');
     const delivery_charge = 50;
-  
+    const navigate = useNavigate()
+
     const { data: food_details = {} } = useQuery({
         queryKey: ['food_details', id],
         queryFn: async () => {
@@ -34,27 +35,33 @@ const OrderConfirm = () => {
         else {
             amount = (parseInt(price) * quantity) + delivery_charge;
         }
-        const data = { food_id:id,paymentMethod, name, phone, address, food_name, quantity };
+        const data = { food_id: id, paymentMethod, name, phone, address, food_name, quantity };
 
-        axiosPublic.post(`/api/payment/init`,data)
+        axiosPublic.post(`/api/payment/init`, data)
             .then(res => {
-                const url = res.data.url; 
+                const url = res.data.url;
                 if (url) {
-                    window.location.href = url; 
+                    window.location.href = url;
                 }
             })
             .catch(err => {
                 console.log('Payment request error:', err);
-               
+
             });
 
 
     };
 
     return (
-        <div className="min-h-screen bg-gray-100 py-10 px-4">
-            <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-md p-6">
-
+        <div className="min-h-screen bg-gray-100 py-5 md:py-10 md:px-4">
+            {/* Back Button */}
+            <button
+                onClick={() => navigate(-1)}
+                className="text-green-600 font-medium hover:underline mb-4"
+            >
+                ← Back to page
+            </button>
+            <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-md md:p-6">
                 <h2 className="text-2xl font-semibold mb-8 text-gray-800 text-center">
                     Confirm Your Order
                 </h2>

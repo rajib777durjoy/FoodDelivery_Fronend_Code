@@ -118,28 +118,7 @@ const FoodDetails = () => {
             })
     }
 
-    // const handleOrderFood = (id) => {
-    //     axiosPublic.post(`/api/restaurant/food_order/${id}`)
-    //         .then(res => {
-    //             if (res.data?.message) {
-    //                 toast.success(res.data?.message, {
-    //                     position: "top-center",
-    //                     autoClose: 3000,
-    //                     hideProgressBar: false,
-    //                     closeOnClick: false,
-    //                     pauseOnHover: true,
-    //                     draggable: true,
-    //                     progress: undefined,
-    //                     theme: "light",
-    //                     transition: Bounce,
-    //                 });
-    //             }
-    //         }).catch(err => {
-    //             console.log(err)
-    //         })
-    // }
-
-    console.log('food::', food)
+    
     return (
         <div className="min-h-screen bg-gray-100 py-10 px-4">
             <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">

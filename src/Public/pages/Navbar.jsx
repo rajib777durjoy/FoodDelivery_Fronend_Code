@@ -9,7 +9,7 @@ import { setUser } from '../../Redux/userSlice';
 
 const Navbar = () => {
     const { user, SignOutUser, loading } = useContext(AuthContext)
-    const userData= useSelector(state=>state.user.user);
+    const userData = useSelector(state => state.user.user);
     const axiosPublic = useAxiosPublic();
     // const [userData, setUserData] = useState([])
     const dispatch = useDispatch()
@@ -17,8 +17,8 @@ const Navbar = () => {
     // console.log('navbar user data:;', userData)
 
     const handleSingOut = () => {
-        SignOutUser().then(()=>{
-          dispatch(setUser({}))
+        SignOutUser().then(() => {
+            dispatch(setUser({}))
         })
     }
     // useEffect(() => {
@@ -48,9 +48,12 @@ const Navbar = () => {
 
                         </div>
                     </button>
-                    {userData?.email  && <div className="dropdown dropdown-center">
+                    {userData?.email && <div className="dropdown dropdown-center">
                         <div tabIndex={0} role="button" className="mx-2"><img src={userData?.profile} className='w-10 h-10 rounded-full' alt="" /></div>
                         <ul tabIndex="-1" className="dropdown-content menu bg-white mt-3 rounded-box z-1 w-52 py-2 px-2 shadow-sm">
+                            <NavLink to="/" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
+                                Home
+                            </NavLink>
                             <NavLink to="/" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900' >
                                 Profile
                             </NavLink>

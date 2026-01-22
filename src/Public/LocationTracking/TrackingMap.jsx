@@ -48,7 +48,7 @@ const TrackingMap = () => {
   },[userData.id]);
 
   return (
-    <MapContainer center={[location.lat, location.lng]} zoom={zoom} style={{ height: "100vh", width: "100%" }}>
+    <MapContainer className="z-20" center={[location.lat, location.lng]} zoom={zoom} style={{ height: "100vh", width: "100%" }}>
       <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
       <Marker position={[location.lat, location.lng]} />
       <RecenterMap lat={location.lat} lng={location.lng} zoom={zoom} />
