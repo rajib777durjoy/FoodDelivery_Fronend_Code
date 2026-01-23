@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import CountUp from 'react-countup';
+import useAxiosPublic from '../Hook/useAxiosPublic';
 
 const CounterPage = () => {
+    const axiosPublic = useAxiosPublic()
+    useEffect(()=>{
+     axiosPublic.get('/api/user/check_db').then(res=>{
+        console.log(res.data)
+     }).catch(err=>{
+        console.log(err?.message)
+     })
+    },[])
     return (
         <div className="w-full grid md:grid-cols-3 gap-6 text-black py-20">
             <div className="flex justify-center">

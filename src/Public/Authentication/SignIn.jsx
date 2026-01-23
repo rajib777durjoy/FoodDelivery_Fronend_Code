@@ -46,7 +46,8 @@ const SignIn = () => {
             fullname: res.user?.displayName,
             email: res.user?.email,
             profile: res.user?.photoURL
-          }).then(res => {
+          }).then((res) => {
+            console.log(res.data)
             return navigate('/')
           });
 

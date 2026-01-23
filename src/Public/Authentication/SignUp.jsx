@@ -36,7 +36,7 @@ const SignUp = () => {
             formData
         );
         const imageUrl = res?.data?.secure_url
-        console.log('imageurl', imageUrl)
+        // console.log('imageurl', imageUrl)
         CreateNewUser(data?.email, password)
             .then(res => {
                 console.log(res.user)
@@ -51,18 +51,20 @@ const SignUp = () => {
                             email: data?.email,
                             profile: imageUrl
                         }).then(res => {
-                            toast.success('SingUp successfull', {
-                                position: "top-center",
-                                autoClose: 3000,
-                                hideProgressBar: false,
-                                closeOnClick: false,
-                                pauseOnHover: true,
-                                draggable: true,
-                                progress: undefined,
-                                theme: "light",
-                                transition: Bounce,
-                            });
-                            return navigate('/')
+                            if (res.data.message) {
+                                toast.success('SingUp successfull', {
+                                    position: "top-center",
+                                    autoClose: 3000,
+                                    hideProgressBar: false,
+                                    closeOnClick: false,
+                                    pauseOnHover: true,
+                                    draggable: true,
+                                    progress: undefined,
+                                    theme: "light",
+                                    transition: Bounce,
+                                });
+                                return navigate('/')
+                            }
                         })
 
 
@@ -106,10 +108,10 @@ const SignUp = () => {
                         fullname: res.user?.displayName,
                         email: res.user?.email,
                         profile: res.user?.photoURL
-                    }).then(res => {  
+                    }).then(res => {
                         return navigate('/')
-                    });
-
+ 
+                   });
                 }
 
             }).catch(err => {
