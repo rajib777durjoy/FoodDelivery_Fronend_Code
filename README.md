@@ -1,16 +1,38 @@
-# React + Vite
+# EatNow - Food Ordering App 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+EatNow is a modern **full-stack food ordering platform** that connects hungry users with nearby restaurants for fast, fresh meals delivered right to your door. Enjoy super-fast delivery, live order tracking, favorite restaurants, and a seamless ordering experience!
 
-Currently, two official plugins are available:
+**Live Demo:** [https://eatnowfoodorderapp.vercel.app]
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features 
+- Browse food items and restaurants
+- Add to cart & manage orders
+- Super fast delivery with live tracking
+- User authentication (login/signup)
+- Favorite restaurants & items
+- Customer reviews & ratings
+- Responsive design (mobile + desktop)
+- Secure backend with PostgreSQL database
 
-## React Compiler
+## Tech Stack 
+### Frontend
+- React.js 
+- Tailwind CSS ,React hook form, daisyUi
+- Vercel for deployment
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Backend
+- Node.js + Express.js
+- Drizzle ORM 
+- PostgreSQL (Render PostgreSQL)
+- Render for backend hosting
 
-## Expanding the ESLint configuration
+### Database & Tools
+- PostgreSQL
+- Drizzle migrations / push
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Deployment
+Frontend: Vercel 
+Build: npm run build  && vercel --prod 
+Backend: Render (Web Service)
+Build Command: npm install && npx drizzle-kit push:pg
+Start Command: npm start

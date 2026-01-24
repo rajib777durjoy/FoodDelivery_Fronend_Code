@@ -31,7 +31,7 @@ const SignIn = () => {
           theme: "light",
           transition: Bounce,
         });
-        navigate('/')
+       return navigate('/')
       }).catch(err => {
         console.log('error', err?.message)
       })
@@ -41,16 +41,17 @@ const SignIn = () => {
     GoogleSingIn()
       .then((res) => {
         if (res.user) {
-          console.log('user api call form google')
           axiosPublic.post('/api/user/user_data', {
             fullname: res.user?.displayName,
             email: res.user?.email,
             profile: res.user?.photoURL
           }).then((res) => {
-            console.log(res.data)
-            return navigate('/')
+            if(res.data?.message === 'signIn successfull'){
+              return navigate('/')
+            } 
+          }).catch(err=>{
+            console.log('singIn error message ',err?.message)
           });
-
         }
 
       }).catch(err => {

@@ -51,7 +51,7 @@ const SignUp = () => {
                             email: data?.email,
                             profile: imageUrl
                         }).then(res => {
-                            if (res.data.message) {
+                            if (res.data?.message) {
                                 toast.success('SingUp successfull', {
                                     position: "top-center",
                                     autoClose: 3000,
@@ -109,9 +109,10 @@ const SignUp = () => {
                         email: res.user?.email,
                         profile: res.user?.photoURL
                     }).then(res => {
-                        return navigate('/')
- 
-                   });
+                        if (res.data?.message === 'signIn successfull') {
+                            return navigate('/')
+                        }
+                    });
                 }
 
             }).catch(err => {
