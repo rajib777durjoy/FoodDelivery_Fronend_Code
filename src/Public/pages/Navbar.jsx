@@ -11,26 +11,14 @@ const Navbar = () => {
     const { user, SignOutUser, loading } = useContext(AuthContext)
     const userData = useSelector(state => state.user.user);
     const axiosPublic = useAxiosPublic();
-    // const [userData, setUserData] = useState([])
     const dispatch = useDispatch()
-
-    // console.log('navbar user data:;', userData)
 
     const handleSingOut = () => {
         SignOutUser().then(() => {
             dispatch(setUser({}))
         })
     }
-    // useEffect(() => {
-    //     const userInformationFunction = async () => {
-    //         const res = await axiosPublic.get(`/api/user/user_data`);
-    //         console.log(res.data)
-    //         dispatch(setUser(res.data))
-    //         setUserData(res.data)
-    //     }
-    //     userInformationFunction()
-    // }, [user?.email, loading])
-
+    
     const role = userData?.role;
     // const role = 'delivery';
     console.log('role', role)

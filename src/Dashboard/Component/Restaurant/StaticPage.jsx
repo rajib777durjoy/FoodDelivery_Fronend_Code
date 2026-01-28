@@ -110,7 +110,7 @@ const StaticPage = () => {
               </tr>
             </thead>
             <tbody>
-              {order?.map((item) => (
+              {order.length>0 && order?.map((item) => (
                 <tr key={item.id} className="border-b last:border-0">
                   <td className="py-3 font-medium">{item?.id}</td>
                   <td className="py-3">{item?.customer_phone}</td>
