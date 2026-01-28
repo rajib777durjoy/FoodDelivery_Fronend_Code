@@ -7,6 +7,7 @@ import useAxiosPublic from "../Hook/useAxiosPublic";
 import { Bounce, toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../Redux/userSlice";
+import { GiCircularSawblade } from "react-icons/gi";
 
 
 const SignIn = () => {
@@ -15,15 +16,19 @@ const SignIn = () => {
   const { SignInUser, GoogleSingIn } = useContext(AuthContext)
   const axiosPublic = useAxiosPublic();
   const dispatch= useDispatch()
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [loading,setLoading]=useState(false)
 
 
   const onSubmit = (data) => {
+    setLoading(true)
     console.log("Sign In Data:", data.email);
     SignInUser(data?.email, data?.password)
       .then(res => {
+        setLoading(false)
         console.log(res?.user)
         dispatch(setUser(res.data))
+        
         toast.success('SingIn successfull', {
           position: "top-center",
           autoClose: 3000,
@@ -37,7 +42,7 @@ const SignIn = () => {
         });
         return navigate('/')
       }).catch(err => {
-
+         setLoading(false)
          dispatch(setUser({}))
         console.log('error', err?.message)
       })
@@ -53,16 +58,19 @@ const SignIn = () => {
             profile: res.user?.photoURL
           }).then((res) => {
             if (res.data) {
+             
               dispatch(setUser(res.data))
               return navigate('/')
             }
           }).catch(err => {
+            
              dispatch(setUser({}))
             console.log('singIn error message ', err?.message)
           });
         }
 
       }).catch(err => {
+        
          dispatch(setUser({}))
         console.log('err', err)
       })
@@ -144,9 +152,9 @@ const SignIn = () => {
           </p>
 
           {/* Submit */}
-          <button className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition">
+          {loading?<button type="button" className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold "><GiCircularSawblade className="text-2xl text-white animate-spin" /></button>: <button className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition">
             Sign In
-          </button>
+          </button>}
         </form>
 
         {/* Footer */}

@@ -11,6 +11,7 @@ import { Bounce, toast } from "react-toastify";
 import useAxiosPublic from "../Hook/useAxiosPublic";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../Redux/userSlice";
+import { GiCircularSawblade } from "react-icons/gi";
 
 const SignUp = () => {
     const { CreateNewUser, GoogleSingIn } = useContext(AuthContext)
@@ -27,6 +28,7 @@ const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const axiosPublic = useAxiosPublic();
+    const [loading,setLoading]=useState(false)
     const dispatch = useDispatch()
     const password = watch('password')
     const onSubmit = async (data) => {
@@ -42,6 +44,7 @@ const SignUp = () => {
         // console.log('imageurl', imageUrl)
         CreateNewUser(data?.email, password)
             .then(res => {
+                setLoading(true)
                 console.log(res.user)
                 if (res?.user && imageUrl) {
                     updateProfile(auth.currentUser, {
@@ -54,6 +57,7 @@ const SignUp = () => {
                         }).then(res => {
                             if (res.data) {
                                 dispatch(setUser(res.data))
+                                setLoading(false)
                                 toast.success('SingUp successfull', {
                                     position: "top-center",
                                     autoClose: 3000,
@@ -71,6 +75,7 @@ const SignUp = () => {
 
 
                     }).catch((err) => {
+                        setLoading(false)
                          dispatch(setUser({}))
                         toast.error(err?.message, {
                             position: "top-center",
@@ -88,6 +93,7 @@ const SignUp = () => {
                     })
                 }
             }).catch(err => {
+                setLoading(false)
                  dispatch(setUser({}))
                 toast.error(err?.message, {
                     position: "top-center",
@@ -104,6 +110,7 @@ const SignUp = () => {
             })
     };
     const handleGoogleSignIn = () => {
+        setLoading(true)
         GoogleSingIn()
             .then((res) => {
                 if (res.user) {
@@ -113,6 +120,7 @@ const SignUp = () => {
                         profile: res.user?.photoURL
                     }).then(res => {
                         if (res.data) {
+                            setLoading(false)
                              dispatch(setUser(res.data))
                             return navigate('/')
                         }
@@ -120,6 +128,7 @@ const SignUp = () => {
                 }
 
             }).catch(err => {
+                setLoading(false)
                  dispatch(setUser({}))
                 console.log('err', err)
             })
@@ -270,12 +279,12 @@ const SignUp = () => {
                     </div>
 
                     {/* Submit */}
-                    <button
+                    {loading?<button type="button" className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold "><GiCircularSawblade className="text-2xl text-white animate-spin" /></button>:<button
                         type="submit"
                         className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition"
                     >
                         Sign Up
-                    </button>
+                    </button>}
                 </form>
 
                 {/* Footer */}
