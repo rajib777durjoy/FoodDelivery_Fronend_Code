@@ -45,6 +45,7 @@ import StaticPage from './Dashboard/Component/Restaurant/StaticPage';
 import Staticpage from './Dashboard/Component/DeliveryComponent/Staticpage';
 import Static from './Public/pages/Static/Staticpage';
 import EarningPage from './Dashboard/Component/DeliveryComponent/EarningPage';
+import Protect from './Public/ProtectRoute/Protect';
 
 function App() {
   const axiosPublic = useAxiosPublic();
@@ -58,16 +59,16 @@ function App() {
         <Route path='/All_restaurant' element={<All_Restaurant></All_Restaurant>}></Route>
         <Route path='/menu_Of_restaurant/:id' element={<Restaurant_menu />}></Route>
         <Route path='/FoodByCategory/:name' element={<FoodByCategory></FoodByCategory>}></Route>
-        <Route path='/JoinOurTeam' element={<JoinOurTeam></JoinOurTeam>}></Route>
-        <Route path='/BecomePartner' element={<BecomePartner></BecomePartner>}></Route>
-        <Route path='/BecomeDeliveryHero' element={<DeliveryPartner></DeliveryPartner>} ></Route>
+        <Route path='/JoinOurTeam' element={<Protect><JoinOurTeam></JoinOurTeam></Protect>}></Route>
+        <Route path='/BecomePartner' element={<Protect><BecomePartner></BecomePartner></Protect>}></Route>
+        <Route path='/BecomeDeliveryHero' element={<Protect><DeliveryPartner></DeliveryPartner></Protect>} ></Route>
         <Route path='/All_FoodItem' element={<AllFood></AllFood>}></Route>
         <Route path='/Food_details/:id' element={<FoodDetails></FoodDetails>}></Route>
-        <Route path='/order_confirm/:id/:quantity' element={<OrderConfirm></OrderConfirm>}></Route>
+        <Route path='/order_confirm/:id/:quantity' element={<Protect><OrderConfirm></OrderConfirm></Protect>}></Route>
         <Route path='/payment/success/:tran_id' element={<Successpage></Successpage>}></Route>
         <Route path='/payment/fail/:tran_id' element={<PaymentFail></PaymentFail>} ></Route>
-        <Route path='/OrderDetails/:id' element={<OrderDetails></OrderDetails>} ></Route>
-        <Route path='/TrackingMap' element={<TrackingMap></TrackingMap>}></Route>
+        <Route path='/OrderDetails/:id' element={<Protect><OrderDetails></OrderDetails></Protect>} ></Route>
+        <Route path='/TrackingMap' element={<Protect><TrackingMap></TrackingMap></Protect>}></Route>
       </Route>
       {/* Restaurant dashboard page */}
       <Route path='/restaurant_Dashboard' element={<RestaurantDashboard></RestaurantDashboard>}>
