@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../Provider/AuthProvider";
 import useAxiosPublic from "../Hook/useAxiosPublic";
 import { Bounce, toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../Redux/userSlice";
 
 
 const SignIn = () => {
@@ -12,14 +14,16 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { SignInUser, GoogleSingIn } = useContext(AuthContext)
   const axiosPublic = useAxiosPublic();
+  const dispatch= useDispatch()
   const navigate = useNavigate()
- 
+
 
   const onSubmit = (data) => {
     console.log("Sign In Data:", data.email);
     SignInUser(data?.email, data?.password)
       .then(res => {
         console.log(res?.user)
+        dispatch(setUser(res.data))
         toast.success('SingIn successfull', {
           position: "top-center",
           autoClose: 3000,
@@ -31,8 +35,10 @@ const SignIn = () => {
           theme: "light",
           transition: Bounce,
         });
-       return navigate('/')
+        return navigate('/')
       }).catch(err => {
+
+         dispatch(setUser({}))
         console.log('error', err?.message)
       })
   };
@@ -46,15 +52,18 @@ const SignIn = () => {
             email: res.user?.email,
             profile: res.user?.photoURL
           }).then((res) => {
-            if(res.data?.message === 'signIn successfull'){
+            if (res.data) {
+              dispatch(setUser(res.data))
               return navigate('/')
-            } 
-          }).catch(err=>{
-            console.log('singIn error message ',err?.message)
+            }
+          }).catch(err => {
+             dispatch(setUser({}))
+            console.log('singIn error message ', err?.message)
           });
         }
 
       }).catch(err => {
+         dispatch(setUser({}))
         console.log('err', err)
       })
   }

@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Bounce, toast } from "react-toastify";
 import { GiCircularSawblade } from "react-icons/gi";
 import useAxiosSecure from "../Hook/useAxiosSecure";
+import { useNavigate } from "react-router";
 
 const BecomePartner = () => {
     const { register, handleSubmit, reset } = useForm();
@@ -12,6 +13,7 @@ const BecomePartner = () => {
     const [loading, setloadign] = useState(false);
     const axiosPublic = useAxiosSecure()
     const user = useSelector(state => state.user.user);
+    const navigate = useNavigate()
     //   console.log('user',user)
     const onSubmit = async (data) => {
         setloadign(true)
@@ -57,6 +59,7 @@ const BecomePartner = () => {
                     transition: Bounce,
                 });
                 reset();
+              return navigate('/')
             }
 
         } catch (error) {
@@ -216,13 +219,13 @@ const BecomePartner = () => {
                     <div className="md:col-span-2 text-center mt-6">
                         {
                             loading && <button type="button" className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold "><GiCircularSawblade className="text-2xl text-white animate-spin" /></button> || <button
-                            type="submit"
-                            className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold transition"
-                        >
-                          Submit Restaurant Information
-                        </button>
+                                type="submit"
+                                className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold transition"
+                            >
+                                Submit Restaurant Information
+                            </button>
                         }
-                        
+
                     </div>
 
                 </form>

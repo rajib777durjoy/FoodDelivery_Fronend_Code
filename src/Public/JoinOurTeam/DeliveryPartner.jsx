@@ -3,10 +3,12 @@ import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { Bounce, toast } from "react-toastify";
 import useAxiosSecure from "../Hook/useAxiosSecure";
+import { useNavigate } from "react-router";
 
 const DeliveryPartner = () => {
   const user_data = useSelector(state => state.user.user);
   const axiosPublic = useAxiosSecure();
+  const navigate= useNavigate()
 
   const {
     register,
@@ -42,6 +44,7 @@ const DeliveryPartner = () => {
               theme: "light",
               transition: Bounce,
             });
+             return navigate('/')
           }
           else {
             toast.warning(res.data.message, {
@@ -55,6 +58,7 @@ const DeliveryPartner = () => {
               theme: "light",
               transition: Bounce,
             });
+           return navigate('/')
 
           }
         }).catch(err => {

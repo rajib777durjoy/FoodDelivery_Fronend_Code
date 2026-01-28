@@ -9,6 +9,8 @@ import axios from "axios";
 import { auth } from "../../../firebase.config";
 import { Bounce, toast } from "react-toastify";
 import useAxiosPublic from "../Hook/useAxiosPublic";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../Redux/userSlice";
 
 const SignUp = () => {
     const { CreateNewUser, GoogleSingIn } = useContext(AuthContext)
@@ -25,6 +27,7 @@ const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const axiosPublic = useAxiosPublic();
+    const dispatch = useDispatch()
     const password = watch('password')
     const onSubmit = async (data) => {
         const file = data?.profile[0];
@@ -41,17 +44,16 @@ const SignUp = () => {
             .then(res => {
                 console.log(res.user)
                 if (res?.user && imageUrl) {
-                    console.log('update profile run::')
                     updateProfile(auth.currentUser, {
                         displayName: data?.fullname, photoURL: imageUrl
                     }).then(() => {
-                        console.log('user api call form signUp')
                         axiosPublic.post('/api/user/user_data', {
                             fullname: data?.fullname,
                             email: data?.email,
                             profile: imageUrl
                         }).then(res => {
-                            if (res.data?.message) {
+                            if (res.data) {
+                                dispatch(setUser(res.data))
                                 toast.success('SingUp successfull', {
                                     position: "top-center",
                                     autoClose: 3000,
@@ -69,6 +71,7 @@ const SignUp = () => {
 
 
                     }).catch((err) => {
+                         dispatch(setUser({}))
                         toast.error(err?.message, {
                             position: "top-center",
                             autoClose: 3000,
@@ -85,6 +88,7 @@ const SignUp = () => {
                     })
                 }
             }).catch(err => {
+                 dispatch(setUser({}))
                 toast.error(err?.message, {
                     position: "top-center",
                     autoClose: 3000,
@@ -103,19 +107,20 @@ const SignUp = () => {
         GoogleSingIn()
             .then((res) => {
                 if (res.user) {
-                    console.log('user api call form google')
                     axiosPublic.post('/api/user/user_data', {
                         fullname: res.user?.displayName,
                         email: res.user?.email,
                         profile: res.user?.photoURL
                     }).then(res => {
-                        if (res.data?.message === 'signIn successfull') {
+                        if (res.data) {
+                             dispatch(setUser(res.data))
                             return navigate('/')
                         }
                     });
                 }
 
             }).catch(err => {
+                 dispatch(setUser({}))
                 console.log('err', err)
             })
     }

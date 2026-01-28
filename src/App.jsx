@@ -49,20 +49,7 @@ import EarningPage from './Dashboard/Component/DeliveryComponent/EarningPage';
 function App() {
   const axiosPublic = useAxiosPublic();
   const { user, loading } = useContext(AuthContext)
-  // console.log('app user',user)
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const getCurrentuser = async () => {
-      const res = await axiosPublic.get(`/api/user/user_data/${user?.email}`);
-      // console.log('app js fill user::', res?.data)
-      dispatch(setUser(res.data))
-
-    };
-    getCurrentuser()
-
-  }, [user?.email, loading])
-
+  
   return (
     <Routes>
       <Route path="/" element={<Layoutpage></Layoutpage>}>
