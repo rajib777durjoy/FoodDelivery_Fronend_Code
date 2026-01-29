@@ -15,7 +15,6 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { SignInUser, GoogleSingIn } = useContext(AuthContext)
   const axiosPublic = useAxiosPublic();
-  const dispatch= useDispatch()
   const navigate = useNavigate();
   const [loading,setLoading]=useState(false)
 
@@ -27,8 +26,6 @@ const SignIn = () => {
       .then(res => {
         setLoading(false)
         console.log(res?.user)
-        dispatch(setUser(res.data))
-        
         toast.success('SingIn successfull', {
           position: "top-center",
           autoClose: 3000,
@@ -43,7 +40,6 @@ const SignIn = () => {
         return navigate('/')
       }).catch(err => {
          setLoading(false)
-         dispatch(setUser({}))
         console.log('error', err?.message)
       })
   };
@@ -58,20 +54,14 @@ const SignIn = () => {
             profile: res.user?.photoURL
           }).then((res) => {
             if (res.data) {
-             
-              dispatch(setUser(res.data))
               return navigate('/')
             }
           }).catch(err => {
-            
-             dispatch(setUser({}))
             console.log('singIn error message ', err?.message)
           });
         }
 
       }).catch(err => {
-        
-         dispatch(setUser({}))
         console.log('err', err)
       })
   }

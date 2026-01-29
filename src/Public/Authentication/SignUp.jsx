@@ -29,7 +29,6 @@ const SignUp = () => {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const axiosPublic = useAxiosPublic();
     const [loading,setLoading]=useState(false)
-    const dispatch = useDispatch()
     const password = watch('password')
     const onSubmit = async (data) => {
         const file = data?.profile[0];
@@ -56,7 +55,6 @@ const SignUp = () => {
                             profile: imageUrl
                         }).then(res => {
                             if (res.data) {
-                                dispatch(setUser(res.data))
                                 setLoading(false)
                                 toast.success('SingUp successfull', {
                                     position: "top-center",
@@ -76,7 +74,6 @@ const SignUp = () => {
 
                     }).catch((err) => {
                         setLoading(false)
-                         dispatch(setUser({}))
                         toast.error(err?.message, {
                             position: "top-center",
                             autoClose: 3000,
@@ -94,7 +91,7 @@ const SignUp = () => {
                 }
             }).catch(err => {
                 setLoading(false)
-                 dispatch(setUser({}))
+                 
                 toast.error(err?.message, {
                     position: "top-center",
                     autoClose: 3000,
@@ -121,7 +118,6 @@ const SignUp = () => {
                     }).then(res => {
                         if (res.data) {
                             setLoading(false)
-                             dispatch(setUser(res.data))
                             return navigate('/')
                         }
                     });
@@ -129,7 +125,6 @@ const SignUp = () => {
 
             }).catch(err => {
                 setLoading(false)
-                 dispatch(setUser({}))
                 console.log('err', err)
             })
     }

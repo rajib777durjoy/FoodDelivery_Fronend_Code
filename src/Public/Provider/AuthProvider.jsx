@@ -5,11 +5,12 @@ import { auth } from '../../../firebase.config';
 import useAxiosPublic from '../Hook/useAxiosPublic';
 import socket from '../../Socket.js';
 import { useDispatch } from 'react-redux';
+import { setUser } from '../../Redux/userSlice.js';
 
 
 export const AuthContext = createContext(null)
 const AuthProvider = ({ children }) => {
-    const [user, setuser] = useState(null);
+    const [user, Setuser] = useState(null);
     const dispatch = useDispatch()
     const [loading, setLoading] = useState(true);
     const axiosPublic = useAxiosPublic();
@@ -59,28 +60,36 @@ const AuthProvider = ({ children }) => {
 
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             console.log('currentUser::', currentUser);
-            setuser(currentUser);
-            // dispatch(setuser(currentUser))
+            Setuser(currentUser);
             if (currentUser?.email) {
                 axiosPublic.post('/jwt_generate', { email: currentUser?.email })
                     .then(res => {
                         setLoading(false)
                         console.log('token generate message::', res.data.message)
+                        axiosPublic.get(`/api/user/user_data/${currentUser?.email}`).then((res) => {
+                            dispatch(setUser(res?.data))
+                        }).catch((err) => {
+                            dispatch(setUser({}))
+                            console.log('user data missing:', err?.message)
+                        })
                     }).catch(err => {
                         setLoading(false)
                         console.log(err)
                     })
             } else {
+                setLoading(false)
                 axiosPublic.post('/jwt_remove', {})
                     .then(res => {
+                        dispatch(setUser({}))
                         setLoading(false)
                         console.log('token remove message:::', res.data.message)
                     }).catch(err => {
                         setLoading(false)
                         console.log(err)
                     })
+
             }
-            setLoading(false)
+
         });
 
         // / tracking location  function ///
