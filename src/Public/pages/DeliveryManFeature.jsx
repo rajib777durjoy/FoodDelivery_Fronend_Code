@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 
 const DeliveryManFeature = () => {
     return (
@@ -44,9 +45,9 @@ const DeliveryManFeature = () => {
 
 
                     <div className="pt-4">
-                        <button className="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition">
+                        <Link to={'/TrackingMap'} className="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition">
                             Track Your Order
-                        </button>
+                        </Link>
                     </div>
                 </div>
 
