@@ -85,7 +85,7 @@ const AddFood = () => {
                         type="text"
                         placeholder="e.g. Chicken Burger"
                         name="food_name"
-                        className="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+                        className="w-full mt-1 px-3 py-2 text-black border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
                     />
                 </div>
 
@@ -135,7 +135,7 @@ const AddFood = () => {
                     <label className="block text-sm font-medium text-gray-700">
                         Food Image
                     </label>
-                    <input type="file" name="food_image" onChange={(e) => setimage(URL.createObjectURL(e.target.files[0]))} className="w-full mt-1" />
+                    <input type="file" name="food_image" onChange={(e) => setimage(URL.createObjectURL(e.target.files[0]))} className="w-full mt-1 border" />
                     {image && <img src={image} className="w-20 h-20 "></img>}
                 </div>
 
@@ -148,7 +148,7 @@ const AddFood = () => {
                         rows="4"
                         placeholder="Short description of the food"
                         name="description"
-                        className="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+                        className="w-full mt-1 px-3 py-2 border text-black rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
                     ></textarea>
                 </div>
 
