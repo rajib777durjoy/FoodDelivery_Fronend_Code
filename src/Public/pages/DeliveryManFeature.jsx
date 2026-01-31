@@ -45,7 +45,7 @@ const DeliveryManFeature = () => {
 
 
                     <div className="pt-4">
-                        <Link to={'/TrackingMap'} className="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition">
+                        <Link to={'/'} className="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition">
                             Track Your Order
                         </Link>
                     </div>
