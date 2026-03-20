@@ -2,13 +2,15 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import useAxiosSecure from '../../Hook/useAxiosSecure';
+import { GiCircularSawblade } from 'react-icons/gi';
 
 const OrderConfirm = () => {
     const { id, quantity } = useParams();
     const axiosPublic = useAxiosSecure();
     const [paymentMethod, setPaymentMethod] = useState('cod');
     const delivery_charge = 50;
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const [loading, setloading] = useState(false)
 
     const { data: food_details = {} } = useQuery({
         queryKey: ['food_details', id],
@@ -35,16 +37,19 @@ const OrderConfirm = () => {
         else {
             amount = (parseInt(price) * quantity) + delivery_charge;
         }
+        setloading(true)
         const data = { food_id: id, paymentMethod, name, phone, address, food_name, quantity };
-
+        
         axiosPublic.post(`/api/payment/init`, data)
             .then(res => {
                 const url = res.data.url;
                 if (url) {
+                    setloading(false)
                     window.location.href = url;
                 }
             })
             .catch(err => {
+                setloading(false)
                 console.log('Payment request error:', err);
 
             });
@@ -100,11 +105,15 @@ const OrderConfirm = () => {
                                 className="w-full border text-gray-800 rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500"
                             />
                             {/* CONFIRM BUTTON */}
-                            <button
-                                className="w-full mt-6 bg-green-600 hover:bg-green-700 text-gray-900 py-3 rounded-lg font-semibold transition"
-                            >
-                                Confirm Order
-                            </button>
+                            {
+                                loading ? <button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold "><GiCircularSawblade className="text-2xl text-white animate-spin" /></button>
+                                    : <button
+                                        type='submit'
+                                        className="w-full mt-6 bg-green-600 hover:bg-green-700 text-gray-900 py-3 rounded-lg font-semibold transition">
+                                        Confirm Order
+                                    </button>
+                            }
+
                         </form>
                     </div>
 
