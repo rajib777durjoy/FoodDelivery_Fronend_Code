@@ -37,26 +37,6 @@ const AllFood = () => {
             })
     }
 
-    const handleOrderFood = (id) => {
-        axiosPublic.post(`/api/restaurant/food_order/${id}`)
-            .then(res => {
-                if (res.data?.message) {
-                    toast.success(res.data?.message, {
-                        position: "top-center",
-                        autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: false,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                        transition: Bounce,
-                    });
-                }
-            }).catch(err => {
-                console.log(err)
-            })
-    }
     return (
         <div className="min-h-screen bg-gray-100 py-10 px-4">
             {/* Back Button */}
@@ -134,7 +114,7 @@ const AllFood = () => {
 
                                     <button
                                         disabled={!food.available}
-                                        onClick={() => handleOrderFood(food.id)}
+                                        onClick={() => navigate(`/Food_details/${food.id}`)}
                                         className={`w-1/2 py-2 rounded-lg font-medium transition
             ${food.available
                                                 ? "bg-green-600 hover:bg-green-700 text-white"
