@@ -79,12 +79,12 @@ const Myorders = () => {
 
               {/* Content */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
-                <Info label="Delivery Location" value={order.delivery_location} />
-                <Info label="Customer Phone" value={order.customer_phone} />
-                <Info label="Quantity" value={order.quantity} />
-                <Info label="Payment Method" value={order.payment_method.toUpperCase()} />
-                <Info label="Total Amount" value={`৳ ${order.payment}`} />
-                <Info label="Due Amount" value={`৳ ${order.dueAmount}`} />
+                <Info label="Delivery Location" value={order?.delivery_location} />
+                <Info label="Customer Phone" value={order?.customer_phone} />
+                <Info label="Quantity" value={order?.quantity} />
+                <Info label="Payment Method" value={order?.payment_method.toUpperCase()} />
+                <Info label="Total Amount" value={`৳ ${order?.payment}`} />
+                <Info label="Due Amount" value={`৳ ${order?.dueAmount || 0.0}`} />
                 <Status value={order.status} />
               </div>
             </div>

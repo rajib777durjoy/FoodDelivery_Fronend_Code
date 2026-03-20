@@ -35,7 +35,7 @@ const SignUp = () => {
         if (!file) return;
         const formData = new FormData();
         formData.append("file", file);
-        formData.append("upload_preset", "imageUpload");
+        formData.append("upload_preset","imageUpload");
         const res = await axios.post("https://api.cloudinary.com/v1_1/dwmkakht7/image/upload",
             formData
         );
@@ -49,7 +49,7 @@ const SignUp = () => {
                     updateProfile(auth.currentUser, {
                         displayName: data?.fullname, photoURL: imageUrl
                     }).then(() => {
-                        axiosPublic.post('/api/user/user_data', {
+                        axiosPublic.post('/api/user/user_data',{
                             fullname: data?.fullname,
                             email: data?.email,
                             profile: imageUrl

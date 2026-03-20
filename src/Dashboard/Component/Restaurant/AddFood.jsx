@@ -4,12 +4,14 @@ import { useSelector } from "react-redux";
 import { Bounce, toast } from "react-toastify";
 import { GiCircularSawblade } from "react-icons/gi";
 import useAxiosSecure from "../../../Public/Hook/useAxiosSecure";
+import { useNavigate } from "react-router";
 
 const AddFood = () => {
     const [category, setCategory] = useState(null);
     const [availability, setAvailability] = useState(null);
     const [image, setimage] = useState()
     const axiosPublic = useAxiosSecure();
+    const navigate= useNavigate()
     const user = useSelector(state => state.user.user);
     const [loading, setloading] = useState(false);
 
@@ -166,6 +168,7 @@ const AddFood = () => {
 
                     <button
                         type="button"
+                        onClick={()=>navigate('/restaurant_Dashboard/menu')}
                         className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-md"
                     >
                         Cancel

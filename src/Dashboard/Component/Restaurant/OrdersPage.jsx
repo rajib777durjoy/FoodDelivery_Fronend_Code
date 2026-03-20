@@ -7,7 +7,6 @@ import useAxiosSecure from "../../../Public/Hook/useAxiosSecure";
 const OrdersPage = () => {
   const userData = useSelector((state) => state.user.user);
   const AxiosPublic = useAxiosSecure();
-
   const { data: orders = [] } = useQuery({
     queryKey: ["orders", userData?.id],
     queryFn: async () => {

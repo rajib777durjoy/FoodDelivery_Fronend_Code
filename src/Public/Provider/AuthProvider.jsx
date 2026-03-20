@@ -57,12 +57,11 @@ const AuthProvider = ({ children }) => {
         socket.on('order-assigned', handleNotification)
         socket.on("disconnect", handleDisconnect);
 
-
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             console.log('currentUser::', currentUser);
             Setuser(currentUser);
             if (currentUser?.email) {
-                axiosPublic.post('/jwt_generate', { email: currentUser?.email })
+                axiosPublic.post('/jwt_generate',{ email: currentUser?.email })
                     .then(res => {
                         setLoading(false)
                         console.log('token generate message::', res.data.message)

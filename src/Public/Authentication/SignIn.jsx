@@ -52,8 +52,10 @@ const SignIn = () => {
             fullname: res.user?.displayName,
             email: res.user?.email,
             profile: res.user?.photoURL
-          }).then((res) => {
-            if (res.data) {
+          })
+          .then((res) => {
+            console.log('return user data ::', res?.data)
+            if (res?.data) {
               return navigate('/')
             }
           }).catch(err => {
