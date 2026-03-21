@@ -16,7 +16,7 @@ const SignIn = () => {
   const { SignInUser, GoogleSingIn } = useContext(AuthContext)
   const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
-  const [loading,setLoading]=useState(false)
+  const [loading, setLoading] = useState(false)
 
 
   const onSubmit = (data) => {
@@ -39,7 +39,7 @@ const SignIn = () => {
         });
         return navigate('/')
       }).catch(err => {
-         setLoading(false)
+        setLoading(false)
         console.log('error', err?.message)
       })
   };
@@ -53,14 +53,14 @@ const SignIn = () => {
             email: res.user?.email,
             profile: res.user?.photoURL
           })
-          .then((res) => {
-            console.log('return user data ::', res?.data)
-            if (res?.data) {
-              return navigate('/')
-            }
-          }).catch(err => {
-            console.log('singIn error message ', err?.message)
-          });
+            .then((res) => {
+              console.log('return user data ::', res?.data)
+              if (res?.data) {
+                return navigate('/')
+              }
+            }).catch(err => {
+              console.log('singIn error message ', err?.message)
+            });
         }
 
       }).catch(err => {
@@ -144,7 +144,7 @@ const SignIn = () => {
           </p>
 
           {/* Submit */}
-          {loading?<button type="button" className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold "><GiCircularSawblade className="text-2xl text-white animate-spin" /></button>: <button className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition">
+          {loading ? <button type="button" className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold "><GiCircularSawblade className="text-2xl text-white animate-spin" /></button> : <button className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition">
             Sign In
           </button>}
         </form>

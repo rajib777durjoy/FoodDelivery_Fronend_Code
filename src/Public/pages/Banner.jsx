@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 const Banner = () => {
     return (
-        <div className='w-full lg:grid grid-cols-2 gap-6  min-h-125 '>
+        <div className='w-full flex flex-col-reverse lg:flex-row justify-between gap-6 min-h-125 '>
             <div className='mt-15 md:mt-25 lg:mt-40'>
                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-green-500 py-4">
                     EatNow Fresh ,<br /> Flavors, Fast Delivery <span className="text-gray-700">To Your Door</span>
@@ -21,7 +21,6 @@ const Banner = () => {
                         Join Our Team
                     </div></Link>
                 </div>
-
 
             </div>
             <div className='my-4 lg:my-0'>

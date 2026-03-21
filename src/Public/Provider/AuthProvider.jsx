@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '../../Redux/userSlice.js';
 
 
+
 export const AuthContext = createContext(null)
 const AuthProvider = ({ children }) => {
     const [user, Setuser] = useState(null);
@@ -15,7 +16,6 @@ const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const axiosPublic = useAxiosPublic();
     const provider = new GoogleAuthProvider();
-
 
     const GoogleSingIn = () => {
         setLoading(true)
@@ -31,7 +31,8 @@ const AuthProvider = ({ children }) => {
     }
     const SignOutUser = async () => {
         try {
-            await signOut(auth);
+            setLoading(true)
+            return await signOut(auth);
             console.log('Sign out successful');
         } catch (err) {
             console.log('Sign out error', err);
@@ -57,38 +58,34 @@ const AuthProvider = ({ children }) => {
         socket.on('order-assigned', handleNotification)
         socket.on("disconnect", handleDisconnect);
 
-        const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+        const unsubscribe = onAuthStateChanged(auth,(currentUser) => {
             console.log('currentUser::', currentUser);
+            console.log('loading status',loading)
             Setuser(currentUser);
-            if (currentUser?.email) {
-                axiosPublic.post('/jwt_generate',{ email: currentUser?.email })
+            if (currentUser?.email) { 
+                axiosPublic.post('/jwt_generate', { email: currentUser?.email })
                     .then(res => {
-                        setLoading(false)
                         console.log('token generate message::', res.data.message)
                         axiosPublic.get(`/api/user/user_data/${currentUser?.email}`).then((res) => {
+                            setLoading(false)
                             dispatch(setUser(res?.data))
                         }).catch((err) => {
                             dispatch(setUser({}))
                             console.log('user data missing:', err?.message)
                         })
-                    }).catch(err => {
-                        setLoading(false)
-                        console.log(err)
                     })
             } else {
-                setLoading(false)
                 axiosPublic.post('/jwt_remove', {})
                     .then(res => {
                         dispatch(setUser({}))
                         setLoading(false)
                         console.log('token remove message:::', res.data.message)
                     }).catch(err => {
-                        setLoading(false)
                         console.log(err)
                     })
 
             }
-
+         
         });
 
         // / tracking location  function ///
@@ -107,7 +104,7 @@ const AuthProvider = ({ children }) => {
             socket.off("disconnect", handleDisconnect);
             navigator.geolocation.clearWatch(watchId);
         };
-    }, []);
+    },[user]);
 
     useEffect(() => {
         if (user?.email) {

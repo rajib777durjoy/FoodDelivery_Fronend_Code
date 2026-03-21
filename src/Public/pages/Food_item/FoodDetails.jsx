@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router";
 import useAxiosPublic from "../../Hook/useAxiosPublic";
 import { Bounce, toast } from "react-toastify";
 import useAxiosSecure from "../../Hook/useAxiosSecure";
+import { GiCircularSawblade } from "react-icons/gi";
 
 // /* Demo Food Data */
 // const foodItems = [
@@ -66,6 +67,7 @@ const FoodDetails = () => {
     const AxiosSecure = useAxiosSecure();
     const [food, setFood] = useState({})
     const [quantity, setQuantity] = useState(1);
+    const [loading,setLoading]=useState(false);
     const navigate = useNavigate()
     useEffect(() => {
         axiosPublic.get(`/api/restaurant/food_details/${id}`)
@@ -85,9 +87,11 @@ const FoodDetails = () => {
     }
 
     const handleAddToCart = (id) => {
+        setLoading(true)
         AxiosSecure.post(`/api/restaurant/AddToCart/${id}`, { quantity })
             .then(res => {
                 if (res.data?.message === 'Item added to cart successfully') {
+                    setLoading(false)
                     toast.success(res.data?.message, {
                         position: "top-center",
                         autoClose: 3000,
@@ -101,6 +105,7 @@ const FoodDetails = () => {
                     });
                 }
                 else {
+                    setLoading(false)
                     toast.warning(res.data?.message, {
                         position: "top-center",
                         autoClose: 3000,
@@ -114,6 +119,7 @@ const FoodDetails = () => {
                     });
                 }
             }).catch(err => {
+                 setLoading(false)
                 console.log(err);
             })
     }
@@ -197,6 +203,7 @@ const FoodDetails = () => {
 
                         {/* Actions */}
                         <div className="flex gap-4 pt-4">
+                            {loading?<button type="button" className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold "><GiCircularSawblade className="text-2xl text-white animate-spin" /></button>:
                             <button
                                 disabled={!food.available}
                                 onClick={() => handleAddToCart(food.id)}
@@ -207,7 +214,7 @@ const FoodDetails = () => {
                                     }`}
                             >
                                 Add to Cart
-                            </button>
+                            </button>}
 
                             <button
                                 disabled={!food.available}

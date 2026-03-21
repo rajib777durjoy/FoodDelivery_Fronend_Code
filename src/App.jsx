@@ -61,12 +61,13 @@ function App() {
         <Route path='/BecomePartner' element={<Protect><BecomePartner></BecomePartner></Protect>}></Route>
         <Route path='/BecomeDeliveryHero' element={<Protect><DeliveryPartner></DeliveryPartner></Protect>} ></Route>
         <Route path='/All_FoodItem' element={<AllFood></AllFood>}></Route>
-        <Route path='/Food_details/:id' element={<FoodDetails></FoodDetails>}></Route>
+        <Route path='/Food_details/:id' element={<Protect><FoodDetails></FoodDetails></Protect>}></Route>
         <Route path='/order_confirm/:id/:quantity' element={<Protect><OrderConfirm></OrderConfirm></Protect>}></Route>
         <Route path='/payment/success/:tran_id' element={<Successpage></Successpage>}></Route>
         <Route path='/payment/fail/:tran_id' element={<PaymentFail></PaymentFail>} ></Route>
         <Route path='/OrderDetails/:id' element={<Protect><OrderDetails></OrderDetails></Protect>} ></Route>
         <Route path='/TrackingMap' element={<Protect><TrackingMap></TrackingMap></Protect>}></Route>
+        <Route path='/myCart' element={<AddToCart></AddToCart>} ></Route>
       </Route>
       {/* Restaurant dashboard page */}
       <Route path='/restaurant_Dashboard' element={<RestaurantDashboard></RestaurantDashboard>}>

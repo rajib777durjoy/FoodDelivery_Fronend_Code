@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router";
 import useAxiosPublic from "../../Hook/useAxiosPublic";
 import { Bounce, toast } from "react-toastify";
 import socket from "../../../Socket";
-
+import { motion } from "framer-motion";
 
 /* Demo Food Data */
 // const foodItems = [
@@ -116,54 +116,58 @@ const Food_Item = () => {
                     {foodItems?.map((food) => (
                         <div
                             key={food.id}
+                            onClick={() =>navigate(`/Food_details/${food.id}`)}
                             className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition"
                         >
                             {/* Image Section */}
-                            <div className="relative h-52">
+                            <motion.div
+                             initial={{scale:0.9}}
+                             whileHover={{ scale: 1 }}
+                             className="relative h-52">
                                 <img
-                                    src={food.food_image}
+                                    src={food?.food_image}
                                     alt={food.food_name}
-                                    className="w-full h-full object-cover"
+                                    className="w-full h-full object-cover rounded-md"
                                 />
 
                                 {/* Availability Badge */}
                                 <span
                                     className={`absolute top-3 left-3 text-xs font-semibold px-3 py-1 rounded-full
-          ${food.available
+          ${food?.available
                                             ? "bg-green-600 text-white"
                                             : "bg-red-600 text-white"
                                         }`}
                                 >
-                                    {food.available ? "Available" : "Out of Stock"}
+                                    {food?.available ? "Available" : "Out of Stock"}
                                 </span>
 
                                 {/* Add to Cart Icon */}
                                 <button
                                     onClick={() => handleAddToCart(food.id)}
-                                    disabled={!food.available}
+                                    disabled={!food?.available}
                                     className="absolute top-3 right-3 bg-white p-2 rounded-full shadow hover:bg-green-100 transition"
                                     title="Add to Cart"
                                 >
                                     🛒
                                 </button>
-                            </div>
+                            </motion.div>
 
                             {/* Content */}
                             <div className="p-4 space-y-2">
                                 <h2 className="text-lg font-semibold capitalize text-black truncate">
-                                    {food.food_name}
+                                    {food?.food_name}
                                 </h2>
 
                                 <p className="text-sm text-gray-600">
-                                    {food.category}
+                                    {food?.category}
                                 </p>
 
                                 <div className="text-green-600 font-bold text-lg">
-                                    ৳ {food.price}
+                                    ৳ {food?.price}
                                 </div>
 
                                 {/* Action Buttons */}
-                                <div className="flex gap-2 pt-3">
+                                {/* <div className="flex gap-2 pt-3">
                                     <Link
                                         to={`/Food_details/${food.id}`}
                                         className="w-1/2 text-center border border-green-600 text-green-600 hover:bg-green-50 py-2 rounded-lg font-medium transition"
@@ -182,7 +186,7 @@ const Food_Item = () => {
                                     >
                                         Order Now
                                     </button>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     ))}

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../Provider/AuthProvider';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router';
@@ -8,14 +8,15 @@ import useAxiosSecure from '../../Hook/useAxiosSecure';
 const AddToCart = () => {
     const { user } = useContext(AuthContext);
     const axiosPublic = useAxiosSecure();
-    const navigate = useNavigate()
-
+    const navigate = useNavigate();
+    const [loading,setloading]=useState(true)
     // Fetch Cart Items
-    const { data: cart_item = [], isLoading, refetch } = useQuery({
+    const { data: cart_item = [], refetch } = useQuery({
         queryKey: ['cart_item', user?.email],
-        enabled: !!user?.email,
         queryFn: async () => {
+            setloading(false)
             const res = await axiosPublic.get(`/api/restaurant/cart_item_list/${user?.email}`);
+            
             return res.data;
         },
     });
@@ -52,7 +53,7 @@ const AddToCart = () => {
             })
     }
 
-    if (isLoading) {
+    if (loading) {
         return (
             <div className="min-h-screen flex justify-center items-center bg-gray-100">
                 <span className="loading loading-spinner loading-lg"></span>
@@ -68,7 +69,7 @@ const AddToCart = () => {
                 {/* Empty State */}
                 {cart_item.length === 0 ? (
                     <div className="bg-white p-6 rounded-lg shadow text-center">
-                        <p className="text-gray-500">Your cart is empty!</p>
+                        <p className="text-gray-500 text-2xl">Your cart is empty!</p>
                     </div>
                 ) : (
                     <div className="space-y-6">
