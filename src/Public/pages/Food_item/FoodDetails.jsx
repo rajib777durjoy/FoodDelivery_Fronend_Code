@@ -4,6 +4,7 @@ import useAxiosPublic from "../../Hook/useAxiosPublic";
 import { Bounce, toast } from "react-toastify";
 import useAxiosSecure from "../../Hook/useAxiosSecure";
 import { GiCircularSawblade } from "react-icons/gi";
+import Loading from "../../../CustomeLoading/Loading";
 
 // /* Demo Food Data */
 // const foodItems = [
@@ -67,24 +68,31 @@ const FoodDetails = () => {
     const AxiosSecure = useAxiosSecure();
     const [food, setFood] = useState({})
     const [quantity, setQuantity] = useState(1);
-    const [loading,setLoading]=useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate()
     useEffect(() => {
+        setLoading(true)
         axiosPublic.get(`/api/restaurant/food_details/${id}`)
             .then(res => {
+                setLoading(false)
                 setFood(res.data)
             }).catch(err => {
+                setLoading(false)
                 console.log(err)
             })
-    }, [])
+    },[])
 
+    if(loading){
+        return <Loading></Loading>
+    }
     if (!food) {
         return (
             <div className="min-h-screen flex items-center justify-center text-xl">
-                Food not found ❌
+                Food not found !
             </div>
         );
     }
+
 
     const handleAddToCart = (id) => {
         setLoading(true)
@@ -119,15 +127,15 @@ const FoodDetails = () => {
                     });
                 }
             }).catch(err => {
-                 setLoading(false)
+                setLoading(false)
                 console.log(err);
             })
     }
 
-    
+
     return (
         <div className="min-h-screen bg-gray-100 py-10 px-4">
-            <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div className="w-full mx-auto overflow-hidden">
 
                 {/* Back Button */}
                 <div className="p-4">
@@ -139,7 +147,7 @@ const FoodDetails = () => {
                     </button>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-8 p-6">
+                <div className="grid md:grid-cols-2 gap-8 py-6 ">
 
                     {/* Image */}
                     <div className="h-87">
@@ -152,37 +160,82 @@ const FoodDetails = () => {
 
                     {/* Details */}
                     <div className="space-y-4">
-                        <h1 className="text-3xl font-bold text-gray-800">
-                            {food.food_name}
+                        <h1 className="text-3xl capitalize font-bold text-gray-800">
+                            {food?.food_name}
                         </h1>
-
-                        {/* <p className="text-sm text-gray-500">
-              Restaurant:{" "}
-              <span className="font-medium">{food.restaurant}</span>
-            </p> */}
-
                         <div className="flex items-center gap-4">
-                            {/* <span className="text-yellow-500 font-semibold">
-                ⭐ {food.rating}
-              </span> */}
+
                             <span
-                                className={`text-sm font-semibold ${food.available ? "text-green-600" : "text-red-500"
+                                className={`text-sm font-semibold ${food?.available ? "text-green-600" : "text-red-500"
                                     }`}
                             >
-                                {food.available ? "Available" : "Out of Stock"}
+                                {food?.available ? "Available" : "Out of Stock"}
                             </span>
                         </div>
+                        {/* For mobile device Start */}
+                        <div className="w-full md:hidden flex justify-between">
+                            <div className="text-3xl font-bold text-green-600">
+                                ৳ {food?.price}
+                            </div>
+                            <div className="flex items-center gap-4 text-black">
+                                <span className="font-medium">Quantity:</span>
+                                <div className="flex items-center border rounded-lg text-black">
+                                    <button
+                                        onClick={() => quantity > 1 && setQuantity(quantity - 1)}
+                                        className="px-3 py-1 text-lg font-bold text-black"
+                                    >
+                                        -
+                                    </button>
+                                    <span className="px-4 text-black">{quantity}</span>
+                                    <button
+                                        onClick={() => setQuantity(quantity + 1)}
+                                        className="px-3 py-1 text-lg font-bold text-black"
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex gap-4 pt-4 md:hidden">
+                            {loading ? <button type="button" className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold "><GiCircularSawblade className="text-2xl text-white animate-spin" /></button> :
+                                <button
+                                    disabled={!food.available}
+                                    onClick={() => handleAddToCart(food.id)}
+                                    className={`w-full py-3 rounded-xl font-semibold transition
+                ${food?.available
+                                            ? "bg-green-600 hover:bg-green-700 text-white"
+                                            : "bg-gray-300 cursor-not-allowed"
+                                        }`}
+                                >
+                                    Add to Cart
+                                </button>}
+
+                            <button
+                                disabled={!food.available}
+                                onClick={() => navigate(`/order_confirm/${id}/${quantity}`)}
+                                className={`w-full py-3 rounded-xl font-semibold transition
+                ${food?.available
+                                        ? "border border-green-600 text-green-600 hover:bg-green-50"
+                                        : "border border-gray-300 text-gray-400 cursor-not-allowed"
+                                    }`}
+                            >
+                                Order Now
+                            </button>
+                        </div>
+                        {/* For mobile device End */}
 
                         <p className="text-gray-600 leading-relaxed">
-                            {food.description}
+                            <div className="text-xl font-bold">Why You'll Love It</div>
+                            {food?.description}
                         </p>
 
-                        <div className="text-3xl font-bold text-green-600">
-                            ৳ {food.price}
+                        <div className="text-3xl hidden md:block font-bold text-green-600">
+                            ৳ {food?.price}
                         </div>
 
                         {/* Quantity */}
-                        <div className="flex items-center gap-4 text-black">
+                        <div className="md:flex hidden items-center gap-4 text-black">
                             <span className="font-medium">Quantity:</span>
                             <div className="flex items-center border rounded-lg text-black">
                                 <button
@@ -202,19 +255,19 @@ const FoodDetails = () => {
                         </div>
 
                         {/* Actions */}
-                        <div className="flex gap-4 pt-4">
-                            {loading?<button type="button" className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold "><GiCircularSawblade className="text-2xl text-white animate-spin" /></button>:
-                            <button
-                                disabled={!food.available}
-                                onClick={() => handleAddToCart(food.id)}
-                                className={`w-full py-3 rounded-xl font-semibold transition
+                        <div className="md:flex hidden gap-4 pt-4">
+                            {loading ? <button type="button" className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold "><GiCircularSawblade className="text-2xl text-white animate-spin" /></button> :
+                                <button
+                                    disabled={!food.available}
+                                    onClick={() => handleAddToCart(food.id)}
+                                    className={`w-full py-3 rounded-xl font-semibold transition
                 ${food.available
-                                        ? "bg-green-600 hover:bg-green-700 text-white"
-                                        : "bg-gray-300 cursor-not-allowed"
-                                    }`}
-                            >
-                                Add to Cart
-                            </button>}
+                                            ? "bg-green-600 hover:bg-green-700 text-white"
+                                            : "bg-gray-300 cursor-not-allowed"
+                                        }`}
+                                >
+                                    Add to Cart
+                                </button>}
 
                             <button
                                 disabled={!food.available}

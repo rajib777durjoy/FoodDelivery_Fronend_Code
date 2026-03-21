@@ -79,7 +79,7 @@ const StaticPage = () => {
             {TodayOrder.length}
           </p>
           <p className="text-gray-500 text-sm">
-            Total Orders: {order.length}
+            Total Orders: {order?.length}
           </p>
         </div>
 
@@ -99,7 +99,7 @@ const StaticPage = () => {
         <h2 className="text-xl font-semibold mb-4">Recent Orders</h2>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+          <table className="w-full text-left border-collapse text-black">
             <thead>
               <tr className="text-gray-500 border-b">
                 <th className="py-2">Order ID</th>
@@ -110,16 +110,16 @@ const StaticPage = () => {
               </tr>
             </thead>
             <tbody>
-              {order.length>0 && order?.map((item) => (
+              {order.length> 0 && order?.map((item) => (
                 <tr key={item.id} className="border-b last:border-0">
                   <td className="py-3 font-medium">{item?.id}</td>
                   <td className="py-3">{item?.customer_phone}</td>
                   <td className="py-3">৳ {item?.payment}</td>
-                  <td className="py-3">৳ {item?.dueAmount}</td>
-                  <td className="py-3">৳ {item?.status}</td>
+                  <td className="py-3">৳ {item?.dueAmount || 0}</td>
+                  <td className="py-3">{item?.status}</td>
                   <td className="py-3">
                     <span
-                      className={`px-3 py-1 text-sm rounded-full
+                      className={`px-3 py-1 text-sm text-black rounded-full
                         ${order.status === "Delivered"
                           ? "bg-green-100 text-green-700"
                           : order.status === "Preparing"
@@ -127,7 +127,7 @@ const StaticPage = () => {
                             : "bg-red-100 text-red-700"
                         }`}
                     >
-                      {order.status}
+                      {order?.status}
                     </span>
                   </td>
                 </tr>

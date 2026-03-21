@@ -78,30 +78,7 @@ const Food_Item = () => {
         return ()=>{
             socket.off('notification'); 
         }
-    }, [])
-
-    const handleAddToCart = (id) => {
-        axiosPublic.post(`/api/restaurant/AddToCart/${id}`)
-            .then(res => {
-                if (res.data?.message) {
-                    toast.success(res.data?.message, {
-                        position: "top-center",
-                        autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: false,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                        transition: Bounce,
-                    });
-                }
-            }).catch(err => {
-                console.log(err);
-            })
-    }
-
-    
+    }, []);
 
     return (
         <div className="min-h-screen bg-gray-100 py-10 px-4">
@@ -143,7 +120,6 @@ const Food_Item = () => {
 
                                 {/* Add to Cart Icon */}
                                 <button
-                                    onClick={() => handleAddToCart(food.id)}
                                     disabled={!food?.available}
                                     className="absolute top-3 right-3 bg-white p-2 rounded-full shadow hover:bg-green-100 transition"
                                     title="Add to Cart"

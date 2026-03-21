@@ -3,11 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 import useAxiosSecure from "../../../Public/Hook/useAxiosSecure";
+import { useState } from "react";
+import Loading from "../../../CustomeLoading/Loading";
 
 const OrdersPage = () => {
   const userData = useSelector((state) => state.user.user);
   const AxiosPublic = useAxiosSecure();
-  const { data: orders = [] } = useQuery({
+
+  const { data: orders = [],isPending } = useQuery({
     queryKey: ["orders", userData?.id],
     queryFn: async () => {
       const res = await AxiosPublic.get(
@@ -16,7 +19,9 @@ const OrdersPage = () => {
       return res.data;
     },
   });
- 
+  if(isPending){
+    return <Loading></Loading>
+  }
   const statusColor = (status) => {
     switch (status) {
       case "Pending":

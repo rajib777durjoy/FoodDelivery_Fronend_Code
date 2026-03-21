@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { NavLink, Outlet } from "react-router";
+import { NavLink, Outlet, useNavigate } from "react-router";
 import { AuthContext } from "../Public/Provider/AuthProvider";
 import { CiMenuFries } from "react-icons/ci";
 import { IoClose } from "react-icons/io5";
@@ -7,7 +7,7 @@ import { IoClose } from "react-icons/io5";
 const CustomerDashboard = () => {
   const { SignOutUser, user } = useContext(AuthContext);
   const [menu, setMenu] = useState(false);
-
+  const Navigate = useNavigate()
   const linkClass = ({ isActive }) =>
     `block px-4 py-2 rounded-lg transition text-sm
     ${isActive
@@ -36,7 +36,10 @@ const CustomerDashboard = () => {
         </nav>
 
         <button
-          onClick={SignOutUser}
+          onClick={async()=>{
+            await SignOutUser()
+            Navigate('/SingIn')
+          }}
           className="mt-4 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg"
         >
           Sign Out
@@ -88,7 +91,10 @@ const CustomerDashboard = () => {
           </nav>
 
           <button
-            onClick={SignOutUser}
+            onClick={async()=>{
+            await SignOutUser()
+            Navigate('/SingIn')
+          }}
             className="mt-6 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg w-full"
           >
             Sign Out

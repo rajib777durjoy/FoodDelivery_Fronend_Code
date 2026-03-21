@@ -41,9 +41,9 @@ const RestaurantOwnerDashboard = () => {
           <NavLink to="/restaurant_Dashboard/orders" className={linkClass}>
             Orders
           </NavLink>
-          <NavLink to="/restaurant_Dashboard/TrackingMap" className={linkClass}>
+          {/* <NavLink to="/restaurant_Dashboard/TrackingMap" className={linkClass}>
             Track Delivery Man
-          </NavLink>
+          </NavLink> */}
           <NavLink
             to="/restaurant_Dashboard/delivery_history"
             className={linkClass}
