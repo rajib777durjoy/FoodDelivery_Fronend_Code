@@ -12,7 +12,7 @@ const Home = () => {
     return (
         <div className='w-full min-h-screen '>
                 <Banner></Banner>
-                <CounterPage></CounterPage>
+                {/* <CounterPage></CounterPage> */}
                 <Food_Item></Food_Item>
                 <Services></Services>
                 <RestaurentFeature></RestaurentFeature>

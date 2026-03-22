@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 const Footer = () => {
   return (
     <footer className="bg-green-800 text-white py-10">
-      <div className="w-[90%] mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="w-[90%] mx-auto grid grid-cols-1 md:grid-cols-3  gap-6">
         {/* About Section */}
         <div>
           <h1 className="text-2xl font-bold mb-3">EatNow</h1>
@@ -15,7 +15,7 @@ const Footer = () => {
         </div>
 
         {/* Quick Links */}
-        <div>
+        {/* <div>
           <h2 className="text-xl font-semibold mb-3">Quick Links</h2>
           <ul className="space-y-2">
             <li><a href="/" className="hover:text-amber-400">Home</a></li>
@@ -23,10 +23,10 @@ const Footer = () => {
             <li><a href="/about" className="hover:text-amber-400">About</a></li>
             <li><a href="/contact" className="hover:text-amber-400">Contact</a></li>
           </ul>
-        </div>
+        </div> */}
 
         {/* Contact */}
-        <div>
+        <div className='md:mx-auto'>
           <h2 className="text-xl font-semibold mb-3">Contact Us</h2>
           <p className="text-gray-300">123 Food Street, Dhaka, Bangladesh</p>
           <p className="text-gray-300">Phone: +880 1733757561</p>
@@ -34,7 +34,7 @@ const Footer = () => {
         </div>
 
         {/* Social Media */}
-        <div>
+        <div className='md:ms-auto'>
           <h2 className="text-xl font-semibold mb-3">Follow Us</h2>
           <div className="flex gap-4 text-white text-2xl">
             <a href="https://www.facebook.com/durjoy.chando.2024" target='_blank'><FaFacebook className="hover:text-amber-400" /></a>

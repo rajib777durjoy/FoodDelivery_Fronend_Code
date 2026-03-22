@@ -3,14 +3,14 @@ import { Link } from "react-router";
 
 const RestaurentFeature = () => {
     return (
-        <section className="w-full bg-gray-50 py-12 mt-10">
-            <span className="block text-center text-lg font-semibold text-green-600 uppercase ">
+        <section className="w-full  py-12 mt-10">
+            <span className="block text-center text-2xl font-semibold text-green-600 uppercase ">
                 Featured Restaurants
             </span>
 
-            <h1 className="text-xl flex justify-center items-center lg:text-4xl font-bold text-gray-900 mb-10">
+            <h1 className="text-2xl md:flex text-center gap-2 justify-center items-center lg:text-4xl font-bold text-gray-900 mb-10">
                 EatNow Restaurants <br />
-                <span className="text-green-600">Quality You Can Trust</span>
+                <span className="text-green-600 ">Quality You Can Trust</span>
             </h1>
             <div className=" mx-auto px-4 grid lg:grid-cols-2 gap-10 items-center">
 

@@ -4,7 +4,7 @@ import { TbTruckDelivery } from "react-icons/tb";
 import { IoRestaurant } from "react-icons/io5";
 const Services = () => {
     return (
-        <div className="w-full py-20 bg-gray-50">
+        <div className="w-full py-20 ">
             <div className="max-w-7xl mx-auto px-4">
                 
                 <h2 className="text-4xl font-bold text-center mb-12 text-gray-800">

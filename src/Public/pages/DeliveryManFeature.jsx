@@ -3,12 +3,12 @@ import { Link } from "react-router";
 
 const DeliveryManFeature = () => {
     return (
-        <section className="w-full bg-white py-12 mt-10">
-            <span className="block text-center text-lg font-semibold text-green-600 uppercase ">
+        <section className="w-full  py-12 mt-10">
+            <span className="block text-center text-2xl font-semibold text-green-600 uppercase ">
                 Trusted Delivery Partners
             </span>
 
-            <h1 className="text-xl flex justify-center mb-10 lg:text-4xl font-bold text-gray-900 ">
+            <h1 className="text-2xl text-center gap-2 md:flex justify-center mb-10 lg:text-4xl font-bold text-gray-900 ">
                 Fast & Reliable <br />
                 <span className="text-green-600">Delivery You Can Trust</span>
             </h1>

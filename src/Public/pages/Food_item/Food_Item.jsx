@@ -81,7 +81,7 @@ const Food_Item = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-gray-100 py-10 px-4">
+        <div className="min-h-screen  py-10 px-4">
             <div className="max-w-7xl mx-auto">
                 {/* Page Title */}
                 <h1 className="text-2xl lg:text-3xl font-bold text-center mb-8 text-gray-800">
