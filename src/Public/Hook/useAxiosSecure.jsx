@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useContext, useEffect } from 'react';
 import { AuthContext } from '../Provider/AuthProvider';
-import { useLocation, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 const instance = axios.create({
     baseURL: import.meta.env.VITE_HOSTING_URL, withCredentials: true
@@ -14,18 +14,17 @@ const instance = axios.create({
 
 const useAxiosSecure = () => {
     const {SignOutUser}=useContext(AuthContext)
-    const location = useLocation()
     const navigate = useNavigate()
-    // console.log('axios location::',location)
+
     useEffect(() => {
         const interceptor = instance.interceptors.response.use((response) => {
             return response;
-        }, (err) => {
+        },(err) => {
             const status = err?.status;
             if (status === 403 || status === 401) {
                 // signOut user here function //
                 SignOutUser()
-                navigator('/SignUp')
+                navigate('/SignUp')
             }
             return Promise.reject(err);
         })
