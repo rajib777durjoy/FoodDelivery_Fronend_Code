@@ -8,7 +8,7 @@ import useAxiosSecure from '../../../Public/Hook/useAxiosSecure';
 const SelectDVHero = () => {
     const userData = useSelector(state => state.user.user);
     const { id: order_id } = useParams()
-    console.log('order_id::', order_id)
+    // console.log('order_id::', order_id)
     const axiosPublic = useAxiosSecure();
  
 
@@ -20,10 +20,12 @@ const SelectDVHero = () => {
         },
         
     });
+    // console.log('deliver_details:',deliverMan)
     const handleSelectDeliver = (id) => { // id = is deliver_hero id //
-        axiosPublic.patch(`/api/deliveryHero/deliver_man/update/${id}`, { order_id })
+        // console.log('deliver_id:',id)
+        axiosPublic.put(`/api/deliveryHero/deliver_man/update/${id}`, {order_id})
             .then(res => {
-                console.log('update message::', res.data.message);
+                console.log('update message::', res.data?.message);
                 if (res.data.message === 'Booking Successfull !') {
                     refetch()
                     toast.success(res.data?.message, {
@@ -39,7 +41,7 @@ const SelectDVHero = () => {
                     });
                 }
             }).catch(err => {
-                console.log('error', err);
+                // console.log('error', err);
                 toast.error(err?.message, {
                     position: "top-center",
                     autoClose: 3000,
@@ -52,6 +54,7 @@ const SelectDVHero = () => {
                     transition: Bounce,
                 });
             })
+
     }
     
     return (
@@ -93,7 +96,7 @@ const SelectDVHero = () => {
 
                                     <td className="px-4 py-3 ">
                                         <img
-                                            src={dv?.profile || 'https://i.ibb.co/5GzXkwq/user.png'}
+                                            src={dv?.profile}
                                             alt="profile"
                                             className="w-10 h-10  rounded-full object-cover"
                                         />
@@ -128,7 +131,7 @@ const SelectDVHero = () => {
                                         </span>
                                     </td>
                                     <td className="px-4 py-3">
-                                        <button onClick={() => handleSelectDeliver(dv?.deliverHero_id)} disabled={!dv.status} className={`rounded-md text-black px-2 py-1 ${dv.status ? 'px-4 bg-green-700 text-white' : "text-red-700"}`}> {dv.status? "Select" : "On_the_way"}</button>
+                                        <button onClick={() => handleSelectDeliver(dv?.deliverhero_id)} disabled={!dv.status} className={`rounded-md text-black px-2 py-1 ${dv.status ? 'px-4 bg-green-700 text-white' : "text-red-700"}`}> {dv.status? "Select" : "On_the_way"}</button>
 
                                     </td>
                                 </tr>

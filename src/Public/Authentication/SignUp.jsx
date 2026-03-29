@@ -9,8 +9,6 @@ import axios from "axios";
 import { auth } from "../../../firebase.config";
 import { Bounce, toast } from "react-toastify";
 import useAxiosPublic from "../Hook/useAxiosPublic";
-import { useDispatch } from "react-redux";
-import { setUser } from "../../Redux/userSlice";
 import { GiCircularSawblade } from "react-icons/gi";
 
 const SignUp = () => {
@@ -90,8 +88,7 @@ const SignUp = () => {
                     })
                 }
             }).catch(err => {
-                setLoading(false)
-                 
+                setLoading(false)      
                 toast.error(err?.message, {
                     position: "top-center",
                     autoClose: 3000,

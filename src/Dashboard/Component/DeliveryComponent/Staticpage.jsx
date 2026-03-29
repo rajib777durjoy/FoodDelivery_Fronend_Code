@@ -73,12 +73,12 @@ const Staticpage = () => {
                     </h2>
                 </div>
 
-                <div className="bg-white rounded-xl shadow p-5">
+                {/* <div className="bg-white rounded-xl shadow p-5">
                     <p className="text-gray-500 text-sm">Rating</p>
                     <h2 className="text-3xl font-bold text-yellow-500">
                         ⭐ {deliveryMan.rating}
                     </h2>
-                </div>
+                </div> */}
             </div>
 
             {/* Active Deliveries */}
