@@ -22,7 +22,7 @@ const SignIn = () => {
   const onSubmit = (data) => {
     setLoading(true)
     console.log("Sign In Data:", data.email);
-    SignInUser(data?.email, data?.password)
+    SignInUser(data?.email?.toLowerCase(), data?.password)
       .then(res => {
         setLoading(false)
         console.log(res?.user)
@@ -50,7 +50,7 @@ const SignIn = () => {
         if (res.user) {
           axiosPublic.post('/api/user/user_data', {
             fullname: res.user?.displayName,
-            email: res.user?.email,
+            email: res.user?.email?.toLowerCase(),
             profile: res.user?.photoURL
           })
             .then((res) => {

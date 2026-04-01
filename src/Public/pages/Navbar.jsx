@@ -8,8 +8,9 @@ import { FaShoppingCart } from "react-icons/fa";
 
 
 const Navbar = () => {
-    const { user, SignOutUser, loading } = useContext(AuthContext)
-    const userData = useSelector(state => state.user.user);
+    const { user,SignOutUser, loading } = useContext(AuthContext)
+    const [userData, setUserData] = useState([]);
+    // const data = useSelector((state) => state.user.user)
     const axiosPublic = useAxiosPublic();
     const dispatch = useDispatch()
     const navigate = useNavigate();
@@ -20,10 +21,23 @@ const Navbar = () => {
 
         })
     }
+   
+    useEffect(() => {
+        if (user?.email) {
+            axiosPublic.get(`/api/user/user_data/${user?.email}`)
+                .then(res => {
+                    console.log(res.data)
+                    setUserData(res?.data)
+                     dispatch(setUser(res?.data))
+                }).catch(err => {
+                    console.log('error message ::', err?.message)
+                     dispatch(setUser({}))
+                });
 
-    const role = userData?.role;
-    // const role = 'delivery';
-    console.log('role', role)
+        }
+
+    }, [user])
+    console.log('role::::',userData?.role)
     return (
         <div className='w-[90%] mx-auto '>
             <div className="navbar text-black">
@@ -39,15 +53,15 @@ const Navbar = () => {
                         </div>
                     </button>}
 
-                    {userData?.email && role ==='customer' && <Link to={'/dashboard/myCart'} className="text-white text-2xl mr-1">
+                    {userData?.email && userData?.role === 'customer' && <Link to={'/dashboard/myCart'} className="text-white text-2xl mr-1">
                         <FaShoppingCart />
                     </Link>}
                     {/* {userData?.email && <Link to={'/myCart'} className="text-white text-2xl mr-1">
                         <FaShoppingCart />
                     </Link>} */}
 
-                    {userData?.email && <div className="dropdown dropdown-center">
-                        <div tabIndex={0} role="button" className="mx-2"><img src={userData?.profile} className='w-10 h-10 rounded-full' alt="" /></div>
+                    {user?.email && <div className="dropdown dropdown-center">
+                        <div tabIndex={0} role="button" className="mx-2"><img src={user?.photoURL} className='w-10 h-10 rounded-full' alt="" /></div>
                         <ul tabIndex="-1" className="dropdown-content menu bg-white mt-3 rounded-box z-1 w-52 py-2 px-2 shadow-sm">
                             <NavLink to="/" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
                                 Home
@@ -61,13 +75,13 @@ const Navbar = () => {
                             <NavLink to="/All_restaurant" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
                                 Restaurants
                             </NavLink>
-                            {role === 'customer' && <NavLink to="/dashboard" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
+                            {userData?.role === 'customer' && <NavLink to="/dashboard" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
                                 Dashboard
                             </NavLink>}
-                            {role === 'deliver_hero' && <NavLink to="/delivery_Dashboard" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
+                            {userData?.role === 'deliver_hero' && <NavLink to="/delivery_Dashboard" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
                                 Dashboard
                             </NavLink>}
-                            {role === 'partner' && <NavLink to="/restaurant_Dashboard" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
+                            {userData?.role === 'partner' && <NavLink to="/restaurant_Dashboard" className='my-2 hover:bg-green-600 font-medium px-4 py-1 rounded-md hover:text-white hover:shadow shadow-green-900'>
                                 Dashboard
                             </NavLink>}
 
@@ -80,7 +94,7 @@ const Navbar = () => {
                         </ul>
                     </div> || <div className='flex gap-2 flex-row-reverse '>
                             {/* <NavLink to='/SignUp' className='btn bg-white hover:scale-95 transition-all duration-300 text-black hover:bg-green-800 border-0 hover:text-white'>SignUp</NavLink> */}
-                            <NavLink to='/SignIn' className='btn bg-white hover:scale-95 transition-all duration-300 text-black hover:bg-green-800 border-0 hover:text-white'>SignIn</NavLink>
+                            <NavLink to='/SignIn' className='btn bg-white hover:scale-95 transition-all duration-300 text-black hover:bg-green-800 border-0 hover:text-white'>Sign In</NavLink>
                         </div>}
 
                 </div>

@@ -66,13 +66,7 @@ const AuthProvider = ({ children }) => {
                 axiosPublic.post('/jwt_generate', { email: currentUser?.email })
                     .then(res => {
                         console.log('token generate message::', res.data.message)
-                        axiosPublic.get(`/api/user/user_data/${currentUser?.email}`).then((res) => {
-                            setLoading(false)
-                            dispatch(setUser(res?.data))
-                        }).catch((err) => {
-                            dispatch(setUser({}))
-                            console.log('user data missing:', err?.message)
-                        })
+                        setLoading(false)
                     })
             } else {
                 axiosPublic.post('/jwt_remove', {})
@@ -81,9 +75,10 @@ const AuthProvider = ({ children }) => {
                         setLoading(false)
                         console.log('token remove message:::', res.data.message)
                     }).catch(err => {
+                        setLoading(false)
                         console.log(err)
                     })
-
+               
             }
          
         });

@@ -29,6 +29,7 @@ const SignUp = () => {
     const [loading,setLoading]=useState(false)
     const password = watch('password')
     const onSubmit = async (data) => {
+         setLoading(true)
         const file = data?.profile[0];
         if (!file) return;
         const formData = new FormData();
@@ -39,9 +40,8 @@ const SignUp = () => {
         );
         const imageUrl = res?.data?.secure_url
         // console.log('imageurl', imageUrl)
-        CreateNewUser(data?.email, password)
+        CreateNewUser(data?.email?.toLowerCase(), password)
             .then(res => {
-                setLoading(true)
                 console.log(res.user)
                 if (res?.user && imageUrl) {
                     updateProfile(auth.currentUser, {
@@ -49,7 +49,7 @@ const SignUp = () => {
                     }).then(() => {
                         axiosPublic.post('/api/user/user_data',{
                             fullname: data?.fullname,
-                            email: data?.email,
+                            email: data?.email?.toLowerCase(),
                             profile: imageUrl
                         }).then(res => {
                             if (res.data) {

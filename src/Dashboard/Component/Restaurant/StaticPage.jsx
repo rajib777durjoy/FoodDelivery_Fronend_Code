@@ -22,7 +22,7 @@ const StaticPage = () => {
   useEffect(() => {
     axiosSecure.get(`/api/restaurant/owner_static_page/${userData?.id}`)
       .then(res => {
-        console.log('owner order::', res?.data)
+        // console.log('owner order::', res?.data)
         setOrder(res?.data)
         TotalPayment(res?.data || []);
         todayOrder(res?.data || [])
