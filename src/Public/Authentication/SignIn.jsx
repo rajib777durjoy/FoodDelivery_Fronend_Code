@@ -24,7 +24,7 @@ const SignIn = () => {
     console.log("Sign In Data:", data.email);
     SignInUser(data?.email?.toLowerCase(), data?.password)
       .then(res => {
-        setLoading(false)
+        
         console.log(res?.user)
         toast.success('SingIn successfull', {
           position: "top-center",
@@ -37,6 +37,7 @@ const SignIn = () => {
           theme: "light",
           transition: Bounce,
         });
+        setLoading(false)
         return navigate('/')
       }).catch(err => {
         setLoading(false)

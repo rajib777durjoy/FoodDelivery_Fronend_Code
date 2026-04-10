@@ -36,10 +36,7 @@ const CustomerDashboard = () => {
         </nav>
 
         <button
-          onClick={async()=>{
-            await SignOutUser()
-            Navigate('/SingIn')
-          }}
+          onClick={SignOutUser}
           className="mt-4 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg"
         >
           Sign Out

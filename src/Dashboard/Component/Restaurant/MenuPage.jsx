@@ -54,11 +54,11 @@ const MenuPage = () => {
     }
 
     // loading style ///
-    if (isPending) {
-        return (
-            <Loading></Loading>
-        );
-    }
+    // if (isPending) {
+    //     return (
+    //         <Loading></Loading>
+    //     );
+    // }
 
     return (
         <div className="space-y-6">
