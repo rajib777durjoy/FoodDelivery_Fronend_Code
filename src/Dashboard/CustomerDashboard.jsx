@@ -36,7 +36,11 @@ const CustomerDashboard = () => {
         </nav>
 
         <button
-          onClick={SignOutUser}
+          onClick={() => {
+            SignOutUser().then(() => {
+              Navigate('/SignIn', { replace: false })
+            })
+          }}
           className="mt-4 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg"
         >
           Sign Out
@@ -88,10 +92,12 @@ const CustomerDashboard = () => {
           </nav>
 
           <button
-            onClick={async()=>{
-            await SignOutUser()
-            Navigate('/SingIn')
-          }}
+            onClick={() => {
+              SignOutUser().then(() => {
+                Navigate('/SignIn', { replace: false })
+              })
+
+            }}
             className="mt-6 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg w-full"
           >
             Sign Out

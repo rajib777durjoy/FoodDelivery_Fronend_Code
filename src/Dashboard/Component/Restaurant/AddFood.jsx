@@ -11,7 +11,7 @@ const AddFood = () => {
     const [availability, setAvailability] = useState(null);
     const [image, setimage] = useState()
     const axiosPublic = useAxiosSecure();
-    const navigate= useNavigate()
+    const navigate = useNavigate()
     const user = useSelector(state => state.user.user);
     const [loading, setloading] = useState(false);
 
@@ -52,6 +52,8 @@ const AddFood = () => {
             console.log('response::', res.data?.message)
             if (res.data?.message) {
                 setloading(false)
+                data.reset()
+                setimage(null)
                 toast.success(res.data?.message, {
                     position: "top-center",
                     autoClose: 3000,
@@ -63,10 +65,13 @@ const AddFood = () => {
                     theme: "light",
                     transition: Bounce,
                 });
+
             }
-          
+
         }).catch(err => {
             setloading(false)
+            data.reset()
+            setimage(null)
             console.log('error', err?.message)
         })
     }
@@ -133,11 +138,12 @@ const AddFood = () => {
                 </div>
 
                 {/* Image Upload */}
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                <div className="">
+                    <label className="block text-sm  p-2  font-medium text-gray-700">
                         Food Image
+                        {/* <input type="file" className="file-input file-input-ghost" /> */}
                     </label>
-                    <input type="file" name="food_image" onChange={(e) => setimage(URL.createObjectURL(e.target.files[0]))} className="w-full mt-1 border" />
+                    <input type="file"  name="food_image" onChange={(e) => setimage(URL.createObjectURL(e.target.files[0]))} className="w-full file-input file-input-ghost mt-1 border border-gray-800" />
                     {image && <img src={image} className="w-20 h-20 "></img>}
                 </div>
 
@@ -168,7 +174,7 @@ const AddFood = () => {
 
                     <button
                         type="button"
-                        onClick={()=>navigate('/restaurant_Dashboard/menu')}
+                        onClick={() => navigate('/restaurant_Dashboard/menu')}
                         className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-md"
                     >
                         Cancel

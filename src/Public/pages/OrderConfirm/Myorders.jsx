@@ -1,23 +1,40 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-
 import { AuthContext } from '../../Provider/AuthProvider';
 import useAxiosSecure from '../../Hook/useAxiosSecure';
+import socket from '../../../Socket';
+
 
 const Myorders = () => {
   const axiosPublic = useAxiosSecure();
   const { user } = useContext(AuthContext);
+  const [orderData, setOrderData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const { data: orderData = [], isLoading } = useQuery({
-    queryKey: ['orders', user?.email],
-    enabled: !!user?.email,
-    queryFn: async () => {
+  useEffect(() => {
+    const orderListFunction = async () => {
       const res = await axiosPublic.get(
         `/api/restaurant/my_order_list/${user?.email}`
       );
-      return res.data;
-    },
-  });
+      setOrderData(res.data);
+      setIsLoading(false);
+    }
+    orderListFunction();
+
+  }, [])
+
+  useEffect(() => {
+    socket.on('order_status_update', (data) => {
+      console.log(
+        "received order status update:", data
+      )
+      setOrderData(prev => [...prev, data])
+    })
+
+    return () => socket.off('order_status_update');
+  }, [])
+
+  console.log('orderData::', orderData)
 
   if (isLoading) {
     return (
@@ -40,6 +57,47 @@ const Myorders = () => {
       });
   }
 
+
+
+  // cus_id
+  // : 
+  // 14
+  // delivery_id
+  // : 
+  // null
+  // delivery_location
+  // : 
+  // "Baniachong,Habiganj"
+  // dueamount
+  // : 
+  // "0.00"
+  // food_id
+  // : 
+  // 10
+  // food_image
+  // : 
+  // "https://res.cloudinary.com/dwmkakht7/image/upload/v1776182777/restaurants/qrlm73hb5rbnqswmanjv.jpg"
+  // food_name
+  // : 
+  // "French_Fries"
+  // id
+  // : 
+  // 14
+  // otp
+  // : 
+  // null
+  // payment
+  // : 
+  // "250.00"
+  // price
+  // : 
+  // "200"
+  // quantity
+  // : 
+  // 1
+  // status
+  // : 
+  // "panding"
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-8">
       <div className="max-w-6xl mx-auto">
@@ -60,33 +118,29 @@ const Myorders = () => {
         )}
 
         {/* Orders */}
+        {/* Todo for order details page */}
         <div className="space-y-6">
           {orderData.map(order => (
-            <div
-              key={order.id}
-              onClick={() => handleDuePayment(order.id)}
-              className="bg-white rounded-xl shadow hover:shadow-md transition p-6"
-            >
-              {/* Top */}
-              <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4">
-                <h3 className="text-lg font-semibold text-gray-800">
-                  Order #{order.id}
-                </h3>
-                <span className="text-sm text-gray-500">
-                  {new Date(order.created_at).toLocaleString()}
-                </span>
+            <div className='w-full border-2 border-red-400 text-black '>
+              <div className='flex justify-between'>
+
+                <div className={`${order?.status === "panding" && "text-blue-400"}  rounded-full`}>
+                  <span>panding</span>
+                </div>
+                  <div className={`${order?.status === "panding" && "text-blue-400"}  rounded-full`}>
+                  <span>panding</span>
+                </div>
+                 <div className={`${order?.status === "panding" && "text-blue-400"}  rounded-full`}>
+                  <span>panding</span>
+                </div>
+                  <div className={`${order?.status === "panding" && "text-blue-400"}  rounded-full`}>
+                  <span>panding</span>
+                </div>
+              </div>
+              <div>
+                <h1>{order?.id}</h1>
               </div>
 
-              {/* Content */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
-                <Info label="Delivery Location" value={order?.delivery_location} />
-                <Info label="Customer Phone" value={order?.customer_phone} />
-                <Info label="Quantity" value={order?.quantity} />
-                <Info label="Payment Method" value={order?.payment_method.toUpperCase()} />
-                <Info label="Total Amount" value={`৳ ${order?.payment}`} />
-                <Info label="Due Amount" value={`৳ ${order?.dueAmount || 0.0}`} />
-                <Status value={order.status} />
-              </div>
             </div>
           ))}
         </div>
@@ -95,30 +149,6 @@ const Myorders = () => {
     </div>
   );
 };
-
-const Info = ({ label, value }) => (
-  <div className="flex justify-between">
-    <span className="text-gray-600">{label}</span>
-    <span className="font-medium text-gray-800">{value}</span>
-  </div>
-);
-
-const Status = ({ value }) => {
-  const color =
-    value === 'panding'
-      ? 'bg-yellow-100 text-yellow-700'
-      : 'bg-green-100 text-green-700';
-
-  return (
-    <div className="flex justify-between sm:col-span-2 lg:col-span-3">
-      <span className="text-gray-600">Order Status</span>
-      <span className={`px-3 py-1 text-black rounded-full text-xs font-semibold ${color}`}>
-        {value}
-      </span>
-    </div>
-  );
-};
-
 export default Myorders;
 
 

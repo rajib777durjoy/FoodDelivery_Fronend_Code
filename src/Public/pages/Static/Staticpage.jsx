@@ -22,7 +22,7 @@ const Static = () => {
   useEffect(() => {
     if (userData?.id) {
       axiosSecure
-        .get(`/api/restaurant/customer_static_page/${userData.id}`)
+        .get(`/api/restaurant/customer_static_page/${userData?.id}`)
         .then((res) => {
           SetOrder_list(res.data);
           calculateStats(res.data);

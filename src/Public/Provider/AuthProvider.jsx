@@ -17,6 +17,7 @@ const AuthProvider = ({ children }) => {
     const axiosPublic = useAxiosPublic();
     const provider = new GoogleAuthProvider();
 
+
     const GoogleSingIn = () => {
         setLoading(true)
         return signInWithPopup(auth, provider)
@@ -32,6 +33,7 @@ const AuthProvider = ({ children }) => {
     const SignOutUser = async () => {
         try {
             setLoading(true)
+            
             return await signOut(auth);
             console.log('Sign out successful');
         } catch (err) {
@@ -59,7 +61,7 @@ const AuthProvider = ({ children }) => {
         socket.on("disconnect", handleDisconnect);
 
         const unsubscribe = onAuthStateChanged(auth,(currentUser) => {
-            console.log('currentUser::', currentUser);
+            console.log('currentUser::', currentUser.email);
             console.log('loading status',loading)
             Setuser(currentUser);
             if (currentUser?.email) { 

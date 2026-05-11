@@ -38,15 +38,15 @@ const MenuPage = () => {
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, delete it!"
         }).then(async (result) => {
-            if (result.isConfirmed) {
+            if (result?.isConfirmed) {
                 const res = await axiosPublic.delete(`/api/restaurant/food_item_delete/${id}`)
                 if (res.data?.message) {
-                    refetch()
                     Swal.fire({
                         title: "Deleted!",
-                        text:res.data?.message,
+                        text: res.data?.message,
                         icon: "success"
                     });
+                  return refetch()
                 }
             }
         });
@@ -105,7 +105,7 @@ const MenuPage = () => {
                                     details
                                 </td>
                                 <td className="p-3 space-x-2">
-                                    <button onClick={()=>navigate(`/restaurant_Dashboard/Food_Edit/${item?.id}`)} className="text-blue-600 hover:underline">
+                                    <button onClick={() => navigate(`/restaurant_Dashboard/Food_Edit/${item?.id}`)} className="text-blue-600 hover:underline">
                                         Edit
                                     </button>
                                     <button onClick={() => handleDelete_Food_item(item?.id)} className="text-red-600 hover:underline">

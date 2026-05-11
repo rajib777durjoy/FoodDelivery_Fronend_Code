@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { NavLink, Outlet } from "react-router";
+import { NavLink, Outlet, useNavigate } from "react-router";
 import { AuthContext } from "../Public/Provider/AuthProvider";
 import { CiMenuFries } from "react-icons/ci";
 import { IoClose } from "react-icons/io5";
@@ -7,13 +7,13 @@ import { IoClose } from "react-icons/io5";
 const RestaurantOwnerDashboard = () => {
   const { SignOutUser, user } = useContext(AuthContext);
   const [menu, setMenu] = useState(false);
+  const Navigate= useNavigate() ;
 
   const linkClass = ({ isActive }) =>
     `block px-4 py-2 rounded-lg text-sm transition
-    ${
-      isActive
-        ? "bg-green-500 text-white"
-        : "text-gray-300 hover:bg-green-600 hover:text-white"
+    ${isActive
+      ? "bg-green-500 text-white"
+      : "text-gray-300 hover:bg-green-600 hover:text-white"
     }`;
 
   return (
@@ -72,7 +72,11 @@ const RestaurantOwnerDashboard = () => {
 
         {/* Sign Out */}
         <button
-          onClick={SignOutUser}
+          onClick={() => {
+            SignOutUser().then(() => {
+              Navigate('/SignIn', { replace: false })
+            })
+          }}
           className="mt-6 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg"
         >
           Sign Out
@@ -81,14 +85,12 @@ const RestaurantOwnerDashboard = () => {
 
       {/* Mobile Sidebar */}
       <div
-        className={`fixed inset-0 z-50 lg:hidden transition ${
-          menu ? "visible" : "invisible"
-        }`}
+        className={`fixed inset-0 z-50 lg:hidden transition ${menu ? "visible" : "invisible"
+          }`}
       >
         <div
-          className={`absolute inset-0 bg-black/50 ${
-            menu ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute inset-0 bg-black/50 ${menu ? "opacity-100" : "opacity-0"
+            }`}
           onClick={() => setMenu(false)}
         />
 
@@ -141,7 +143,11 @@ const RestaurantOwnerDashboard = () => {
           </nav>
 
           <button
-            onClick={SignOutUser}
+            onClick={() => {
+              SignOutUser().then(() => {
+                Navigate('/SignIn', { replace: false })
+              })
+            }}
             className="mt-6 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg w-full"
           >
             Sign Out
